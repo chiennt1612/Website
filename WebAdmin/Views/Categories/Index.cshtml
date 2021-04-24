@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@*@model IEnumerable<EntityFramework.Web.Entities.Categories>*@
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<EntityFramework.Web.Entities.Categories>
+
+@{ ViewData["Title"] = Localizer["Danh sách"]; }
+
+<h1>@Localizer["Danh sách nhóm hàng hóa"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["Thêm mới"]</a>
+</p>
+@if (Model.Count > 0)
+{
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Parent)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].DisplayOnMenuMain)
+                            </th>
+                            @*<th>
+            @Html.DisplayNameFor(model => model[0].UserCreator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].DateCreator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].UserModify)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].DateModify)
+        </th>*@
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parent.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayOnMenuMain)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UserCreator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserModify)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateModify)
+                </td>*@
+            <td style="display: inline">
+                <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Sửa"]</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Xóa"]</a>
+            </td>
+        </tr>}
+                    </tbody>
+                </table><div class="pagination">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+                </div> }
+            else
+            {
+<p>@Localizer["Không có dữ liệu"]</p>}

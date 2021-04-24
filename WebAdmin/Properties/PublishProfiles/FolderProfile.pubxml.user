@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Project\00.NgocTuan\Project\Publish\WebAdmin</_PublishTargetUrl>
+    <History>True|2021-04-23T17:38:53.0245095Z;True|2021-04-20T20:42:22.2007789+07:00;True|2021-04-17T17:32:48.3646139+07:00;True|2021-04-17T17:09:05.9515877+07:00;True|2021-04-17T15:55:11.8997835+07:00;True|2021-04-17T15:51:01.6292412+07:00;False|2021-04-17T15:50:51.3793554+07:00;True|2021-04-17T15:49:21.8204066+07:00;False|2021-04-17T15:49:11.9051698+07:00;True|2021-04-17T15:45:08.7807439+07:00;</History>
+  </PropertyGroup>
+</Project>

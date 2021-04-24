@@ -1,0 +1,236 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@*@model IEnumerable<EntityFramework.Web.Entities.Product>*@
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<EntityFramework.Web.Entities.Product>
+
+@{ ViewData["Title"] = Localizer["Danh sách"]; }
+
+<h1>@Localizer["Danh sách"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["Thêm mới"]</a>
+</p>@if (Model.Count > 0)
+{
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Code)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Categories)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].CategoryReference)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Img)
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model[0].ImgSlide1)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model[0].ImgSlide2)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model[0].ImgSlide3)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model[0].ImgSlide4)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ImgSlide5)
+                                </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Summary)
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].IsNews)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Discount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Quota)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].IsSale)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].IsHot)
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.MetaTitle)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MetaDescription)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MetaKeyword)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MetaBox)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MetaRobotTag)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserCreator)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DateCreator)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserModify)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DateModify)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IsDeleted)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserDeleted)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DateDeleted)
+                                </th>*@
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryReference)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Img)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.ImgSlide1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImgSlide2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImgSlide3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImgSlide4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImgSlide5)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.IsNews)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quota)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsHot)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.MetaTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetaDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetaKeyword)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetaBox)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetaRobotTag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserCreator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserModify)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateModify)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDeleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserDeleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateDeleted)
+                </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Sửa"]</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Xóa"]</a>
+            </td>
+        </tr>}
+                    </tbody>
+                </table><div class="pagination">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+                </div> }
+            else
+            {
+<p>@Localizer["Không có dữ liệu"]</p>}

@@ -1,0 +1,147 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model EntityFramework.Web.Entities.Article
+
+@{
+    ViewData["Title"] = Localizer["Sửa"];
+}
+
+<h1>@Localizer["Sửa"]</h1>
+
+<h4>@Localizer["Tin tức"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CategoryMain" class="control-label"></label>
+                <select asp-for="CategoryMain" class="form-control" asp-items="ViewBag.CategoryMain"></select>
+                <span asp-validation-for="CategoryMain" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryReference" class="control-label"></label>
+                <input asp-for="CategoryReference" class="form-control" />
+                <span asp-validation-for="CategoryReference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TagsReference" class="control-label"></label>
+                <input asp-for="TagsReference" class="form-control" />
+                <span asp-validation-for="TagsReference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Img" class="control-label"></label>
+                <input asp-for="Img" class="form-control" />
+                <span asp-validation-for="Img" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImgBanner" class="control-label"></label>
+                <input asp-for="ImgBanner" class="form-control" />
+                <span asp-validation-for="ImgBanner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsNews" /> @Html.DisplayNameFor(model => model.IsNews)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publisher" class="control-label"></label>
+                <input asp-for="Publisher" class="form-control" />
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div><input type="hidden" asp-for="Id" />
+            @*<div class="form-group">
+                <label asp-for="MetaTitle" class="control-label"></label>
+                <input asp-for="MetaTitle" class="form-control" />
+                <span asp-validation-for="MetaTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaDescription" class="control-label"></label>
+                <input asp-for="MetaDescription" class="form-control" />
+                <span asp-validation-for="MetaDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaKeyword" class="control-label"></label>
+                <input asp-for="MetaKeyword" class="form-control" />
+                <span asp-validation-for="MetaKeyword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaBox" class="control-label"></label>
+                <input asp-for="MetaBox" class="form-control" />
+                <span asp-validation-for="MetaBox" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaRobotTag" class="control-label"></label>
+                <input asp-for="MetaRobotTag" class="form-control" />
+                <span asp-validation-for="MetaRobotTag" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="UserCreator" class="control-label"></label>
+                <input asp-for="UserCreator" class="form-control" />
+                <span asp-validation-for="UserCreator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreator" class="control-label"></label>
+                <input asp-for="DateCreator" class="form-control" />
+                <span asp-validation-for="DateCreator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserModify" class="control-label"></label>
+                <input asp-for="UserModify" class="form-control" />
+                <span asp-validation-for="UserModify" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateModify" class="control-label"></label>
+                <input asp-for="DateModify" class="form-control" />
+                <span asp-validation-for="DateModify" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDeleted" class="control-label"></label>
+                <input asp-for="UserDeleted" class="form-control" />
+                <span asp-validation-for="UserDeleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateDeleted" class="control-label"></label>
+                <input asp-for="DateDeleted" class="form-control" />
+                <span asp-validation-for="DateDeleted" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Lưu"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["Quay lại danh sách"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

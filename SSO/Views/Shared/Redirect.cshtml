@@ -1,0 +1,17 @@
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using IdentityServer4.Extensions
+@inject IViewLocalizer Localizer
+@model RedirectViewModel
+
+<div class="redirect-page">
+    <div class="lead">
+        <h1>@Localizer["Bạn đang được chuyển hướng về Ứng dụng yêu cầu"]</h1>
+        <p>@Localizer["Khi kết thúc bạn có thể đóng cửa sổ này"].</p>
+    </div>
+</div>
+
+<meta http-equiv="refresh" content="0;url=@Model.RedirectUrl" data-url="@Model.RedirectUrl">
+<script src="~/js/signin-redirect.js"></script>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAyWghAoRv3Uuj+IU9MMIYFwAAAAACAAAAAAAQZgAAAAEAACAAAAB/0ff9UoTZRW7PV+XAQZcaOGBCHggQT5OiuG4YryzfnQAAAAAOgAAAAAIAACAAAADl6zvPQ0RT50QT8sNP7Kc4I9J/bI9WO6NSCvZZnK4eVyAAAABtcvm6pH0L5CB1GyJht1NYhnyGu6y7vqfRLfe68RkHd0AAAAB4H1MdlqbXis03G88JXuJG3pIyiBfCDpQLrqoL9j9a3scNVgJNoqHODKdO32onU0zAubt/0vibWANi3rUsTH5X</EncryptedPassword>
+    <_PublishTargetUrl>ftp://www.pay.nuocngoctuan.com</_PublishTargetUrl>
+    <History>False|2021-04-17T12:34:25.3675409Z;</History>
+  </PropertyGroup>
+</Project>

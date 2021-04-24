@@ -1,0 +1,41 @@
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using IdentityServer4.Extensions
+@inject IViewLocalizer Localizer
+
+@model ErrorViewModel
+
+@{ var error = Model?.Error?.Error;
+                var errorDescription = Model?.Error?.ErrorDescription;
+                var request_id = Model?.Error?.RequestId; }
+
+<div class="error-page">
+    <div class="lead">
+        <h1>Error</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="alert alert-danger">
+                @Localizer["Xin lỗi, yêu cầu của bạn gặp lỗi"]
+
+                @if (error != null)
+                {
+            <strong>
+                <em>
+                    : @error
+                </em>
+            </strong> if (errorDescription != null)
+            {
+            <div>@errorDescription</div>}
+    }
+            </div>
+
+            @if (request_id != null)
+            {
+        <div class="request-id">@Localizer["Mã yêu cầu"]: @request_id</div>            }
+        </div>
+    </div>
+</div>

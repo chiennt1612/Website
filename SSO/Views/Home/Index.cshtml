@@ -1,0 +1,44 @@
+@using System.Diagnostics
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@using IdentityServer4.Extensions
+
+@{
+    var version = FileVersionInfo.GetVersionInfo(typeof(IdentityServer4.Hosting.IdentityServerMiddleware).Assembly.Location).ProductVersion.Split('+').First();
+}
+
+<div class="welcome-page">
+    <h1>
+        <img src="~/icon.jpg">
+        @Localizer["Chào mừng đến với SSO - Ngọc Tuấn Group"]
+        <small class="text-muted">(version @version)</small>
+    </h1>
+
+    <ul>
+        <li>
+            @Localizer["Thông tin SSO"]
+            <a href="~/.well-known/openid-configuration">@Localizer["xem chi tiết"]</a>
+            @Localizer["bạn thấy Metadata, Endpoint, ..."]
+        </li>
+        <li>
+            @Localizer["Nhấn chuột"] <a href="~/Decryptor/Index">@Localizer["vào đây"]</a> @Localizer["để mã hóa hoặc giải mã"].
+        </li>
+        <li>
+            @Localizer["Nhấn chuột"] <a href="~/Account/Register">@Localizer["vào đây"]</a> @Localizer["để đăng ký tài khoản"].
+        </li>
+        <li>
+            @Localizer["Nhấn chuột"] <a href="~/Manage/Index">@Localizer["vào đây"]</a> @Localizer["để xem trang cá nhân"].
+        </li>
+        <li>
+            @Localizer["Nhấn chuột"] <a href="~/diagnostics">@Localizer["vào đây"]</a> @Localizer["để xem thông tin phiên đăng nhập"].
+        </li>
+        <li>
+            @Localizer["Nhấn chuột"] <a href="~/grants">@Localizer["vào đây"]</a> @Localizer["để xem quyền truy cập tài nguyên SSO"].
+        </li>
+    </ul>
+</div>

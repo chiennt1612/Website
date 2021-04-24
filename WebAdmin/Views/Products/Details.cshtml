@@ -1,0 +1,201 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model EntityFramework.Web.Entities.Product
+
+@{
+    ViewData["Title"] = Localizer["Chi tiết"];
+}
+
+<h1>@Localizer["Chi tiết"]</h1>
+
+<div>
+    <h4>@Localizer["Hàng hóa"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Categories)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Categories.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CategoryReference)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CategoryReference)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Img)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Img)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgSlide1)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImgSlide1)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgSlide2)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImgSlide2)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgSlide3)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImgSlide3)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgSlide4)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImgSlide4)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgSlide5)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImgSlide5)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Summary)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsNews)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsNews)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Quota)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quota)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsSale)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsSale)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsHot)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsHot)
+        </dd>
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MetaTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MetaTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MetaDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MetaDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MetaKeyword)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MetaKeyword)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MetaBox)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MetaBox)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MetaRobotTag)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MetaRobotTag)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserCreator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserCreator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateCreator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserModify)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserModify)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateModify)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateModify)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserDeleted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserDeleted)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateDeleted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateDeleted)
+        </dd>*@
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Sửa"]</a> | <a asp-action="Delete" asp-route-id="@Model.Id">@Localizer["Xóa"]</a> |
+    <a asp-action="Index">@Localizer["Quay lại danh sách"]</a>
+</div>

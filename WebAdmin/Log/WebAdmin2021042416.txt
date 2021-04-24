@@ -1,0 +1,42 @@
+[16:39:30 Error] WebAdmin.Helpers.DecryptorProvider
+Giai ma server=(LOCAL);database=BacNgocTuan;User Id=SA;Password=MjNlYjMyMDI5ODRmMGJiYzY2ZTVjYTE5: System.FormatException: The input is not a valid Base-64 string as it contains a non-base 64 character, more than two padding characters, or an illegal character among the padding characters.
+   at System.Convert.FromBase64_ComputeResultLength(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at WebAdmin.Helpers.RijndaelEnhanced.Decrypt(String cipherText) in D:\Project\00.NgocTuan\Project\Application\WebAdmin\Helpers\DecryptorProvider.cs:line 627
+   at WebAdmin.Helpers.DecryptorProvider.Decrypt(String a) in D:\Project\00.NgocTuan\Project\Application\WebAdmin\Helpers\DecryptorProvider.cs:line 38
+
+)[16:39:30 Information] 
+Starting host...
+
+)[16:39:32 Information] Microsoft.Hosting.Lifetime
+Now listening on: https://localhost:5002
+
+)[16:39:32 Information] Microsoft.Hosting.Lifetime
+Application started. Press Ctrl+C to shut down.
+
+)[16:39:32 Information] Microsoft.Hosting.Lifetime
+Hosting environment: Development
+
+)[16:39:32 Information] Microsoft.Hosting.Lifetime
+Content root path: D:\Project\00.NgocTuan\Project\Application\WebAdmin
+
+)[16:39:34 Information] Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectHandler
+AuthenticationScheme: oidc was challenged.
+
+)[16:39:35 Information] Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler
+AuthenticationScheme: Cookies signed in.
+
+)[16:39:41 Information] WebAdmin.Services.ParamSettingServices
+GetListAsync expression, sort True 1 10
+
+)[16:39:44 Information] WebAdmin.Services.MenuMainFooterServices
+GetListAsync expression, sort True 1 10
+
+)[16:39:46 Information] WebAdmin.Services.NewsCategoriesServices
+GetListAsync expression, sort True 1 10
+
+)[16:39:47 Information] WebAdmin.Services.CategoriesServices
+GetListAsync expression, sort True 1 10
+
+)
