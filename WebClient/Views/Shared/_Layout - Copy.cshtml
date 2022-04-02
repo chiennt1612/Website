@@ -1,0 +1,569 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
+@using WebClient.Helpers
+@inject IViewLocalizer Localizer
+@inject IHttpContextAccessor httpContext
+
+<!DOCTYPE html>
+<html lang="vi" class="loading-site no-js">
+<head>
+    <meta charset="UTF-8" />
+    <script>(function (html) { html.className = html.className.replace(/\bno-js\b/, 'js') })(document.documentElement);</script>
+    <script>window._wca = window._wca || [];</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <title>@Localizer["Lắc Bạc 925 Bạc Ngọc Tuấn - Lắc chân, lắc tay bạc cao cấp nhập khẩu!"]</title>
+    <meta name="description" content="@Localizer["Các mẫu lắc bạc đẹp và HOT nhất hiện nay. Liên tục cập nhật những mẫu lắc chân, lăc tay bạc cao cấp 92.5 nhập khẩu từ Ý, Thái!"]" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://bacngoctuan.com/lac-bac" />
+    <link rel="next" href="https://bacngoctuan.com/lac-bac/page/2" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="@Localizer["Lắc Bạc 925 Bạc Ngọc Tuấn - Lắc chân, lắc tay bạc cao cấp nhập khẩu!"]" />
+    <meta property="og:description" content="@Localizer["Các mẫu lắc bạc đẹp và HOT nhất hiện nay. Liên tục cập nhật những mẫu lắc chân, lăc tay bạc cao cấp 92.5 nhập khẩu từ Ý, Thái!"]" />
+    <meta property="og:url" content="https://bacngoctuan.com/lac-bac" />
+    <meta property="og:site_name" content="Trang Sức Bạc Ngọc Tuấn" />
+    <meta name="twitter:card" content="summary_large_image" />
+    @Html.Raw(@"<script type=""application/ld+json"" class=""yoast-schema-graph"">{""@context"":""https://schema.org"",""@graph"":[{""@type"":""WebSite"",""@id"":""https://bacngoctuan.com/#website"",""url"":""https://bacngoctuan.com/"",""name"":""Trang S\u1ee9c B\u1ea1c Ng\u1ecdc Tu\u1ea5n"",""description"":""Trang S\u1ee9c B\u1ea1c 925 Cao C\u1ea5p"",""potentialAction"":[{""@type"":""SearchAction"",""target"":""https://bacngoctuan.com/?s={search_term_string}"",""query-input"":""required name=search_term_string""}],""inLanguage"":""vi""},{""@type"":""CollectionPage"",""@id"":""https://bacngoctuan.com/lac-bac#webpage"",""url"":""https://bacngoctuan.com/lac-bac"",""name"":""L\u1eafc B\u1ea1c 925 B\u1ea1c Ng\u1ecdc Tu\u1ea5n - L\u1eafc ch\u00e2n, l\u1eafc tay b\u1ea1c cao c\u1ea5p nh\u1eadp kh\u1ea9u!"",""isPartOf"":{""@id"":""https://bacngoctuan.com/#website""},""description"":""C\u00e1c m\u1eabu l\u1eafc b\u1ea1c \u0111\u1eb9p v\u00e0 HOT nh\u1ea5t hi\u1ec7n nay. Li\u00ean t\u1ee5c c\u1eadp nh\u1eadt nh\u1eefng m\u1eabu l\u1eafc ch\u00e2n, l\u0103c tay b\u1ea1c cao c\u1ea5p 92.5 nh\u1eadp kh\u1ea9u t\u1eeb \u00dd, Th\u00e1i!"",""breadcrumb"":{""@id"":""https://bacngoctuan.com/lac-bac#breadcrumb""},""inLanguage"":""vi"",""potentialAction"":[{""@type"":""ReadAction"",""target"":[""https://bacngoctuan.com/lac-bac""]}]},{""@type"":""BreadcrumbList"",""@id"":""https://bacngoctuan.com/lac-bac#breadcrumb"",""itemListElement"":[{""@type"":""ListItem"",""position"":1,""item"":{""@type"":""WebPage"",""@id"":""https://bacngoctuan.com/"",""url"":""https://bacngoctuan.com/"",""name"":""Trang ch\u1ee7""}},{""@type"":""ListItem"",""position"":2,""item"":{""@type"":""WebPage"",""@id"":""https://bacngoctuan.com/lac-bac"",""url"":""https://bacngoctuan.com/lac-bac"",""name"":""L\u1eafc B\u1ea1c""}}]}]}</script>")
+
+    <link rel='dns-prefetch' href='//stats.wp.com' />
+    <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel='dns-prefetch' href='//i0.wp.com' />
+    <link rel='dns-prefetch' href='//i1.wp.com' />
+    <link rel='dns-prefetch' href='//i2.wp.com' />
+    <link rel='dns-prefetch' href='//c0.wp.com' />
+    <link rel="alternate" type="application/rss+xml" title="@Localizer["Dòng thông tin Trang Sức Bạc Ngọc Tuấn"]" href="https://bacngoctuan.com/feed" />
+    <link rel="alternate" type="application/rss+xml" title="@Localizer["Dòng phản hồi Trang Sức Bạc Ngọc Tuấn"]" href="https://bacngoctuan.com/comments/feed" />
+    <link rel="alternate" type="application/rss+xml" title="@Localizer["Nguồn cấp Trang Sức Bạc Ngọc Tuấn &raquo; Lắc Bạc Danh mục"]" href="https://bacngoctuan.com/lac-bac/feed" />
+    <link rel='stylesheet' id='wp-block-library-css' href='/css/style.min.css' type='text/css' media='all' />
+    <style id='wp-block-library-inline-css' type='text/css'>
+        .has-text-align-justify {
+            text-align: justify;
+        }
+    </style>
+    <link rel='stylesheet' id='wc-block-vendors-style-css' href='/css/vendors-style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='wc-block-style-css' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='contact-form-7-css' href='/css/styles.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='mobile-css' href='/css/mobile.css' type='text/css' />
+    <link rel='stylesheet' id='kk-star-ratings-css' href='/css/kk-star-ratings.css' type='text/css' media='all' />
+    <style id='kk-star-ratings-inline-css' type='text/css'>
+        .kk-star-ratings .kksr-stars .kksr-star {
+            margin-right: 4px;
+        }
+
+        [dir="rtl"] .kk-star-ratings .kksr-stars .kksr-star {
+            margin-left: 4px;
+            margin-right: 0;
+        }
+    </style>
+    <style id='woocommerce-inline-inline-css' type='text/css'>
+        .woocommerce form .form-row .required {
+            visibility: visible;
+        }
+    </style>
+    <link rel='stylesheet' id='megamenu-css' href='/css/maxmegamenu/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='dashicons-css' href='/css/maxmegamenu/dashicons.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-icons-css' href='/css/maxmegamenu/fl-icons.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-main-css' href='/css/maxmegamenu/flatsome.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-shop-css' href='/css/maxmegamenu/flatsome-shop.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-style-css' href='/css/mecua-child/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-googlefonts-css' href='//fonts.googleapis.com/css?family=Roboto+Condensed%3Aregular%2C700%2Cregular%2C700%2Cregular&#038;display=swap' type='text/css' media='all' />
+    <link rel='stylesheet' id='jetpack_css-css' href='/css/maxmegamenu/jetpack.css' type='text/css' media='all' />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <script type="text/javascript">(function (a, d) { if (a._nsl === d) { a._nsl = []; var c = function () { if (a.jQuery === d) setTimeout(c, 33); else { for (var b = 0; b < a._nsl.length; b++)a._nsl[b].call(a, a.jQuery); a._nsl = { push: function (b) { b.call(a, a.jQuery) } } } }; c() } })(window);</script>
+    <script type='text/javascript' src='/js/jquery/jquery.min.js' id='jquery-core-js'></script>
+    <script defer type='text/javascript' src='https://stats.wp.com/s-202116.js' id='woocommerce-analytics-js'></script>
+    <link rel="https://api.w.org/" href="https://bacngoctuan.com/wp-json/" />
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://bacngoctuan.com/xmlrpc.php?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://bacngoctuan.com/wp-includes/wlwmanifest.xml" />
+    <meta name="generator" content="WordPress 5.6.3" />
+    <meta name="generator" content="WooCommerce 4.9.2" />
+    <style type='text/css'>
+        img#wpstats {
+            display: none
+        }
+    </style>
+    <style>
+        .bg {
+            opacity: 0;
+            transition: opacity 1s;
+            -webkit-transition: opacity 1s;
+        }
+
+        .bg-loaded {
+            opacity: 1;
+        }
+    </style>
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="/css/mecua-child/ie-fallback.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script>
+        <script>
+            var head = document.getElementsByTagName('head')[0], style = document.createElement('style');
+            style.type = 'text/css';
+            style.styleSheet.cssText = ':before,:after{content:none !important';
+            head.appendChild(style);
+            setTimeout(function(){head.removeChild(style);}, 0);
+        </script>
+        <script src="/js/ie/ie-flexibility.js"></script>
+    <![endif]-->
+    <noscript>
+        <style>
+            .woocommerce-product-gallery {
+                opacity: 1 !important;
+            }
+        </style>
+    </noscript>
+    <style type="text/css">
+        /* If html does not have either class, do not show lazy loaded images. */
+        html:not( .jetpack-lazy-images-js-enabled ):not( .js ) .jetpack-lazy-image {
+            display: none;
+        }
+    </style>
+    <script>
+        document.documentElement.classList.add(
+            'jetpack-lazy-images-js-enabled'
+        );
+    </script>
+    <link rel="icon" href="/Image/logo_web_chuan32x32png.png?fit=32%2C32&#038;ssl=1" sizes="32x32" />
+    <link rel="icon" href="/Image/logo_web_chuan192x192.png?fit=192%2C192&#038;ssl=1" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/Image/cropped-logo_web_chuan180.png?fit=180%2C180&#038;ssl=1" />
+    <meta name="msapplication-TileImage" content="/Image/logo_web_chuan270x270.png?fit=270%2C270&#038;ssl=1" />
+    @Html.Raw(@"<style id=""custom-css"" type=""text/css"">:root {--primary-color: #104892;}.header-main{height: 100px}#logo img{max-height: 100px}#logo{width:328px;}.header-bottom{min-height: 55px}.header-top{min-height: 30px}.has-transparent + .page-title:first-of-type,.has-transparent + #main > .page-title,.has-transparent + #main > div > .page-title,.has-transparent + #main .page-header-wrapper:first-of-type .page-title{padding-top: 180px;}.header.show-on-scroll,.stuck .header-main{height:70px!important}.stuck #logo img{max-height: 70px!important}.search-form{ width: 75%;}.header-bottom {background-color: #01029A; /*#001c5d;*/}.header-main .nav > li > a{line-height: 16px }.stuck .header-main .nav > li > a{line-height: 50px }.header-bottom-nav > li > a{line-height: 16px }@media (max-width: 549px) {.header-main{height: 70px}#logo img{max-height: 70px}}.header-top{background-color:#eaeaea!important;}/* Color */.accordion-title.active, .has-icon-bg .icon .icon-inner,.logo a, .primary.is-underline, .primary.is-link, .badge-outline .badge-inner, .nav-outline > li.active> a,.nav-outline >li.active > a, .cart-icon strong,[data-color='primary'], .is-outline.primary{color: #104892;}/* Color !important */[data-text-color=""primary""]{color: #104892!important;}/* Background Color */[data-text-bg=""primary""]{background-color: #104892;}/* Background */.scroll-to-bullets a,.featured-title, .label-new.menu-item > a:after, .nav-pagination > li > .current,.nav-pagination > li > span:hover,.nav-pagination > li > a:hover,.has-hover:hover .badge-outline .badge-inner,button[type=""submit""], .button.wc-forward:not(.checkout):not(.checkout-button), .button.submit-button, .button.primary:not(.is-outline),.featured-table .title,.is-outline:hover, .has-icon:hover .icon-label,.nav-dropdown-bold .nav-column li > a:hover, .nav-dropdown.nav-dropdown-bold > li > a:hover, .nav-dropdown-bold.dark .nav-column li > a:hover, .nav-dropdown.nav-dropdown-bold.dark > li > a:hover, .is-outline:hover, .tagcloud a:hover,.grid-tools a, input[type='submit']:not(.is-form), .box-badge:hover .box-text, input.button.alt,.nav-box > li > a:hover,.nav-box > li.active > a,.nav-pills > li.active > a ,.current-dropdown .cart-icon strong, .cart-icon:hover strong, .nav-line-bottom > li > a:before, .nav-line-grow > li > a:before, .nav-line > li > a:before,.banner, .header-top, .slider-nav-circle .flickity-prev-next-button:hover svg, .slider-nav-circle .flickity-prev-next-button:hover .arrow, .primary.is-outline:hover, .button.primary:not(.is-outline), input[type='submit'].primary, input[type='submit'].primary, input[type='reset'].button, input[type='button'].primary, .badge-inner{background-color: #104892;}/* Border */.nav-vertical.nav-tabs > li.active > a,.scroll-to-bullets a.active,.nav-pagination > li > .current,.nav-pagination > li > span:hover,.nav-pagination > li > a:hover,.has-hover:hover .badge-outline .badge-inner,.accordion-title.active,.featured-table,.is-outline:hover, .tagcloud a:hover,blockquote, .has-border, .cart-icon strong:after,.cart-icon strong,.blockUI:before, .processing:before,.loading-spin, .slider-nav-circle .flickity-prev-next-button:hover svg, .slider-nav-circle .flickity-prev-next-button:hover .arrow, .primary.is-outline:hover{border-color: #104892}.nav-tabs > li.active > a{border-top-color: #104892}.widget_shopping_cart_content .blockUI.blockOverlay:before { border-left-color: #104892 }.woocommerce-checkout-review-order .blockUI.blockOverlay:before { border-left-color: #104892 }/* Fill */.slider .flickity-prev-next-button:hover svg,.slider .flickity-prev-next-button:hover .arrow{fill: #104892;}/* Background Color */[data-icon-label]:after, .secondary.is-underline:hover,.secondary.is-outline:hover,.icon-label,.button.secondary:not(.is-outline),.button.alt:not(.is-outline), .badge-inner.on-sale, .button.checkout, .single_add_to_cart_button, .current .breadcrumb-step{ background-color:#0e828a; }[data-text-bg=""secondary""]{background-color: #0e828a;}/* Color */.secondary.is-underline,.secondary.is-link, .secondary.is-outline,.stars a.active, .star-rating:before, .woocommerce-page .star-rating:before,.star-rating span:before, .color-secondary{color: #0e828a}/* Color !important */[data-text-color=""secondary""]{color: #0e828a!important;}/* Border */.secondary.is-outline:hover{border-color:#0e828a}body{font-family:""Roboto Condensed"", sans-serif}body{font-weight: 0}.nav > li > a {font-family:""Roboto Condensed"", sans-serif;}.mobile-sidebar-levels-2 .nav > li > ul > li > a {font-family:""Roboto Condensed"", sans-serif;}.nav > li > a {font-weight: 700;}.mobile-sidebar-levels-2 .nav > li > ul > li > a {font-weight: 700;}h1,h2,h3,h4,h5,h6,.heading-font, .off-canvas-center .nav-sidebar.nav-vertical > li > a{font-family: ""Roboto Condensed"", sans-serif;}h1,h2,h3,h4,h5,h6,.heading-font,.banner h1,.banner h2{font-weight: 700;}.alt-font{font-family: ""Roboto Condensed"", sans-serif;}.alt-font{font-weight: 0!important;}.header:not(.transparent) .top-bar-nav > li > a {color: #011c7d;}.header:not(.transparent) .top-bar-nav.nav > li > a:hover,.header:not(.transparent) .top-bar-nav.nav > li.active > a,.header:not(.transparent) .top-bar-nav.nav > li.current > a,.header:not(.transparent) .top-bar-nav.nav > li > a.active,.header:not(.transparent) .top-bar-nav.nav > li > a.current{color: #7e1010;}.top-bar-nav.nav-line-bottom > li > a:before,.top-bar-nav.nav-line-grow > li > a:before,.top-bar-nav.nav-line > li > a:before,.top-bar-nav.nav-box > li > a:hover,.top-bar-nav.nav-box > li.active > a,.top-bar-nav.nav-pills > li > a:hover,.top-bar-nav.nav-pills > li.active > a{color:#FFF!important;background-color: #7e1010;}@media screen and (min-width: 550px){.products .box-vertical .box-image{min-width: 300px!important;width: 300px!important;}}.page-title-small + main .product-container > .row{padding-top:0;}.label-new.menu-item > a:after{content:""New"";}.label-hot.menu-item > a:after{content:""Hot"";}.label-sale.menu-item > a:after{content:""Sale"";}.label-popular.menu-item > a:after{content:""Popular"";}</style>")
+    <style type="text/css" id="wp-custom-css">
+        .back-to-top {
+            bottom: 20px;
+            right: 90px;
+        }
+
+        .section-title-normal span {
+            display: inline-block;
+            padding: 5px 20px;
+            color: #fff;
+            background: #01029A; /*#001c5d;*/
+            font-size: 16px;
+            border-radius: 5px 30px 0px 5px
+        }
+
+        .header-main {
+            height: 76px;
+            background-color: #01029A; /*#001c5d;*/
+        }
+
+        .form-flat input:not([type="submit"]), .form-flat textarea, .form-flat select {
+            background-color: rgb(255 255 255 / 93%);
+            box-shadow: none;
+            border-color: rgb(255 255 255 / 9%);
+            background-position: 99% 50%;
+            color: currentColor !important;
+            border-radius: 99px;
+        }
+
+        .footer-2 {
+            background-color: #01029A; /*#001c5d;*/
+        }
+
+        .absolute-footer, html {
+            background-color: #ececec;
+        }
+    </style>
+    <style type="text/css">
+        /** Mega Menu CSS: fs **/
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83548111-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-83548111-2');
+    </script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+</head>
+<body data-rsssl=1 class="archive tax-product_cat term-lac-bac term-108 theme-flatsome woocommerce woocommerce-page woocommerce-no-js mega-menu-primary lightbox nav-dropdown-has-arrow">
+    <a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+    <div id="wrapper">
+        <header id="header" class="header has-sticky sticky-jump">
+            <div class="header-wrapper">
+
+                @await Html.PartialAsync("_TopLayoutPartial")
+
+                <div id="masthead" class="header-main ">
+                    <div class="header-inner flex-row container logo-left medium-logo-center" role="navigation">
+
+                        <!-- Logo -->
+                        <div id="logo" class="flex-col logo">
+                            <!-- Header logo -->
+                            <a href="https://bacngoctuan.com/" title="@Localizer["Trang Sức Bạc Ngọc Tuấn - Trang Sức Bạc 925 Cao Cấp"]" rel="home">
+                                <img width="328" height="100" src="/Image/logo_bnt-chuan.png" class="header_logo header-logo" alt="@Localizer["Trang Sức Bạc Ngọc Tuấn"]" /><img width="328" height="100" src="/Image/logo_web_chuan-2.png" class="header-logo-dark" alt="@Localizer["Trang Sức Bạc Ngọc Tuấn"]" />
+                            </a>
+                        </div>
+
+                        <!-- Mobile Left Elements -->
+                        @await Html.PartialAsync("_LeftElementMobile", ViewData.GetSearchInput())
+
+                        <!-- Left Elements -->
+                        @await Html.PartialAsync("_LeftElement", ViewData.GetSearchInput())
+
+                        <!-- Right Elements -->
+                        @*@await Html.PartialAsync("_RightElement")*@
+                        @await Component.InvokeAsync("Partial", new { _PartialName = "_RightElement" })
+
+                        <!-- Mobile Right Elements -->
+                        @*@await Html.PartialAsync("_RightElenmentMobile")*@
+                        @await Component.InvokeAsync("Partial", new { _PartialName = "_RightElenmentMobile" })
+
+                    </div>
+
+                    <div class="container"><div class="top-divider full-width"></div></div>
+                </div>
+
+                <div id="wide-nav" class="header-bottom wide-nav nav-dark hide-for-medium">
+                    <div class="flex-row container">
+
+                        <div class="flex-col hide-for-medium flex-left">
+                            <ul class="nav header-nav header-bottom-nav nav-left  nav-uppercase">
+                                <div id="mega-menu-wrap-primary" class="mega-menu-wrap">
+                                    <div class="mega-menu-toggle">
+                                        <div class="mega-toggle-blocks-left"></div>
+                                        <div class="mega-toggle-blocks-center"></div>
+                                        <div class="mega-toggle-blocks-right">
+                                            <div class='mega-toggle-block mega-menu-toggle-animated-block mega-toggle-block-0' id='mega-toggle-block-0'>
+                                                <button aria-label="Toggle Menu" class="mega-toggle-animated mega-toggle-animated-slider" type="button">
+                                                    <span class="mega-toggle-animated-box">
+                                                        <span class="mega-toggle-animated-inner"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Main menu header -->
+                                    @await Html.PartialAsync("_MainMenuHeader")
+
+                                </div>
+                            </ul>
+                        </div>
+
+                        <div class="flex-col hide-for-medium flex-right flex-grow">
+                            <ul class="nav header-nav header-bottom-nav nav-right  nav-uppercase">
+                                <li class="header-contact-wrapper">
+                                    <ul id="header-contact" class="nav nav-divided nav-uppercase header-contact">
+                                        @*@await Html.PartialAsync("_HeaderContact")*@
+                                        @await Component.InvokeAsync("Partial", new { _PartialName = "_HeaderContact" })
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div>
+            </div>
+        </header>
+
+        @await Html.PartialAsync("_PathOfPage", ViewData.GetSearchInput())
+
+        <main id="main" class="">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <footer id="footer" class="footer-wrapper">
+        <div class="footer-widgets footer footer-2 dark">
+            <div class="row dark large-columns-4 mb-0">
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_CompanyInfo" })
+
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_CateFooter" })
+
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_AboutList" })
+
+                <div id="custom_html-5" class="widget_text col pb-0 widget widget_custom_html">
+                    <div class="textwidget custom-html-widget">
+                        <div class="fb-page" data-href="https://www.facebook.com/bacngoctuan.fanpage" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+                            <blockquote cite="https://www.facebook.com/bacngoctuan.fanpage" class="fb-xfbml-parse-ignore">
+                                <a href="https://www.facebook.com/bacngoctuan.fanpage">@Localizer["Bạc Ngọc Tuấn Fanpage"]</a>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="absolute-footer dark medium-text-center text-center">
+            <div class="container clearfix">
+
+                <div class="footer-primary pull-left">
+                    <div class="copyright-footer">
+                        <a href="http://online.gov.vn/HomePage/CustomWebsiteDisplay.aspx?DocId=4849"><img src="/Image/dathongbaobct.png" width="15%" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#top" class="back-to-top button icon invert plain fixed bottom z-1 is-outline hide-for-medium circle" id="top-link">
+            <i class="icon-angle-up"></i>
+        </a>
+
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!--------------------------------------------------------------------------->
+    <script type='text/javascript' src='/js/hoverIntent.min.js' id='hoverIntent-js'></script>
+    <script type='text/javascript' id='flatsome-js-js-extra'>
+        /* <![CDATA[ */
+        var flatsomeVars = { "ajaxurl": "@httpContext.HttpContext.Request.Scheme:\/\/@httpContext.HttpContext.Request.Host/QuickView", "rtl": "", "sticky_height": "70", "lightbox": { "close_markup": "<button title=\"%title%\" type=\"button\" class=\"mfp-close\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-x\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"><\/line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"><\/line><\/svg><\/button>", "close_btn_inside": false }, "user": { "can_edit_pages": false }, "i18n": { "mainMenu": "Main Menu" }, "options": { "cookie_notice_version": "1" } };
+        /* ]]> */
+        ///ajax
+    </script>
+    <script type='text/javascript' src='/js/flatsome.js' id='flatsome-js-js'></script>
+    <script type='text/javascript' src='/js/flatsome-lazy-load.js' id='flatsome-lazy-js'></script>
+    <script type='text/javascript' src='/js/woocommerce.js' id='flatsome-theme-woocommerce-js-js'></script>
+    <script type='text/javascript' id='megamenu-js-extra'>
+        /* <![CDATA[ */
+        var megamenu = { "timeout": "300", "interval": "100" };
+        /* ]]> */
+    </script>
+    <script type='text/javascript' src='/js/megamenu/maxmegamenu.js' id='megamenu-js'></script>
+    <script type='text/javascript' src='/js/megamenu/wp-embed.min.js' id='wp-embed-js'></script>
+    <script type='text/javascript' src='/js/jquery/ui/core.min.js' id='jquery-ui-core-js'></script>
+    <script type='text/javascript' src='/js/jquery/ui/mouse.min.js' id='jquery-ui-mouse-js'></script>
+    <script type='text/javascript' src='/js/jquery/ui/slider.min.js' id='jquery-ui-slider-js'></script>
+
+    <script type='text/javascript' src='/js/jquery.blockUI.min.js' id='jquery-blockui-js'></script>
+
+    <script type='text/javascript' id='wc-price-slider-js-extra'>
+        /* <![CDATA[ */
+        var woocommerce_price_slider_params = { "currency_format_num_decimals": "0", "currency_format_symbol": "\u20ab", "currency_format_decimal_sep": ",", "currency_format_thousand_sep": ".", "currency_format": "%v%s" };
+        /* ]]> */
+    </script>
+    <script type='text/javascript' src='/js/price-slider.min.js' id='wc-price-slider-js'></script>
+
+    <script src='https://stats.wp.com/e-202116.js' defer></script>
+    <script>
+        _stq = window._stq || [];
+        _stq.push(['view', { v: 'ext', j: '1:9.4', blog: '188823379', post: '0', tz: '7', srv: 'bacngoctuan.com' }]);
+        _stq.push(['clickTrackerInit', '188823379', '0']);
+    </script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v8.0&appId=256353968743463&autoLogAppEvents=1" nonce="QFlsQmtK"></script>
+
+    <script type='text/javascript'>
+            !function (t) { if (!t.chatngay) { t.chatngay = { client_id: "sjS_sX6Hdo" }; var a = document.createElement("script"); a.async = !0, a.type = "text/javascript", a.src = "https://chatngay-static.glee.vn/files/loader.js"; var e = document.getElementsByTagName("script")[0]; e.parentNode.insertBefore(a, e) } }(window);
+        </script>
+
+    <div class="alert alert-success alert-dismissible" id="myAlert" style="display:none">
+        <a href="#" class="close">&times;</a>
+        <span id="IdTxt"><strong>Success!</strong> This alert box could indicate a successful or positive action.</span>
+    </div>
+
+    <script type='text/javascript' src='/js/accounting.min.js' id='accounting-js'></script>
+
+    <script type='text/javascript'>
+        function PageNews_OnClick(_Page, _Type, _Cate) {
+            switch (_Type) {
+                case "ByKeyword":
+                    //document.forms["frmSearchByKeyword"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeyword"].action = "/News/Search/" + _Page;
+                    document.forms["frmSearchByKeyword"].submit();
+                    break;
+                case "ByKeywordMobile":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/News/Search/" + _Page;
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                default:
+                    window.location.href = "/News/" + _Cate + "/" + _Page;
+                    break;
+            }
+        }
+
+        function PageProduct_OnClick(_Page, _Type, _Cate, _Orderby) {
+            switch (_Type) {
+                case "ByPrice":
+                    //document.forms["frmSearchByPrice"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByPrice"].action = "/Categories/Search/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByPrice"].submit();
+                    break;
+                case "ByKeyword":
+                    //document.forms["frmSearchByKeyword"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeyword"].action = "/Categories/Search/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByKeyword"].submit();
+                    break;
+                case "ByKeywordMobile":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/Categories/Search/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                case "ProductHot":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/Categories/ProductHot/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                case "ProductNew":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/Categories/ProductNew/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                default:
+                    window.location.href = "/Categories/" + _Cate + "/" + _Page + "/" + _Orderby;
+                    break;
+            }
+        }
+
+        function SearchSubmit_OnClick(_Type) {
+            switch (_Type) {
+                case "ByPrice":
+                    //document.forms["frmSearchByPrice"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByPrice"].action = "/Categories/Search/";
+                    document.forms["frmSearchByPrice"].submit();
+                    break;
+                case "ByKeyword":
+                    //document.forms["frmSearchByKeyword"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeyword"].action = "/Categories/Search/";
+                    document.forms["frmSearchByKeyword"].submit();
+                    break;
+                case "ByKeywordMobile":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/Categories/Search/";
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                case "ProductHot":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/Categories/ProductHot/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                case "ProductNew":
+                    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    document.forms["frmSearchByKeywordMobile"].action = "/Categories/ProductNew/" + _Page + "/" + _Orderby;
+                    document.forms["frmSearchByKeywordMobile"].submit();
+                    break;
+                default:
+                    window.location.href = "/Categories/1";
+                    break;
+            }
+        }
+
+        function OptionPay() {
+            var a = document.getElementById("payment_method_cod");
+            var a1 = document.getElementById("_payment_method_cod");
+            var b = document.getElementById("payment_method_bacs");
+            var b1 = document.getElementById("_payment_method_bacs");
+            var c = document.getElementById("payment_method_paygate");
+            if (a.checked) {
+                a1.style.display = "block";
+                b1.style.display = "none";
+            }
+            else if (b.checked) {
+                a1.style.display = "none";
+                b1.style.display = "block";
+            }
+            else if (c.checked) {
+                a1.style.display = "none";
+                b1.style.display = "none";
+            }
+        }
+
+        function ChangeQty(name) {
+            var max = 999999;
+            var i = name.substring(3);
+            var qty = $("#" + name);
+            var qtyV = (qty.val() == "" ? max : parseInt(qty.val())); // Lấy số lượng
+            if (qtyV < 0) {
+                qtyV = 1;
+                qty.val(qtyV);
+            }
+            var qtyMax = (qty.attr("max") == "" ? max : parseInt(qty.attr("max"))); // Lấy số lượng max
+            if (qtyMax < 0) qtyMax = max;
+            var qtyMin = (qty.attr("min") == "" ? 0 : parseInt(qty.attr("min"))); // Lấy số lượng min
+            if (qtyMin < 0 || qtyMin > qtyMax) qtyMin = 0;
+            @*if (qtyV < qtyMin || qtyV > qtyMax) {
+                qtyV = qtyMin; // Số lượng ko trong khoảng cho phép set = min
+                qty.val(qtyV);
+                $("#myAlert").attr("style", "display:block;");
+                $("#IdTxt").html("@Localizer["<strong>Cảnh báo: </strong> Số lượng không nằm ngoài khoảng"] (" + qtyMin + " - " + qtyMax + ")");
+            }*@
+
+            var price = $("#Price" + i);
+            var total = $("#Total" + i);
+            var priceV = (price.val() == "" ? 0 : parseInt(price.val())); // Lấy giá
+            var totalV = insertSepr((priceV * qtyV));
+            total.html(totalV);
+        }
+
+        function insertSepr(k) {
+            var n = "" + k;
+            var e = 0;
+            var g = "";
+            var b = 0;
+            var h = n.length - 1;
+            var f = n.indexOf(".");
+            if (f >= 0) {
+                h = f - 1
+            }
+            for (e = h; e >= 0; e--) {
+                if (n.charAt(e) != " ") {
+                    if (b++ % 3 == 0 && e != h && n.charAt(e) != "-") {
+                        g = "@Paygate.OnePay.Tools.NumberSepr" + g
+                    }
+                    g = n.charAt(e) + g
+                }
+            }
+            if (f >= 0) {
+                for (e = f; e < n.length; e++) {
+                    g += n.charAt(e)
+                }
+            }
+            return g
+        }
+        $(document).ready(function () {
+            $(".close").click(function () {
+                $("#myAlert").attr("style", "display:none;");
+            });
+        });
+    </script>
+    <div class="zalo-chat-widget" data-oaid="1561726888311431416" data-welcome-message="Chào!" data-autopopup="1" data-width="350" data-height="420"></div>
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <style>
+        .zalo-chat-widget {
+            left: 0px !important;
+        }
+    </style>
+
+    <!-- FB Messenger Chat -->
+    <div id="fb-root"></div>
+
+    <!-- Your Plugin chat code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "123556357741843");
+        chatbox.setAttribute("attribution", "page_inbox");
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v11.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!--------------------------------------------------------------------------->
+</body>
+</html>

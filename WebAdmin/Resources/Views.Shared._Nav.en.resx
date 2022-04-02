@@ -123,6 +123,9 @@
   <data name="Danh mục" xml:space="preserve">
     <value>Category</value>
   </data>
+  <data name="Giới thiệu" xml:space="preserve">
+    <value>Abouts</value>
+  </data>
   <data name="Hàng hóa" xml:space="preserve">
     <value>Production</value>
   </data>

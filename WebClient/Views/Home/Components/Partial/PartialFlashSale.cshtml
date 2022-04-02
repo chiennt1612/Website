@@ -1,0 +1,78 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Product>
+
+<div class="container section-title-container">
+    <h2 class="section-title section-title-bold-center">
+        <b></b>
+        <span class="section-title-main" style="font-size: 99%; background-color: red; color: white;"><i class="icon-clock"></i>@Localizer["Giảm giá sốc"]</span>
+        <b></b>
+        <a href="/Categories/0/1?IsDiscount=1" target=""><i class="icon-angle-right"></i></a>
+    </h2>
+</div>
+
+<div class="row large-columns-5 medium-columns-4 small-columns-2 row-small slider row-slider slider-nav-simple slider-nav-push is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{&quot;imagesLoaded&quot;: true, &quot;groupCells&quot;: &quot;100%&quot;, &quot;dragThreshold&quot; : 5, &quot;cellAlign&quot;: &quot;left&quot;,&quot;wrapAround&quot;: true,&quot;prevNextButtons&quot;: true,&quot;percentPosition&quot;: true,&quot;pageDots&quot;: false, &quot;rightToLeft&quot;: false, &quot;autoPlay&quot; : false}" tabindex="0">
+
+    @foreach (var item in Model)
+    {
+        <div class="product-small col has-hover out-of-stock product type-product post-@item.Id status-publish first outofstock product_cat-nhan-bac product_cat-nhan-bac-nu product_cat-nhan-bac-nu-co-da product_tag-nhan-nu has-post-thumbnail sale purchasable product-type-simple is-selected" aria-selected="true" style="position: absolute; left: 160%;">
+            <div class="col-inner">
+                <div class="product-small box ">
+                    <div class="box-image">
+                        <div class="image-fade_in_back">
+                            <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@item.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Code">
+                                @*asp-route-Id="@item.Id"*@
+                                <img width="300" height="300" src="@item.Img" data-src="@item.Img?resize=300%2C300&amp;ssl=1" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active" alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager" data-srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w" data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px" srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w">
+                                <img width="300" height="300" src="@item.ImgSlide1" data-src="@item.ImgSlide1?resize=300%2C300&amp;ssl=1" class="show-on-hover absolute fill hide-for-small back-image jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active" alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager" data-srcset="@item.ImgSlide1?w=700&amp;ssl=1 700w, @item.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide1?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide1?resize=280%2C280&amp;ssl=1 280w" data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px" srcset="@item.ImgSlide1?w=700&amp;ssl=1 700w, @item.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide1?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide1?resize=280%2C280&amp;ssl=1 280w">
+                            </a>
+                        </div>
+                        <div class="image-tools is-small top right show-on-hover">
+                        </div>
+                        <div class="image-tools is-small hide-for-small bottom left show-on-hover">
+                        </div>
+                        <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                            <a class="quick-view" data-prod="@item.Id" href="#quick-view">@Localizer["Xem nhanh"]</a>
+                        </div>
+                        @if (item.Quota <= 0)
+                        {
+                            <div class="out-of-stock-label">@Localizer["Hết hàng"]</div>
+                        }
+
+                    </div>
+
+                    <div class="box-text box-text-products">
+                        <div class="title-wrapper">
+                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">
+                                @item.MainCategories.Name
+                            </p>
+                            <p class="name product-title woocommerce-loop-product__title">
+                                <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@item.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Code">
+                                    @*asp-route-Id="@item.Id"*@@item.Name @Localizer["mã"] @item.Code
+                                </a>
+                            </p>
+                        </div>
+                        <div class="price-wrapper">
+                            <span class="price">
+                                @if (item.Discount > 0)
+                                {
+                                    <del>
+                                        <span class="woocommerce-Price-amount amount">
+                                            <bdi>@item.Price.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                        </span>
+                                    </del>
+                                }
+                                <ins>
+                                    <span class="woocommerce-Price-amount amount">
+                                        <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                    </span>
+                                </ins>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

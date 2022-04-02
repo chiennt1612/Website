@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using IdentityModel;
+﻿using IdentityModel;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using SSO.Entities;
 using SSO.Helpers;
+using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace SSO.DBContext.SeekData
 {
@@ -24,10 +24,12 @@ namespace SSO.DBContext.SeekData
             services.AddLogging();
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddIdentityServer()
-                .AddConfigurationStore(options => {
+                .AddConfigurationStore(options =>
+                {
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString);
                 })
-                .AddOperationalStore(options => {
+                .AddOperationalStore(options =>
+                {
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString);
                 });
 

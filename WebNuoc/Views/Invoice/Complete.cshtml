@@ -1,0 +1,100 @@
+﻿@using EntityFramework.Web.Entities
+@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model InvoiceResultModel
+
+@{
+    ViewData["Title"] = @Localizer["Kết quả thanh toán hóa đơn nước"];
+}
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="" itemprop="url">
+                            <span itemprop="title">@Localizer["Kết quả thanh toán hóa đơn nước"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section>
+
+<section id="register-service">
+    <div class="wrap">
+        <div class="form">
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Hóa đơn số"]</label>
+                <div class="col-md-7 col-sm-6">
+                    @Model.invoiceNo
+                </div><!--col-->
+            </div>
+
+            @if (Model.invoiceResult == null)
+            {
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Thông tin đơn thanh toán"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        @Model.vpc_OrderInfo
+                    </div><!--col-->
+                </div>
+            }
+            else
+            {
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Mã khách"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        @Model.invoiceResult.ItemsData.CustomerCode
+                    </div><!--col-->
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Họ tên"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        @Model.invoiceResult.ItemsData.CustomerName
+                    </div><!--col-->
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Địa chỉ"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        @Model.invoiceResult.ItemsData.Address
+                    </div><!--col-->
+                </div>
+            }
+
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Tổng tiền"]</label>
+                <div class="col-md-7 col-sm-6">
+                    @Model.invoiceAmount.ToString().FormatNumber()
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">
+                    @(Localizer["Tình trạng đơn"])
+                </label>
+                <div class="col-md-7 col-sm-6">
+                    <ul>
+                        <li>@Localizer["Ngày-giờ"]: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</li>
+                        <li>@Localizer["Mã đơn"]: @Model.invoiceNo</li>
+                        <li>@Localizer["Kết quả thanh toán"]: @Model.vpc_TxnResponseCode / @Model.vpc_Message</li>
+                        <li>@Localizer["Mã giao dịch OnePay"]: @Model.onePayID</li>
+                        <li>@Localizer["Gạch nợ hóa đơn"]: @Model.payResult.PayStatus / @Model.payResult.Message</li>
+                    </ul>
+                </div>
+            </div>
+        </div><!--form-->
+    </div><!--wrap-->
+</section>

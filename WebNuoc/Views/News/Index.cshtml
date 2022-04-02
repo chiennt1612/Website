@@ -1,0 +1,98 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.News.ListNews
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+                <h1 class="title">@Localizer["Tin tức"]</h1>
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="/News" itemprop="url">
+                            <span itemprop="title">@Localizer["Tin tức"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section id="news-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-7">
+                <div id="list-news">
+
+                    @foreach (var item in Model.listArticle.list)
+                    {
+                        <div class="item">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-5">
+                                    <a asp-action="Details" asp-controller="News" asp-route-Id="@item.Id" class="img">
+                                        <img src="@item.Img"
+                                             alt="@item.Title" />
+                                    </a>
+                                </div>
+                                <div class="col-md-8 col-sm-7">
+                                    <div class="right-side">
+                                        <a asp-action="Details" asp-controller="News" asp-route-Id="@item.Id" class="name">
+                                            @item.Title
+                                        </a>
+                                        <p>@item.DateCreator.ToString("dd/MM/yyyy HH:mm")</p>
+                                        <p>
+                                            @Html.Raw(item.Summary)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--item-->
+                    }
+
+                </div>
+                @await Html.PartialAsync("/Views/News/_PartialPageRender.cshtml", new WebNuoc.Models.Home.SearchInput() { Page = Model.listArticle.page, TotalPage = (Model.listArticle.totalRecords / Model.listArticle.pageSize), CategoryId = Model.CategoryId, TotalRow = Model.listArticle.totalRecords, SearchType = "News" });
+            </div><!--left-->
+            <div class="col-lg-4 col-md-5">
+
+                <div class="box-news-right">
+                    <div class="title-box">@Localizer["Bài viết mới"]</div>
+                    <div class="list-news-right">
+                        <ul class="ul">
+                            @for (var i = 0; i < Model.articles.Count(); i++)
+                            {
+                                <li>
+                                    <span class="no">@i.NumberTo00N(2)</span>
+                                    <a asp-action="Details" asp-controller="News" asp-route-Id="@Model.articles[i].Id">
+                                        @Model.articles[i].Title
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                </div><!--box-news-right-->
+                @foreach (var item in Model.rightAdvs)
+                {
+                    <div class="box-news-right">
+                        <div class="title-box">@item.CustomerName</div>
+
+                            <div class="item">
+                                <img border=0 src="@item.Img" width='1000' height='666' alt="" />
+                            </div>
+                    </div><!--box-news-right-->
+                }
+
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section>

@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.NewsCategories>
+
+@foreach (var cate in Model)
+{
+<section class="cate-news mt30 clearfix">
+    <header class="title mb15 relative z-6 bg-gray-f0">
+        <h3 class="font15 uppercase white bold bor-bot-red">
+            <a asp-action="Index" asp-controller="News" asp-route-Id="@cate.Id" asp-route-Page="1" title="@cate.Name" class="art-shape inline pl15 pr5 relative bg-red white lh-38">
+            @cate.Name
+            </a>
+        </h3>
+        <ul class="subs-cate abs07 font12">
+        </ul>
+    </header>
+
+    @await Component.InvokeAsync("Partial", new { _PartialName = "NewList", Id = @cate.Id })
+
+</section>
+}

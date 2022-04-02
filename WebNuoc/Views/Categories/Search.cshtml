@@ -1,0 +1,94 @@
+﻿@using Paygate.OnePay
+@using WebNuoc.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Product>
+<div class="row category-page-row">
+
+    <div class="col large-3 hide-for-medium ">
+        <div class="is-sticky-column">
+            <div class="is-sticky-column__inner">
+                <div id="shop-sidebar" class="sidebar-inner col-inner">
+                    <!---Main menu left-->
+                    @*@await Html.PartialAsync("/Views/Categories/_MainMenuLeft.cshtml")*@
+                    @await Component.InvokeAsync("Partial", new { _PartialName = "_MainMenuLeft" })
+
+                    <!---Search by Price-->
+                    @await Html.PartialAsync("/Views/Categories/_SearchByPrice.cshtml", ViewData[ViewDataParam.SearchInput] as WebNuoc.Models.Home.SearchInput)
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col large-9">
+        <!---// Render body-->
+        <div class="shop-container">
+            <div class="term-description">
+                <p>@Localizer["Những sản phẩm Nhẫn Bạc chất liệu bạc 925 cao cấp được bán tại Trang Sức Bạc Ngọc Tuấn. Danh sách bao gồm: Nhẫn Bạc Nam, Nhẫn Bạc Nữ, Nhẫn Bạc Trẻ Em, Nhẫn Đôi Bạc"]</p>
+            </div>
+            <div class="woocommerce-notices-wrapper"></div>
+            <div class="products row row-small large-columns-4 medium-columns-4 small-columns-2">
+                @foreach (var item in Model)
+                {
+                    <div class="product-small col has-hover product type-product post-@item.Id status-publish first instock product_cat-nhan-bac-nu product_cat-nhan-bac-nu-co-da has-post-thumbnail shipping-taxable purchasable product-type-simple">
+                        <div class="col-inner">
+                            <div class="product-small box ">
+                                <div class="box-image">
+                                    <div class="image-fade_in_back">
+                                        <a asp-action="Details" asp-controller="Categories" asp-route-Id="@item.Id">
+                                            <img width="300" height="300" src="@item.Img" data-src="@item.Img?resize=300%2C300&amp;ssl=1" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active" alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager" data-srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w" data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px" srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w">
+                                            <img width="300" height="300" src="@item.ImgSlide2" data-src="@item.ImgSlide2?resize=300%2C300&amp;ssl=1" class="show-on-hover absolute fill hide-for-small back-image jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active" alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager" data-srcset="@item.ImgSlide2?w=700&amp;ssl=1 700w, @item.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide2?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide2?resize=280%2C280&amp;ssl=1 280w" data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px" srcset="@item.ImgSlide2?w=700&amp;ssl=1 700w, @item.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide2?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide2?resize=280%2C280&amp;ssl=1 280w">
+                                        </a>
+                                    </div>
+                                    <div class="image-tools is-small top right show-on-hover">
+                                    </div>
+                                    <div class="image-tools is-small hide-for-small bottom left show-on-hover">
+                                    </div>
+                                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                        <a class="quick-view" data-prod="@item.Id" href="#quick-view">@Localizer["Xem nhanh"]</a>
+                                    </div>
+                                </div>
+
+                                <div class="box-text box-text-products">
+                                    <div class="title-wrapper">
+                                        <p class="category uppercase is-smaller no-text-overflow product-cat op-7">
+                                            @item.MainCategories.Name
+                                        </p>
+                                        <p class="name product-title woocommerce-loop-product__title">
+                                            <a asp-action="Details" asp-controller="Categories" asp-route-Id="@item.Id">@item.Name @item.Code</a>
+                                        </p>
+                                    </div>
+                                    <div class="price-wrapper">
+                                        <span class="price">
+                                            <del>
+                                                <span class="woocommerce-Price-amount amount">
+                                                    <bdi>@item.Price.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                </span>
+                                            </del>
+                                            <ins>
+                                                <span class="woocommerce-Price-amount amount">
+                                                    <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                </span>
+                                            </ins>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @await Html.PartialAsync("/Views/Categories/_PartialPageRender.cshtml", ViewData[WebNuoc.Services.ViewDataParam.SearchInput])
+
+            <hr />
+            @Localizer["Nhẫn Bạc được bán tại Trang Sức Bạc Ngọc Tuấn tất cả đều là sản phẩm nhập khẩu nguyên chiếc từ Ý và Thái Lan (2 đất nước khá nổi tiếng trên thế giới về công nghệ và kỹ thuật chế tác trang sức chất liệu bạc 925). Với 18 năm uy tín trên thị trường, Bạc Ngọc Tuấn cam kết chất lượng sản phẩm <a href=\"https://bacngoctuan.com/nhan-bac\">nhẫn bạc</a> được công ty bán ra. Liên hệ ngay với chúng tôi để được hỗ trợ tư vấn về sản phẩm, cách chọn size và các chế độ, chính sách..."]
+
+            <br />
+            @Localizer["Tìm kiếm nhanh:  nhẫn bạc 925 cao cấp - nhẫn đầu rồng - nhẫn hình lá - nhẫn trái tim - nhẫn hình rắn - nhẫn vương miện - nhẫn hình cỏ 3 lá - nhẫn hình cỏ bốn lá - nhẫn đá đen"]
+            @Localizer["nhẫn bạc đôi - nhẫn bạc nữ có đá - nhẫn bạc nữ không đá - nhẫn bạc nam có đá - nhẫn bạc nam không đá - nhẫn chân bạc - nhẫn bạc trẻ em"]
+        </div>
+    </div>
+
+</div>

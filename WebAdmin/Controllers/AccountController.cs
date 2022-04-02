@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WebAdmin.Helpers;
 
-namespace WebClient.Controllers
+namespace WebAdmin.Controllers
 {
+    [SecurityHeaders]
     [Authorize]
     public class AccountController : Controller
     {

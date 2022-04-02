@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using WebAdmin.Repository.Interfaces;
 using X.PagedList;
 
@@ -32,14 +31,14 @@ namespace WebAdmin.Repository
         }
 
         public override async Task<IPagedList<NewsCategories>> GetListByPage(
-            Expression<Func<NewsCategories, bool>> expression, Func<NewsCategories, string> sort, bool desc = false,
+            Expression<Func<NewsCategories, bool>> expression, Func<NewsCategories, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             IQueryable<NewsCategories> r = _context.NewsCategoriess.Include(a => a.Parent)
                 .Where(a => a.IsDeleted == false)
                 .Where(expression);
             IOrderedEnumerable<NewsCategories> r1;
-            if (desc)
+            if (!desc)
             {
                 r1 = r.OrderBy(sort);
             }

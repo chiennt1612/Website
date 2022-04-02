@@ -1,0 +1,115 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<EntityFramework.Web.Entities.Ordering.Order>
+@*@model IEnumerable<EntityFramework.Web.Entities.Ordering.Order>*@
+
+@{
+    ViewData["Title"] = Localizer["Danh sách"];
+}
+
+<h1>@Localizer["Danh sách"]</h1>
+
+<form method="get">
+    <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+    <input type="submit" value="Search" />
+</form>
+
+@using (Html.BeginForm())
+{
+    <div class="pagination">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Fullname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Mobile)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].FeeShip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Total)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OrderStatus)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @(item.FeeShip.ToString().FormatNumber())
+                </td>
+                <td>
+                    @((item.Total + item.FeeShip).ToString().FormatNumber()) @*Html.DisplayFor(modelItem => (item.Total + item.FeeShip))*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pagination">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+    </div>}

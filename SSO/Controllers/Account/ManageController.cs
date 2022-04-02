@@ -1,22 +1,17 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SSO.Entities;
+using SSO.Extensions;
+using SSO.Helpers;
+using SSO.Models.ManageViewModels;
+using SSO.Services.Interface;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using SSO.Models;
-using SSO.Models.ManageViewModels;
-using SSO.Services;
-using SSO.Helpers;
-using SSO.Entities;
-using SSO.Services.Interface;
-using SSO.Extensions;
 
 namespace SSO.Controllers
 {
@@ -54,8 +49,16 @@ namespace SSO.Controllers
         public string StatusMessage { get; set; }
         [SecurityHeaders]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string returnUrl = null)
         {
+            if (String.IsNullOrEmpty(returnUrl))
+            {
+                ViewData["returnUrl"] = "";
+            }
+            else
+            {
+                ViewData["returnUrl"] = returnUrl;
+            }
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -74,10 +77,11 @@ namespace SSO.Controllers
 
             return View(model);
         }
+
         [SecurityHeaders]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(IndexViewModel model)
+        public async Task<IActionResult> Index(IndexViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -88,6 +92,16 @@ namespace SSO.Controllers
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var username = user.UserName;
+            if (model.Username != username)
+            {
+                var setUsernameResult = await _userManager.SetUserNameAsync(user, model.Username);
+                if (!setUsernameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting Username for user with ID '{user.Id}'.");
+                }
             }
 
             var email = user.Email;
@@ -111,7 +125,11 @@ namespace SSO.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            if (!String.IsNullOrEmpty(returnUrl))
+                return Redirect(returnUrl); // quay về trang đăng ký
+            else
+                return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
         }
         [SecurityHeaders]
         [HttpPost]

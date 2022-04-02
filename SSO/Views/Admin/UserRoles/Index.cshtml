@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@inject IViewLocalizer Localizer
+@*@model IEnumerable<SSO.Models.UserRoles.UserRoleList>*@
+@model IPagedList<SSO.Models.UserRoles.UserRoleList>
+
+@{
+    ViewData["Title"] = Localizer["Danh sách"];
+}
+
+<h1>@Localizer["Danh sách"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["Thêm mới"]</a>
+    <form method="get">
+        <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+        <input type="submit" value="Search" />
+    </form>
+</p>
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].RoleId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].RoleName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleName)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-UserId="@item.UserId" asp-route-RoleId="@item.RoleId">@Localizer["Xóa"]</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>

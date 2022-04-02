@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SSO.Models.ManageViewModels
 {
     public class IndexViewModel
     {
-        [Display(Name = "Tên tài khoản")]
+        [Display(Name = "UserName", ResourceType = typeof(LanguageAll.Language))]
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -16,8 +12,8 @@ namespace SSO.Models.ManageViewModels
         public bool IsPhoneNumberConfirmed { get; set; }
 
         [Required]
-        [EmailAddress]
-        [Display(Name = "Địa chỉ Email")]
+        [EmailAddress(ErrorMessageResourceName = "EmailIsNotValid", ErrorMessageResourceType = typeof(LanguageAll.Language))]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Phone]

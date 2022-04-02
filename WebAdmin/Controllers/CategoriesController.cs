@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using WebAdmin.Helpers;
 using WebAdmin.Services.Interfaces;
 
 namespace WebAdmin.Controllers
 {
+    [SecurityHeaders]
     [Authorize(Roles = "Admin,Mod")]
     public class CategoriesController : Controller
     {
@@ -31,14 +31,27 @@ namespace WebAdmin.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, string Keyword)
         {
             int pageSize = Constants.PageSize;
             int pageIndex = 1;
             pageIndex = page.HasValue ? page.Value : 1;
 
-            Expression<Func<Categories, bool>> sqlWhere = item => (item.IsDeleted == false);
-            Func<Categories, string> sqlOrder = s => "DateCreator";
+            Expression<Func<Categories, bool>> sqlWhere;
+            if (!String.IsNullOrEmpty(Keyword))
+            {
+                ViewData["Keyword"] = Keyword;
+                sqlWhere = item => (
+                item.IsDeleted == false &&
+                (item.Name.Contains(Keyword))
+                );
+            }
+            else
+            {
+                ViewData["Keyword"] = "";
+                sqlWhere = item => (item.IsDeleted == false);
+            }
+            Func<Categories, object> sqlOrder = s => s.Id;
 
             return View(await _service.GetListAsync(sqlWhere, sqlOrder, true, pageIndex, pageSize));
         }
@@ -74,7 +87,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,ParentId,Status,DisplayOnMenuMain,MetaTitle,MetaDescription,MetaKeyword,MetaBox,MetaRobotTag,Id")] Categories categories)
+        public async Task<IActionResult> Create(Categories categories)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +123,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Name,ParentId,Status,DisplayOnMenuMain,MetaTitle,MetaDescription,MetaKeyword,MetaBox,MetaRobotTag,Id")] Categories categories)
+        public async Task<IActionResult> Edit(long id, Categories categories)
         {
             if (id != categories.Id)
             {
@@ -151,9 +164,9 @@ namespace WebAdmin.Controllers
             }
 
             var categories = await _service.GetByIdAsync(id.Value);
-                //= await _service.Categoriess
-                //.Include(c => c.Parent)
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //= await _service.Categoriess
+            //.Include(c => c.Parent)
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (categories == null)
             {
                 return NotFound();

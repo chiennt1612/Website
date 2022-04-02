@@ -1,24 +1,19 @@
-﻿using SSO.Helpers;
-using SSO.Models;
-using IdentityServer4.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using IdentityServer4.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SSO.Entities;
+using SSO.Helpers;
+using System;
+using System.Threading.Tasks;
 
 namespace SSO.Controllers
 {
-    [CustomizeAuthorize]
+    //[CustomizeAuthorize]
     [SecurityHeaders]
     [Route("[controller]/[action]")]
     public class DecryptorController : Controller
     {
         private IDecryptorProvider decryptor;
-        public DecryptorController (IDecryptorProvider decryptor)
+        public DecryptorController(IDecryptorProvider decryptor)
         {
             this.decryptor = decryptor;
         }
@@ -40,13 +35,15 @@ namespace SSO.Controllers
             {
                 return View("Index", model);
             }
-            var t = await Task.Run(() => {
-                if(button == "Decrypt")
+            var t = await Task.Run(() =>
+            {
+                if (button == "Decrypt")
                 {
-                    if(model.Type == "Secret")
+                    if (model.Type == "Secret")
                     {
                         model.OutputValue = model.InputValue;
-                    } else
+                    }
+                    else
                     {
                         model.OutputValue = decryptor.Decrypt(model.InputValue);
                     }
@@ -60,7 +57,7 @@ namespace SSO.Controllers
                     else
                     {
                         model.OutputValue = decryptor.Encrypt(model.InputValue);
-                    }                    
+                    }
                 }
                 return model;
             });

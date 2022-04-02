@@ -1,6 +1,8 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model SSO.Models.AccountViewModels.RegisterViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = Localizer["Đăng ký tài khoản"];
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -8,9 +10,14 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <h4>Create a new account.</h4>
+            <h4>@Localizer["Đăng ký tài khoản"]</h4>
             <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <span asp-validation-for="OnError" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
@@ -26,7 +33,11 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
+            <div class="form-group">
+                <label asp-for="IsAgree"><input asp-for="IsAgree" />@Localizer["Tôi đã đọc và Đồng ý với"] <u><a href="#">@Localizer["Điều khoản"]</a></u> @Localizer["dịch vụ!"]</label>
+                <span asp-validation-for="IsAgree" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">@Localizer["Đăng ký"]</button>
         </form>
     </div>
 </div>

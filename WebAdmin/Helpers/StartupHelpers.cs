@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using EntityFramework.Web.DBContext;
+using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,12 +8,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
-using EntityFramework.Web.DBContext;
 using WebAdmin.Repository;
 using WebAdmin.Repository.Interfaces;
 using WebAdmin.Services;
@@ -23,7 +19,7 @@ namespace WebAdmin.Helpers
     public static class StartupHelpers
     {
         #region Localization
-        private static string[] LanguageSupport = new[] { "vi", "en-US" };
+        private static string[] LanguageSupport = new[] { "vi" };//, "en-US"
         public static void AddServiceLanguage(this IServiceCollection services)
         {
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -80,8 +76,8 @@ namespace WebAdmin.Helpers
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
-                    options.Scope.Add("address");
-                    options.Scope.Add("phone");
+                    //options.Scope.Add("address");
+                    //options.Scope.Add("phone");
 
                     // not mapped by default
                     options.ClaimActions.MapJsonKey("role", "role", "role");
@@ -110,14 +106,18 @@ namespace WebAdmin.Helpers
         #endregion
 
         #region DbContext
-        public static void RegisterDbContexts(this IServiceCollection services, IConfiguration configuration)
+        public static void RegisterDbContexts(this IServiceCollection services, IConfiguration configuration, string migrationsAssembly)
         {
             // Build the intermediate service provider
             var sp = services.BuildServiceProvider();
 
             // This will succeed.
             var decryptor = sp.GetService<IDecryptorProvider>();
-            services.RegisterDbContexts<AppDbContext>(configuration, decryptor);
+            services.RegisterDbContexts<AppDbContext>(configuration, decryptor, migrationsAssembly);
+            //services.RegisterDbContexts<OrderDbContext>(configuration, decryptor);
+
+            services.AddIdSHealthChecks<AppDbContext>(configuration, decryptor);
+            //services.AddIdSHealthChecks<OrderDbContext>(configuration, decryptor);
         }
         #endregion
 
@@ -133,6 +133,10 @@ namespace WebAdmin.Helpers
             services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
             services.AddScoped<IParamSettingServices, ParamSettingServices>();
             services.AddScoped<IProductServices, ProductServices>();
+            services.AddScoped<IAboutServices, AboutServices>();
+            services.AddScoped<IAdvServices, AdvServices>();
+            services.AddScoped<IServiceServices, ServiceServices>();
+            services.AddScoped<IFAQServices, FAQServices>();
         }
         #endregion
     }

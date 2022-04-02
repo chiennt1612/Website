@@ -1,0 +1,285 @@
+﻿@using Paygate.OnePay
+@using WebClient.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model EntityFramework.Web.Entities.Ordering.Order
+
+
+<div class="container link-lk-web">
+    <ul class="clearfix">
+        <li>
+            <a href="/">
+                @Localizer["Trang chủ"]
+            </a>
+        </li>
+        <li>
+            <a href="/Order/Cart">
+                @Localizer["Giỏ hàng"]
+            </a>
+        </li>
+        <li>
+            <a>
+                @Localizer["Hoàn thành"]
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="bst-content container">
+    <div class="gt-left col-md-9" style="padding-left:0">
+        <p class="title"><b>@Localizer["Danh sách hàng đã đặt"]</b></p>
+        <div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="font-weight: 700;">
+                        <th style="vertical-align: middle; text-align:center; background: hsla(0, 100%, 90%, 0.3);" colspan='2'>@Localizer["Sản phẩm"]</th>
+                        <th style="text-align:center; background: hsla(0, 100%, 90%, 0.3);" class="hidden-xs">@Localizer["Giá bán"]</th>
+                        <th style="text-align:center; background: hsla(0, 100%, 90%, 0.3);">@Localizer["Số lượng"]</th>
+                        <th style="text-align:center; background: hsla(0, 100%, 90%, 0.3);">@Localizer["Thành tiền"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr id="row1">
+                            <td class="align-top" style="vertical-align:middle; text-align: center;">
+                                <div class="image hidden-xs">
+                                    <img src="@item.Product.Img" alt="@item.Product.Name @item.Product.Code" />
+                                </div>
+                            </td>
+                            <td>
+                                <a href="/@item.Product.Name.RemoveSign4VietnameseString()-@item.Product.Code">
+                                    <b class="name">@item.Product.Name @item.Product.Code</b>
+                                </a>
+                            </td>
+                            <td class="text-center hidden-xs" style="text-align: right;">
+                                <span>@((item.Price- item.Discount).ToString().FormatNumber())</span> đ
+                            </td>
+                            <td class="text-center" style="text-align: right; ">
+                                <span>@item.Units</span>
+                            </td>
+                            <td class="text-center" style="text-align:right; padding-top:40px">
+                                <span>@item.Total.ToString().FormatNumber()</span>đ
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" scope="row">@Localizer["Phí ship"]:</td>
+                        <td style="text-align: right; "><span class="woocommerce-Price-amount amount">@Model.FeeShip.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" scope="row">@Localizer["Tổng cộng"]:</td>
+                        <td style="text-align: right; "><span class="woocommerce-Price-amount amount">@((Model.Total + Model.FeeShip).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" scope="row">@Localizer["Phương thức thanh toán"]:</td>
+                        <td colspan="3">
+                            @switch (Model.PaymentMethod)
+                            {
+                                case 2:
+                                    @Localizer["Chuyển khoản ngân hàng"]
+                                    break;
+                                case 3:
+                                    @Localizer["Thanh toán online"]
+                                    break;
+                                default:
+                                    @Localizer["Trả tiền mặt khi giao hàng"]
+                                    break;
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" scope="row">@Localizer["Trạng thái đơn hàng"]:</td>
+                        <td colspan="3">
+                            @Model.OrderStatus.Name <strong>@Html.Raw(ViewData.GetNotification())</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">@Localizer["Lưu ý"]:</td>
+                        <td colspan="3">@Model.Description</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="gt-right col-md-3 ">
+        <p class="title"><span>@Localizer["Thông tin thanh toán"].</span></p>
+        <div class="row">
+            <div class="form-group">
+                <label class="control-label">@Localizer["Cảm ơn"] @Model.Fullname. @Localizer["Đơn hàng của bạn đã được nhận"].</label>              
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Localizer["Mã đơn hàng:"]</label>
+                <input readonly class="form-control" value="@Model.Id" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Localizer["Ngày:"]</label>
+                <input readonly class="form-control" value="@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Localizer["Tổng cộng:"]</label>
+                <input readonly class="form-control" value="@((Model.Total + Model.FeeShip).ToString().FormatNumber()) đ" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    @Localizer["Phương thức thanh toán:"]
+                </label>
+                <textarea rows="1" readonly class="form-control">
+                    @switch (Model.PaymentMethod)
+                    {
+                        case 2:
+                            @Localizer["Chuyển khoản ngân hàng"]
+                            break;
+                        case 3:
+                            @Localizer["Thanh toán online"]
+                            break;
+                        default:
+                            @Localizer["Trả tiền mặt khi giao hàng"]
+                            break;
+                    }
+                </textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Localizer["Trạng thái đơn hàng"]</label>
+                <label class="form-control">@Html.Raw(Model.OrderStatus.Name + " " + ViewData.GetNotification())</label>
+            </div>
+        </div>
+    </div>
+</div>
+@*
+        <div class="cart-container container page-wrapper page-checkout">
+            <div class="woocommerce">
+                <div class="row">
+                    <div class="large-7 col">
+                       @switch (Model.PaymentMethod)
+                        {
+                            case 2:
+                                <p>@Localizer["Chuyển khoản ngân hàng"]</p>
+                                break;
+                            case 3:
+                                <p>@Localizer["Thanh toán online"]</p>
+                                break;
+                            default:
+                                <p>@Localizer["Trả tiền mặt khi giao hàng"]</p>
+                                break;
+                        }
+
+    <section class="woocommerce-order-details">
+        <h2 class="woocommerce-order-details__title">@Localizer["Chi tiết đơn hàng"]</h2>
+        <table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
+            <thead>
+                <tr>
+                    <th class="woocommerce-table__product-name product-name">@Localizer["Sản phẩm"]</th>
+                    <th class="woocommerce-table__product-table product-total">@Localizer["Tổng"]</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr class="woocommerce-table__line-item order_item">
+                        <td class="woocommerce-table__product-name product-name">
+                            <a asp-controller="Categories" asp-action="Details" asp-route-ProductName="@item.Product.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Product.Code">
+                                asp-route-Id="@item.ProductId">"@item.Product.Name @item.Product.Code
+                                </a>
+                                <strong class="product-quantity">×&nbsp;@item.Units</strong>
+                                </td>
+                                <td class="woocommerce-table__product-total product-total">
+                                    <span class="woocommerce-Price-amount amount"><bdi>@item.Total.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                                </td>
+                                </tr>
+                                }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">@Localizer["Phí ship"]:</th>
+                                        <td><span class="woocommerce-Price-amount amount">@Model.FeeShip.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">@Localizer["Tổng cộng"]:</th>
+                                        <td><span class="woocommerce-Price-amount amount">@((Model.Total + Model.FeeShip).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">@Localizer["Phương thức thanh toán"]:</th>
+                                        <td>
+                                            @switch (Model.PaymentMethod)
+                                            {
+                                                case 2:
+                                                    @Localizer["Chuyển khoản ngân hàng"]
+                                                    break;
+                                                case 3:
+                                                    @Localizer["Thanh toán online"]
+                                                    break;
+                                                default:
+                                                    @Localizer["Trả tiền mặt khi giao hàng"]
+                                                    break;
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">@Localizer["Trạng thái đơn hàng"]:</th>
+                                        <td>
+                                            @Model.OrderStatus.Name <strong>@Html.Raw(ViewData.GetNotification())</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Localizer["Lưu ý"]:</th>
+                                        <td>@Model.Description</td>
+                                    </tr>
+                                </tfoot>
+                                </table>
+                                </section>
+                                </div>
+
+                                <div class="large-5 col">
+                                    <div class="is-well col-inner entry-content">
+                                        <p class="success-color woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
+                                            <strong>@Localizer["Cảm ơn"] @Model.Fullname. @Localizer["Đơn hàng của bạn đã được nhận"].</strong>
+                                        </p>
+                                        <ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details">
+                                            <li class="woocommerce-order-overview__order order">
+                                                @Localizer["Mã đơn hàng:"] <strong>@Model.Id</strong>
+                                            </li>
+                                            <li class="woocommerce-order-overview__date date">
+                                                @Localizer["Ngày:"] <strong>@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</strong>
+                                            </li>
+                                            <li class="woocommerce-order-overview__total total">
+                                                @Localizer["Tổng cộng:"]
+                                                <strong>
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <bdi>@((Model.Total + Model.FeeShip).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                    </span>
+                                                </strong>
+                                            </li>
+                                            <li class="woocommerce-order-overview__payment-method method">
+                                                @Localizer["Phương thức thanh toán:"]
+                                                <strong>
+                                                    @switch (Model.PaymentMethod)
+                                                    {
+                                                        case 2:
+                                                            @Localizer["Chuyển khoản ngân hàng"]
+                                                            break;
+                                                        case 3:
+                                                            @Localizer["Thanh toán online"]
+                                                            break;
+                                                        default:
+                                                            @Localizer["Trả tiền mặt khi giao hàng"]
+                                                            break;
+                                                    }
+                                                </strong>
+                                            </li>
+                                            <li class="woocommerce-order-overview__payment-method method">
+                                                @Localizer["Trạng thái đơn hàng"]
+                                                <strong>
+                                                    @Model.OrderStatus.Name @Html.Raw(ViewData.GetNotification())
+                                                </strong>
+                                            </li>
+                                        </ul>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>*@

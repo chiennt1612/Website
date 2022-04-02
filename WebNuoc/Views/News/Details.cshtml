@@ -1,0 +1,99 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.News.NewsDetails
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+                <h1 class="title">@Localizer["Tin tức"]</h1>
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="/News" itemprop="url">
+                            <span itemprop="title">@Localizer["Tin tức"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section id="news-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-7">
+                <div id="article-detail">
+                    <h1>@Model.article.Title</h1>
+                    <p>@Model.article.DateCreator.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p> </p>
+                    @Html.Raw(Model.article.Description)
+                    <p> </p>
+                    <!-- AddThis Button BEGIN -->
+                    <div class="addthis_toolbox addthis_default_style addthis_20x20_style" style="margin-top:10px;">
+                        <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                        <a class="addthis_button_facebook_share" fb:share:layout="button"></a>
+                        <a class="addthis_button_google_plusone" g:plusone:size="medium" style="width:40px;"></a>
+                    </div>
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5148003b01a03b86" defer></script>
+                    <!-- AddThis Button END -->
+                    <p>&nbsp;</p>
+                    <h2 class="text-18">@Localizer["Bài viết liên quan"]</h2>
+                    <ul>
+                        @for (var i = 0; i < Model.articleRelated.Count(); i++)
+                        {
+                        <li>
+                            <a asp-action="Details" asp-controller="News" asp-route-Id="@Model.articleRelated[i].Id">
+                                @Model.articleRelated[i].Title
+                            </a>
+                            <span class="grey">(@Model.articleRelated[i].DateCreator.ToString("dd/MM/yyyy HH:mm"))</span>
+                        </li>
+                        }
+
+                    </ul>
+                    <div class="fb-comments" data-href="/Service" data-width="100%" data-numposts="5"></div>
+                </div><!--content-->
+            </div>
+            <div class="col-lg-4 col-md-5">
+                <div class="box-news-right">
+                    <div class="title-box">@Localizer["Bài viết mới"]</div>
+                    <div class="list-news-right">
+                        <ul class="ul">
+                            @for (var i = 0; i < Model.articles.Count(); i++)
+                            {
+                            <li>
+                                <span class="no">@i.NumberTo00N(2)</span>
+                                <a asp-action="Details" asp-controller="News" asp-route-Id="@Model.articles[i].Id">
+                                    @Model.articles[i].Title
+                                </a>
+                            </li>
+                            }
+
+                        </ul>
+                    </div>
+                </div><!--box-news-right-->
+
+                @foreach (var item in Model.rightAdvs)
+                {
+                <div class="box-news-right">
+                    <div class="title-box">@item.CustomerName</div>
+
+                    <div class="item">
+                        <img border=0 src="@item.Img" width='1000' height='666' alt="" />
+                    </div>
+                </div><!--box-news-right-->
+                }
+
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section>

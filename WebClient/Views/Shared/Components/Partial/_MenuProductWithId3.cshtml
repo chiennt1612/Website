@@ -1,0 +1,86 @@
+﻿@using WebClient.Services
+@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<Categories>
+@{
+    var a1 = Model.Where(u => u.ParentId == 98);
+}
+@foreach (var item1 in a1)
+{
+    var a2 = Model.Where(u => u.ParentId == item1.Id && u.Id != 128 && u.Id != 48); // Level 1 // mega-current-menu-ancestor
+    <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat mega-current-menu-item @(a2.Count() > 0 ? "mega-menu-item-has-children" :"") mega-menu-item-@item1.Id' id='mega-menu-item-@item1.Id'>
+        <a class="mega-menu-link" href="/Categories/@item1.Id" @(a2.Count() > 0 ? "aria-haspopup=\"true\" aria-expanded=\"false\"" : "")>
+            @item1.Name
+            @if (a2.Count() > 0)
+            {
+                <span class="mega-indicator" data-has-click-event="true"></span>
+            }
+        </a>
+        @if (a2.Count() > 0)
+        {
+            <ul class="mega-sub-menu">
+                @foreach (var item2 in a2)
+                {
+                    var a3 = Model.Where(u => u.ParentId == item2.Id); // Level 2
+                    <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat @(a3.Count() > 0 ? "mega-menu-item-has-children" :"") mega-menu-item-@item2.Id' id='mega-menu-item-@item2.Id'>
+                        <a class="mega-menu-link" href="/Categories/@item2.Id" @(a3.Count() > 0 ? "aria-haspopup=\"true\" aria-expanded=\"false\"" : "")>
+                            @item2.Name
+                            @if (a3.Count() > 0)
+                            {
+                                <span class="mega-indicator" data-has-click-event="true"></span>
+                            }
+                        </a>
+                        @if (a3.Count() > 0)
+                        {
+                            <ul class="mega-sub-menu">
+                                @foreach (var item3 in a3)
+                                {
+                                    var a4 = Model.Where(u => u.ParentId == item3.Id); // Level 3
+                                    <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat @(a4.Count() > 0 ? "mega-menu-item-has-children" :"") mega-menu-item-@item3.Id' id='mega-menu-item-@item3.Id'>
+                                        <a class="mega-menu-link" href="/Categories/@item3.Id" @(a4.Count() > 0 ? "aria-haspopup=\"true\" aria-expanded=\"false\"" : "")>
+                                            @item3.Name
+                                            @if (a4.Count() > 0)
+                                            {
+                                                <span class="mega-indicator" data-has-click-event="true"></span>
+                                            }
+                                        </a>
+                                        @if (a4.Count() > 0)
+                                        {
+                                            <ul class="mega-sub-menu">
+                                                @foreach (var item4 in a4)
+                                                {
+                                                    var a5 = Model.Where(u => u.ParentId == item4.Id); // Level 4
+                                                    <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat @(a5.Count() > 0 ? "mega-menu-item-has-children" :"") mega-menu-item-@item4.Id' id='mega-menu-item-@item4.Id'>
+                                                        <a class="mega-menu-link" href="/Categories/@item4.Id" @(a5.Count() > 0 ? "aria-haspopup=\"true\" aria-expanded=\"false\"" : "")>
+                                                            @item4.Name
+                                                            @if (a5.Count() > 0)
+                                                            {
+                                                                <span class="mega-indicator" data-has-click-event="true"></span>
+                                                            }
+                                                        </a>
+                                                        @if (a5.Count() > 0)
+                                                        {
+                                                            <ul class="mega-sub-menu">
+                                                                @foreach (var item5 in a5)
+                                                                {
+                                                                    <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat mega-menu-item-@item5.Id' id='mega-menu-item-@item5.Id'>
+                                                                        <a class="mega-menu-link" href="/Categories/@item5.Id">@item5.Id</a>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        }
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </li>
+}

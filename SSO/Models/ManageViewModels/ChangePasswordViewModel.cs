@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SSO.Models.ManageViewModels
 {
@@ -10,18 +6,18 @@ namespace SSO.Models.ManageViewModels
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu hiện tại")]
+        [Display(Name = "OldPassword", ResourceType = typeof(LanguageAll.Language))]
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceName = "PasswordLength", ErrorMessageResourceType = typeof(LanguageAll.Language), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu mới")]
+        [Display(Name = "Password", ResourceType = typeof(LanguageAll.Language))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Xác nhận mật khẩu mới")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Display(Name = "ConfirmPassword", ResourceType = typeof(LanguageAll.Language))]
+        [Compare("NewPassword", ErrorMessageResourceName = "confirmationnotmatch", ErrorMessageResourceType = typeof(LanguageAll.Language))]
         public string ConfirmPassword { get; set; }
 
         public string StatusMessage { get; set; }

@@ -1,0 +1,434 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.Categories.ProductDetails
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+}
+<div class="shop-container">
+    <div class="container">
+        <div class="woocommerce-notices-wrapper"></div>
+    </div>
+    <div id="product-7221" class="product type-product post-7221 status-publish first instock product_cat-mat-bac-nu has-post-thumbnail shipping-taxable purchasable product-type-simple">
+        <div class="product-main">
+            <div class="row content-row row-divided row-large">
+                <div id="product-sidebar" class="col large-3 hide-for-medium shop-sidebar ">
+                    @await Component.InvokeAsync("Partial", new { _PartialName = "_MainMenuLeft" })
+                    <aside id="woocommerce_recently_viewed_products-8" class="widget woocommerce widget_recently_viewed_products">
+                        <span class="widget-title shop-sidebar">Xem gần đây</span>
+                        <div class="is-divider small"></div>
+                        <ul class="product_list_widget">
+                            @foreach (var item in Model.productView)
+                            {
+                                <li>
+                                    <a asp-action="Details" asp-controller="Categories" asp-route-Id="@item.Id">
+                                        <img width="100" height="100" src="@item.Img?resize=100%2C100&amp;ssl=1" data-src="@item.Img?resize=100%2C100&amp;ssl=1"
+                                             class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active"
+                                             alt="" loading="eager"
+                                             data-srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w"
+                                             data-lazy-loaded="1" sizes="(max-width: 100px) 100vw, 100px"
+                                             srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w">
+                                        <span class="product-title">@item.Name @item.Code</span>
+                                    </a>
+                                    <del>
+                                        <span class="woocommerce-Price-amount amount">
+                                            <bdi>@item.Price.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                        </span>
+                                    </del>
+                                    <ins>
+                                        <span class="woocommerce-Price-amount amount">
+                                            <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                        </span>
+                                    </ins>
+                                </li>
+                            }
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col large-9">
+                    <div class="row">
+                        <div class="large-7 col">
+                            <div class="product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="opacity: 1;">
+                                <div class="image-tools absolute top show-on-hover right z-3"></div>
+                                <figure class="woocommerce-product-gallery__wrapper product-gallery-slider slider slider-nav-small mb-half has-image-zoom is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{
+                                    &quot;cellAlign&quot;: &quot;center&quot;,
+                                    &quot;wrapAround&quot;: true,
+                                    &quot;autoPlay&quot;: false,
+                                    &quot;prevNextButtons&quot;:true,
+                                    &quot;adaptiveHeight&quot;: true,
+                                    &quot;imagesLoaded&quot;: true,
+                                    &quot;lazyLoad&quot;: 1,
+                                    &quot;dragThreshold&quot; : 15,
+                                    &quot;pageDots&quot;: false,
+                                    &quot;rightToLeft&quot;: false       }" tabindex="0">
+
+                                    <div data-thumb="@Model.product.Img?fit=100%2C100&amp;ssl=1"
+                                         class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                        <a href="@Model.product.Img?fit=2160%2C2160&amp;ssl=1">
+                                            <img width="700" height="700"
+                                                 src="@Model.product.Img?fit=2160%2C2160&amp;ssl=1"
+                                                 class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                                 title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                                 data-src="@Model.product.Img?fit=2160%2C2160&amp;ssl=1"
+                                                 data-large_image="@Model.product.Img?fit=2160%2C2160&amp;ssl=1"
+                                                 data-large_image_width="2160" data-large_image_height="2160"
+                                                 srcset="@Model.product.Img?w=2160&amp;ssl=1 2160w, @Model.product.Img?resize=400%2C400&amp;ssl=1 400w, @Model.product.Img?resize=800%2C800&amp;ssl=1 800w, @Model.product.Img?resize=280%2C280&amp;ssl=1 280w, @Model.product.Img?resize=768%2C768&amp;ssl=1 768w, @Model.product.Img?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.Img?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.Img?resize=300%2C300&amp;ssl=1 300w, @Model.product.Img?resize=700%2C700&amp;ssl=1 700w, @Model.product.Img?resize=100%2C100&amp;ssl=1 100w"
+                                                 data-srcset="@Model.product.Img?w=2160&amp;ssl=1 2160w, @Model.product.Img?resize=400%2C400&amp;ssl=1 400w, @Model.product.Img?resize=800%2C800&amp;ssl=1 800w, @Model.product.Img?resize=280%2C280&amp;ssl=1 280w, @Model.product.Img?resize=768%2C768&amp;ssl=1 768w, @Model.product.Img?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.Img?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.Img?resize=300%2C300&amp;ssl=1 300w, @Model.product.Img?resize=700%2C700&amp;ssl=1 700w, @Model.product.Img?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                        </a>
+                                    </div>
+
+                                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide1))
+                                    {
+                                        <div data-thumb="@Model.product.ImgSlide1?fit=100%2C100&amp;ssl=1"
+                                             class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                            <a href="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1">
+                                                <img width="700" height="700"
+                                                     src="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1"
+                                                     class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                                     title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                                     data-src="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image_width="2160" data-large_image_height="2160"
+                                                     srcset="@Model.product.ImgSlide1?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide1?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide1?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide1?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide1?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide1?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide1?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide1?resize=100%2C100&amp;ssl=1 100w"
+                                                     data-srcset="@Model.product.ImgSlide1?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide1?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide1?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide1?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide1?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide1?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide1?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide1?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                            </a>
+                                        </div>
+                                    }
+
+                                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide2))
+                                    {
+                                        <div data-thumb="@Model.product.ImgSlide2?fit=100%2C100&amp;ssl=1"
+                                             class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                            <a href="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1">
+                                                <img width="700" height="700"
+                                                     src="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1"
+                                                     class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                                     title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                                     data-src="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image_width="2160" data-large_image_height="2160"
+                                                     srcset="@Model.product.ImgSlide2?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide2?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide2?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide2?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide2?resize=100%2C100&amp;ssl=1 100w"
+                                                     data-srcset="@Model.product.ImgSlide2?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide2?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide2?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide2?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide2?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                            </a>
+                                        </div>
+                                    }
+
+                                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide3))
+                                    {
+                                        <div data-thumb="@Model.product.ImgSlide3?fit=100%2C100&amp;ssl=1"
+                                             class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                            <a href="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1">
+                                                <img width="700" height="700"
+                                                     src="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1"
+                                                     class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                                     title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                                     data-src="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image_width="2160" data-large_image_height="2160"
+                                                     srcset="@Model.product.ImgSlide3?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide3?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide3?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide3?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide3?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide3?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide3?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide3?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide3?resize=100%2C100&amp;ssl=1 100w"
+                                                     data-srcset="@Model.product.ImgSlide3?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide3?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide3?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide3?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide3?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide3?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide3?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide3?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide3?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                            </a>
+                                        </div>
+                                    }
+
+                                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide4))
+                                    {
+                                        <div data-thumb="@Model.product.ImgSlide4?fit=100%2C100&amp;ssl=1"
+                                             class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                            <a href="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1">
+                                                <img width="700" height="700"
+                                                     src="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1"
+                                                     class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                                     title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                                     data-src="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image_width="2160" data-large_image_height="2160"
+                                                     srcset="@Model.product.ImgSlide4?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide4?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide4?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide4?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide4?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide4?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide4?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide4?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide4?resize=100%2C100&amp;ssl=1 100w"
+                                                     data-srcset="@Model.product.ImgSlide4?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide4?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide4?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide4?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide4?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide4?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide4?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide4?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide4?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                            </a>
+                                        </div>
+                                    }
+
+                                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide5))
+                                    {
+                                        <div data-thumb="@Model.product.ImgSlide5?fit=100%2C100&amp;ssl=1"
+                                             class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                            <a href="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1">
+                                                <img width="700" height="700"
+                                                     src="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1"
+                                                     class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                                     title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                                     data-src="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1"
+                                                     data-large_image_width="2160" data-large_image_height="2160"
+                                                     srcset="@Model.product.ImgSlide5?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide5?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide5?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide5?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide5?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide5?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide5?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide5?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide5?resize=100%2C100&amp;ssl=1 100w"
+                                                     data-srcset="@Model.product.ImgSlide5?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide5?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide5?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide5?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide5?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide5?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide5?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide5?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide5?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                            </a>
+                                        </div>
+                                    }
+
+                                </figure>
+
+                                <div class="image-tools absolute bottom left z-3">
+                                    <a href="#product-zoom" class="zoom-button button is-outline circle icon tooltip hide-for-small tooltipstered">
+                                        <i class="icon-expand"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="product-thumbnails thumbnails slider-no-arrows slider row row-small row-slider slider-nav-small small-columns-4 is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{
+			                        &quot;cellAlign&quot;: &quot;left&quot;,
+			                        &quot;wrapAround&quot;: false,
+			                        &quot;autoPlay&quot;: false,
+			                        &quot;prevNextButtons&quot;: true,
+			                        &quot;asNavFor&quot;: &quot;.product-gallery-slider&quot;,
+			                        &quot;percentPosition&quot;: true,
+			                        &quot;imagesLoaded&quot;: true,
+			                        &quot;pageDots&quot;: false,
+			                        &quot;rightToLeft&quot;: false,
+			                        &quot;contain&quot;: true
+		                        }" tabindex="0">
+
+                                <div class="col first is-nav-selected is-selected">
+                                    <a>
+                                        <img src="@Model.product.Img?resize=300%2C300&amp;ssl=1"
+                                             alt="" width="300" height="300" class="attachment-woocommerce_thumbnail">
+                                    </a>
+                                </div>
+
+                                @if (!String.IsNullOrEmpty(Model.product.ImgSlide1))
+                                {
+                                    <div class="col" aria-selected="false">
+                                        <a>
+                                            <img src="@Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1"
+                                                 data-src="@Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1"
+                                                 alt="" width="300" height="300"
+                                                 class="attachment-woocommerce_thumbnail lazy-load-active">
+                                        </a>
+                                    </div>
+                                }
+
+                                @if (!String.IsNullOrEmpty(Model.product.ImgSlide2))
+                                {
+                                    <div class="col" aria-selected="false">
+                                        <a>
+                                            <img src="@Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                                 data-src="@Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                                 alt="" width="300" height="300"
+                                                 class="attachment-woocommerce_thumbnail lazy-load-active">
+                                        </a>
+                                    </div>
+                                }
+
+                                @if (!String.IsNullOrEmpty(Model.product.ImgSlide3))
+                                {
+                                    <div class="col" aria-selected="false">
+                                        <a>
+                                            <img src="@Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1"
+                                                 data-src="@Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1"
+                                                 alt="" width="300" height="300"
+                                                 class="attachment-woocommerce_thumbnail lazy-load-active">
+                                        </a>
+                                    </div>
+                                }
+
+                                @if (!String.IsNullOrEmpty(Model.product.ImgSlide4))
+                                {
+                                    <div class="col" aria-selected="false">
+                                        <a>
+                                            <img src="@Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1"
+                                                 data-src="@Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1"
+                                                 alt="" width="300" height="300"
+                                                 class="attachment-woocommerce_thumbnail lazy-load-active">
+                                        </a>
+                                    </div>
+                                }
+
+                                @if (!String.IsNullOrEmpty(Model.product.ImgSlide5))
+                                {
+                                    <div class="col" aria-selected="false">
+                                        <a>
+                                            <img src="@Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1"
+                                                 data-src="@Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1"
+                                                 alt="" width="300" height="300"
+                                                 class="attachment-woocommerce_thumbnail lazy-load-active">
+                                        </a>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="product-info summary entry-summary col col-fit product-summary text-left form-flat">
+                            <h1 class="product-title product_title entry-title">
+                                @Model.product.Name @Model.product.Code
+                            </h1>
+
+                            <div class="is-divider small"></div>
+                            <div class="price-wrapper">
+                                <p class="price product-page-price ">
+                                    <span class="woocommerce-Price-amount amount">
+                                        <bdi>
+                                            @((Model.product.Price - Model.product.Discount).ToString())
+                                            <span class="woocommerce-Price-currencySymbol">₫</span>
+                                        </bdi>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <form class="cart" action="@(Context.ProductUrl(Model.product.Id))" method="post" enctype="multipart/form-data">
+                                <div class="quantity buttons_added form-flat">
+                                    <input type="button" value="-" class="minus button is-form">
+                                    <label class="screen-reader-text" for="quantity_609805980f62d">@Model.product.Name @Model.product.Code @Localizer["số lượng"]</label>
+                                    <input type="number" id="quantity_609805980f62d" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="SL" size="4" placeholder="" inputmode="numeric">
+                                    <input type="button" value="+" class="plus button is-form">
+                                </div>
+                                <button type="submit" name="add-to-cart" value="7221" class="single_add_to_cart_button button alt">@Localizer["Thêm vào giỏ hàng"]</button>
+                            </form>
+                            <div style="background: #fff8d4; border-radius: 10px; padding: 5px; font-size: 15px; color: #171717; margin-bottom: 10px;">
+                                <ul>
+                                    <li>@Localizer["Liên hệ hotline"] <span style="color:red; font-weight:700">@Model.paramSetting.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "HOTLINE").FirstOrDefault().ParamValue</span> @Localizer["hoặc chat"]</li>
+                                    <li>
+                                        @Localizer["Miễn phí vận chuyển đơn hàng từ "] @Model.paramSetting.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "SHIPFREE").FirstOrDefault().ParamValue.FormatNumber() đ
+                                        <br>
+                                        <i>
+                                            (@Localizer["Xem chính sách"]
+                                            <a href="/About/2" target="_blank" style="color:red">@Localizer["tại đây"]</a>)
+                                        </i>
+                                    </li>
+                                    <li>@Localizer["Bảo hành đánh sáng miễn phí trọn đời!"]</li>
+                                </ul>
+                            </div>
+                            <div class="product_meta">
+                                <span class="posted_in">@Localizer["Danh mục"]: <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model.product.MainCategories.Id" rel="tag">@Model.product.MainCategories.Name</a></span>
+                            </div>
+                            <div class="social-icons share-icons share-row relative">
+                                <a href="whatsapp://send?text=@((Model.product.Name + Model.product.Code).UrlEncode()) - @(Context.ProductUrl(Model.product.Id))"
+                                   data-action="share/whatsapp/share"
+                                   class="icon button circle is-outline tooltip whatsapp show-for-medium tooltipstered">
+                                    <i class="icon-whatsapp"></i>
+                                </a>
+                                <a href="//www.facebook.com/sharer.php?u=@(Context.ProductUrl(Model.product.Id))"
+                                   data-label="Facebook"
+                                   onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                                   rel="noopener noreferrer nofollow"
+                                   target="_blank" class="icon button circle is-outline tooltip facebook tooltipstered">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="//twitter.com/share?url=@(Context.ProductUrl(Model.product.Id))"
+                                   onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                                   rel="noopener noreferrer nofollow" target="_blank"
+                                   class="icon button circle is-outline tooltip twitter tooltipstered">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="mailto:enteryour@addresshere.com?subject=@((Model.product.Name + Model.product.Code).UrlEncode())&amp;body=Check%20this%20out:%20@(Context.ProductUrl(Model.product.Id))"
+                                   rel="nofollow"
+                                   class="icon button circle is-outline tooltip email tooltipstered">
+                                    <i class="icon-envelop"></i>
+                                </a>
+                                <a href="//pinterest.com/pin/create/button/?url=@(Context.ProductUrl(Model.product.Id))&amp;media=@Model.product.Img?fit=800%2C800&amp;ssl=1&amp;description=@((Model.product.Name + Model.product.Code).UrlEncode())"
+                                   onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                                   rel="noopener noreferrer nofollow"
+                                   target="_blank" class="icon button circle is-outline tooltip pinterest tooltipstered">
+                                    <i class="icon-pinterest"></i>
+                                </a>
+                                <a href="//www.linkedin.com/shareArticle?mini=true&amp;url=@(Context.ProductUrl(Model.product.Id))&amp;title=@((Model.product.Name + Model.product.Code).UrlEncode())"
+                                   onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                                   rel="noopener noreferrer nofollow" target="_blank" class="icon button circle is-outline tooltip linkedin tooltipstered">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-page-accordian">
+                            <div class="accordion" rel="1">
+                                <div class="accordion-item">
+                                    <a class="accordion-title plain active" href="javascript:void();">
+                                        <button class="toggle"><i class="icon-angle-down"></i></button>
+                                        @Localizer["Chính sách bảo hành"]
+                                    </a>
+                                    <div class="accordion-inner" style="display: block;">
+                                        @Localizer["- Bạc Ngọc Tuấn cam kết bảo hành vĩnh viễn độ sáng bóng sản phẩm cho khách hàng. Sản phẩm trong quá trình sử dụng bị đen, xỉn do tác động của môi trường hoặc cơ địa người sử dụng, khách hàng có thể mang sản phẩm và thẻ bảo hành đến bất kỳ cửa hàng, chi nhánh nào của Bạc Ngọc Tuấn để được hưởng Quy chế bảo hành độ sáng bóng vĩnh viễn."]<br>
+                                        @Localizer["- Ngoài ra, các sản phẩm được hàn, nối, cắt miễn phí lần đầu. Các lần tiếp theo sẽ do nhân viên Bạc Ngọc Tuấn báo giá trước cho khách hàng trước khi tiến hành sửa chữa sản phẩm."]<br>
+                                        @Localizer["- Thông tin bảo hành chính là thông tin cá nhân của Khách hàng bao gồm: Họ và tên, Số điện thoại, Địa chỉ nhà riêng, Email. Khi mang sản phẩm đến bảo hành, Khách hàng chỉ cần cung cấp các Thông tin cá nhân đã cung cấp trước đó để được bảo hành. Bạc Ngọc Tuấn chỉ cấp thẻ cứng trong trường hợp khách không cung cấp thông tin cá nhân."]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="related related-products-wrapper product-section">
+                            <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+                                @Localizer["Sản phẩm tương tự"]
+                            </h3>
+                            <div class="row large-columns-4 medium-columns-4 small-columns-2 row-small slider row-slider slider-nav-reveal slider-nav-push is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{&quot;imagesLoaded&quot;: true, &quot;groupCells&quot;: &quot;100%&quot;, &quot;dragThreshold&quot; : 5, &quot;cellAlign&quot;: &quot;left&quot;,&quot;wrapAround&quot;: true,&quot;prevNextButtons&quot;: true,&quot;percentPosition&quot;: true,&quot;pageDots&quot;: false, &quot;rightToLeft&quot;: false, &quot;autoPlay&quot; : false}" tabindex="0">
+                                @foreach (var item in Model.productRelated)
+                                {
+                                    <div class="product-small col has-hover product type-product post-@item.Id status-publish instock product_cat-mat-bac product_cat-mat-bac-nu product_tag-mat-day-chuyen-nu has-post-thumbnail purchasable product-type-simple is-selected">
+                                        <div class="col-inner">
+                                            <div class="product-small box ">
+                                                <div class="box-image">
+                                                    <div class="image-fade_in_back">
+                                                        <a asp-action="Details" asp-controller="Categories" asp-route-Id="@item.Id">
+                                                            <img width="300" height="300"
+                                                                 src="@item.Img?resize=300%2C300&amp;ssl=1"
+                                                                 data-src="@item.Img?resize=300%2C300&amp;ssl=1"
+                                                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active"
+                                                                 alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager"
+                                                                 data-srcset="@item.Img?w=1000&amp;ssl=1 1000w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w, @item.Img?resize=700%2C700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=800%2C800&amp;ssl=1 800w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=768%2C768&amp;ssl=1 768w"
+                                                                 data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px"
+                                                                 srcset="@item.Img?w=1000&amp;ssl=1 1000w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w, @item.Img?resize=700%2C700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=800%2C800&amp;ssl=1 800w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=768%2C768&amp;ssl=1 768w">
+                                                            <img width="300" height="300"
+                                                                 src="@item.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                                                 data-src="@item.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                                                 class="show-on-hover absolute fill hide-for-small back-image jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active"
+                                                                 alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager"
+                                                                 data-srcset="@item.ImgSlide2?w=1000&amp;ssl=1 1000w, @item.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide2?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @item.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @item.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @item.ImgSlide2?resize=768%2C768&amp;ssl=1 768w"
+                                                                 data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px"
+                                                                 srcset="@item.ImgSlide2?w=1000&amp;ssl=1 1000w, @item.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide2?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @item.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @item.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @item.ImgSlide2?resize=768%2C768&amp;ssl=1 768w">
+                                                        </a>
+                                                    </div>
+                                                    <div class="image-tools is-small top right show-on-hover">
+                                                    </div>
+                                                    <div class="image-tools is-small hide-for-small bottom left show-on-hover">
+                                                    </div>
+                                                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                                        <a class="quick-view" data-prod="@item.Id" href="#quick-view">@Localizer["Xem nhanh"]</a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="box-text box-text-products">
+                                                    <div class="title-wrapper">
+                                                        <p class="category uppercase is-smaller no-text-overflow product-cat op-7">@item.MainCategories.Name</p>
+                                                        <p class="name product-title woocommerce-loop-product__title">
+                                                            <a href="/Categories/@item.MainCategories.Id"></a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="price-wrapper">
+                                                        <span class="price">
+                                                            <del>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <bdi>@(item.Price.ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                                </span>
+                                                            </del>
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                                </span>
+                                                            </ins>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

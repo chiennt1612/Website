@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Paygate.OnePay
+
+@inject IViewLocalizer Localizer
+
+<div class="container header-panel hidden-xs" style="font-size:12px">
+    <div class="pull-left">
+        <a href="/About/2">
+            <p class="hidden-sm" style="color: red; float: left">
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_HeaderPolicy" })
+                <!--strong> MIỄN PHÍ VẬN CHUYỂN >200K</strong-->
+            </p>
+        </a>
+    </div>
+    <div class="pull-right language">
+
+    </div>
+    <div class="language pull-right">
+        <a href="#"><img src="/Image/Untitled-39.png" alt="English" /></a>
+    </div>
+
+    <ul class="log-reg pull-right">
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <li class="register">
+                <a href="@(EntityFramework.Web.DBContext.Constants.Authority)/Account/Register?returnUrl=@((Context.MerchantUrl() + "/Account/Login").UrlEncode())" title="@Localizer["Tặng ngay 100 điểm khi Đăng Ký"]">@Localizer["ĐĂNG KÝ"]</a>
+            </li>
+            <li class="last log-in">
+                <a asp-action="Login" asp-controller="Account" title="@Localizer["Đăng Nhập hàng ngày để tích điểm"]">@Localizer["ĐĂNG NHẬP"]</a>
+            </li>
+        }
+        else
+        {
+            <li class="register">
+                <a asp-action="Profile" asp-controller="Account">@Localizer["Hồ sơ"]</a>
+            </li>
+            <li class="last log-in">
+                <a asp-action="Logout" asp-controller="Account">@Localizer["Thoát"]</a>
+            </li>            
+        }
+    </ul>
+
+    <ul class="contact pull-right">
+        <li><a asp-controller="Home" asp-action="About" asp-route-Id="1">@Localizer["GIỚI THIỆU"]</a></li>
+        <li><a asp-controller="News" asp-action="Index" asp-route-Id="4" asp-route-Page="1">@Localizer["TIN TỨC"]</a></li>
+        <li class="last"><a asp-controller="Home" asp-action="Contact">@Localizer["LIÊN HỆ"]</a></li>
+
+    </ul>
+    <div class="consult pull-right">
+        @await Component.InvokeAsync("Partial", new { _PartialName = "_HeaderContact" })
+        <!--<p>CSKH:<span> <strong style="color: red;">0988 220 220</strong></span></p>-->
+    </div>
+</div>

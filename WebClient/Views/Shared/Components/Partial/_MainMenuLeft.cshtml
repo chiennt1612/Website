@@ -1,0 +1,150 @@
+﻿@using System.Text
+@using WebClient.Helpers
+@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<Categories>
+
+
+@{ 
+    var a = Model;
+    var a1 = a.Where(u => u.Status);
+}
+<div id="menu-left" style="position:fixed;z-index:99;left:5px;bottom:25%;text-align:center;">
+    <p style="text-transform: uppercase;font-weight: 600;text-align: center;">@Localizer["Sản phẩm xem nhiều:"]</p>
+    <ul style="color: white;text-transform: uppercase;font-weight: 600;padding: 10px;border-radius: 0 15px 15px 15px;">
+        @foreach (var item in a1)
+        {
+            <li>
+                <a asp-action="Index" asp-controller="Categories" asp-route-Id="@item.Id" target="_blank">
+                    @item.Name
+                </a>
+            </li>
+        }
+
+        <li class="bnt-salesoc" style="background:#de0303">
+            <a asp-action="ProductHot" asp-controller="Categories" target="_blank">@Localizer["SALE SỐC"]</a>
+        </li>
+    </ul>
+</div>
+<style>
+    #menu-left li {
+        background-color: blue;
+        padding: 7px;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 5px;
+    }
+
+        #menu-left li:hover {
+            background: #000098;
+        }
+
+        #menu-left li > a {
+            color: white;
+        }
+
+            #menu-left li > a:hover {
+                color: #e6e6e6;
+            }
+
+    #popup-pht img:hover {
+        transform: scale(1.1,1.1);
+        -webkit-transition: all 0.3s ease;
+    }
+</style>
+@*@{
+        var a = Model;
+        var a1 = a.Where(u => u.Status);
+        var _Id = ViewData.GetSearchInput().CategoryId;
+
+        var sMenu2 = new StringBuilder();
+        foreach (var item1 in a1)
+        {
+            var sMenu3 = new StringBuilder();
+            var a2 = a.Where(u => u.ParentId == item1.Id);
+            var sActive2 = "";
+            if (_Id == item1.Id)
+            {
+                sActive2 = "current-cat active";
+            }
+            @if (a2.Count() > 0)
+            {
+                sMenu3.Append("<ul class='children'>");
+                @foreach (var item2 in a2)
+                {
+                    var a3 = a.Where(u => u.ParentId == item2.Id);
+                    var sMenu4 = new StringBuilder();
+                    var sActive3 = "";
+                    if (_Id == item2.Id)
+                    {
+                        sActive2 = "active";
+                        sActive3 = "current-cat active";
+                    }
+                    @if (a3.Count() > 0)
+                    {
+                        sMenu4.Append("<ul class='children'>");
+                        @foreach (var item3 in a3)
+                        {
+                            var a4 = a.Where(u => u.ParentId == item3.Id);
+                            var sMenu5 = new StringBuilder();
+                            var sActive4 = "";
+                            if (_Id == item3.Id)
+                            {
+                                sActive2 = "active";
+                                sActive3 = "active";
+                                sActive4 = "current-cat active";
+                            }
+                            @if (a4.Count() > 0)
+                            {
+                                sMenu5.Append("<ul class='children'>");
+                                @foreach (var item4 in a4)
+                                {
+                                    var sActive5 = "";
+                                    if (_Id == item4.Id)
+                                    {
+                                        sActive2 = "active";
+                                        sActive3 = "active";
+                                        sActive4 = "active";
+                                        sActive5 = "current-cat active";
+                                    }
+                                    sMenu5.Append($"<li class=\"cat-item cat-item-{item4.Id} {sActive5}\"><a href=\"/Categories/{item4.Id}\">{item4.Name}</a></li>");
+                                }
+                                sMenu5.Append("</ul>");
+                            }
+                            sMenu4.Append($"<li class=\"cat-item cat-item-{item3.Id} {(a4.Count() > 0 ? "cat-parent" : "")} {sActive4} \">");
+                            sMenu4.Append($"<a href=\"/Categories/{item3.Id}\">{item3.Name}</a>");
+                            sMenu4.Append(sMenu5.ToString());
+                            sMenu4.Append("</li>");
+                            sMenu5.Clear();
+                            sMenu5 = null;
+                        }
+                        sMenu4.Append("</ul>");
+                    }
+                    sMenu3.Append($"<li class=\"cat-item cat-item-{item2.Id} {(a3.Count() > 0 ? "cat-parent" : "")} {sActive3} \">");
+                    sMenu3.Append($"<a href=\"/Categories/{item2.Id}\">{item2.Name}</a>");
+                    sMenu3.Append(sMenu4.ToString());
+                    sMenu3.Append("</li>");
+                    sMenu4.Clear();
+                    sMenu4 = null;
+                }
+                sMenu3.Append("</ul>");
+            }
+            sMenu2.Append($"<li class=\"cat-item cat-item-{item1.Id} {(a2.Count() > 0 ? "cat-parent" : "")} {sActive2} \">");
+            sMenu2.Append($"<a href=\"/Categories/{item1.Id}\">{item1.Name}</a>");
+            sMenu2.Append(sMenu3.ToString());
+            sMenu2.Append("</li>");
+            sMenu3.Clear();
+            sMenu3 = null;
+        }
+    }
+
+    <aside id="woocommerce_product_categories-13" class="widget woocommerce widget_product_categories">
+        <span class="widget-title shop-sidebar">@Localizer["Danh mục sản phẩm"]</span>
+        <div class="is-divider small"></div>
+        <ul class="product-categories">@Html.Raw(sMenu2.ToString())</ul>
+    </aside>
+    @{
+        sMenu2.Clear();
+        sMenu2 = null;
+    }*@

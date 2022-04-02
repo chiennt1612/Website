@@ -1,0 +1,132 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model EntityFramework.Web.Entities.Ordering.Order
+
+@{
+    ViewData["Title"] = Localizer["Chi tiết"];
+}
+
+<h1>@Localizer["Chi tiết"]</h1>
+
+<div>
+    <h4>@Localizer["Đơn hàng"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Mã đơn
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw($"Order ID: {Model.Id.ToString()}<br>Tham chiếu: {(Model.Id + Tools.StartIdOrder).ToString()} <br>PartnerId: {Model.CookieID}")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fullname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fullname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderStatus.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            Chi tiết đơn hàng
+        </dt>
+        <dd class="col-sm-10">
+            <style>
+                th, td {
+                    padding: 3px 10px 3px 10px;
+                }
+            </style>
+            <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="2">
+                <thead>
+                    <tr>
+                        <th class="product-name" colspan="2">@Localizer["Sản phẩm"]</th>
+                        <th class="product-price">@Localizer["Giá"]</th>
+                        <th class="product-quantity">@Localizer["Số lượng"]</th>
+                        <th class="product-subtotal">@Localizer["Thành tiền"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.OrderItems.Count(); i++)
+                    {
+                        <tr class="woocommerce-cart-form__cart-item cart_item">
+                            <td class="product-thumbnail">
+                                <img width="100" height="100"
+                                     src="@Model.OrderItems[i].Product.Img"
+                                     data-src="@Model.OrderItems[i].Product.Img?resize=300%2C300&amp;ssl=1"
+                                     class="lazy-load attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image"
+                                     alt="" loading="lazy" data-lazy-srcset=""
+                                     data-srcset="@Model.OrderItems[i].Product.Img?w=2160&amp;ssl=1 2160w, @Model.OrderItems[i].Product.Img?resize=400%2C400&amp;ssl=1 400w, @Model.OrderItems[i].Product.Img?resize=800%2C800&amp;ssl=1 800w, @Model.OrderItems[i].Product.Img?resize=280%2C280&amp;ssl=1 280w, @Model.OrderItems[i].Product.Img?resize=768%2C768&amp;ssl=1 768w, @Model.OrderItems[i].Product.Img?resize=1536%2C1536&amp;ssl=1 1536w, @Model.OrderItems[i].Product.Img?resize=2048%2C2048&amp;ssl=1 2048w, @Model.OrderItems[i].Product.Img?resize=300%2C300&amp;ssl=1 300w, @Model.OrderItems[i].Product.Img?resize=700%2C700&amp;ssl=1 700w, @Model.OrderItems[i].Product.Img?resize=100%2C100&amp;ssl=1 100w"
+                                     data-lazy-sizes="(max-width: 300px) 100vw, 300px"
+                                     data-lazy-src="@Model.OrderItems[i].Product.Img?resize=300%2C300&amp;ssl=1&amp;is-pending-load=1"
+                                     srcset="@Model.OrderItems[i].Product.Img" />
+                            </td>
+
+                            <td class="product-name" data-title="@Localizer["Sản phẩm"]">
+                                <div class="show-for-small mobile-product-price">
+                                    <span class="mobile-product-price__qty">@Model.OrderItems[i].Units x </span>
+                                    <span class="woocommerce-Price-amount amount"><bdi>@((Model.OrderItems[i].Price- Model.OrderItems[i].Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                                </div>
+                            </td>
+
+                            <td class="product-price" data-title="@Localizer["Giá"]">
+                                <span class="woocommerce-Price-amount amount"><bdi>@((Model.OrderItems[i].Price- Model.OrderItems[i].Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                            </td>
+
+                            <td class="product-quantity" data-title="@Localizer["Số lượng"]">
+                                @Model.OrderItems[i].Units.ToString().FormatNumber()
+                            </td>
+                            <td class="product-subtotal" data-title="@Localizer["Thành tiền"]">
+                                <span class="woocommerce-Price-amount amount"><bdi><span id="Total@(i)">@Model.OrderItems[i].Total.ToString().FormatNumber()</span><span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Sửa"]</a> |
+    <a asp-action="Index">@Localizer["Quay lại danh sách"]</a>
+</div>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,84 +8,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using WebAdmin.Repository.Interfaces;
 using X.PagedList;
 
 namespace WebAdmin.Repository
 {
-    //public class GenericRepository<TEntity> where TEntity : class
-    //{
-    //    internal AppDbContext context;
-    //    internal DbSet<TEntity> dbSet;
-
-    //    public GenericRepository(AppDbContext context)
-    //    {
-    //        this.context = context;
-    //        this.dbSet = context.Set<TEntity>();
-    //    }
-
-    //    public virtual IEnumerable<TEntity> Get(
-    //        Expression<Func<TEntity, bool>> filter = null,
-    //        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-    //        string includeProperties = "")
-    //    {
-    //        IQueryable<TEntity> query = dbSet;
-
-    //        if (filter != null)
-    //        {
-    //            query = query.Where(filter);
-    //        }
-
-    //        foreach (var includeProperty in includeProperties.Split
-    //            (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-    //        {
-    //            query = query.Include(includeProperty);
-    //        }
-
-    //        if (orderBy != null)
-    //        {
-    //            return orderBy(query).ToList();
-    //        }
-    //        else
-    //        {
-    //            return query.ToList();
-    //        }
-    //    }
-
-    //    public virtual TEntity GetByID(object id)
-    //    {
-    //        return dbSet.Find(id);
-    //    }
-
-    //    public virtual void Insert(TEntity entity)
-    //    {
-    //        dbSet.Add(entity);
-    //    }
-
-    //    public virtual void Delete(object id)
-    //    {
-    //        TEntity entityToDelete = dbSet.Find(id);
-    //        Delete(entityToDelete);
-    //    }
-
-    //    public virtual void Delete(TEntity entityToDelete)
-    //    {
-    //        if (context.Entry(entityToDelete).State == EntityState.Detached)
-    //        {
-    //            dbSet.Attach(entityToDelete);
-    //        }
-    //        dbSet.Remove(entityToDelete);
-    //    }
-
-    //    public virtual void Update(TEntity entityToUpdate)
-    //    {
-    //        dbSet.Attach(entityToUpdate);
-    //        context.Entry(entityToUpdate).State = EntityState.Modified;
-    //    }
-    //}
     /// <inheritdoc />
     /// <summary>
     /// Generic repository
@@ -151,7 +80,7 @@ namespace WebAdmin.Repository
             }
 
             _dbSet.AttachRange(entities);
-                _dbContext.Entry(entities).State = EntityState.Modified;
+            _dbContext.Entry(entities).State = EntityState.Modified;
         }
 
         public async Task DeleteAsync(TKey id)
@@ -173,12 +102,12 @@ namespace WebAdmin.Repository
         }
 
         public virtual async Task<IPagedList<T>> GetListByPage(
-            Expression<Func<T, bool>> expression, Func<T, string> sort, bool desc = false,
+            Expression<Func<T, bool>> expression, Func<T, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             IQueryable<T> r = _dbSet.AsNoTracking().Where(expression);
             IOrderedEnumerable<T> r1;
-            if (desc)
+            if (!desc)
             {
                 r1 = r.OrderBy(sort);
             }
@@ -253,7 +182,7 @@ namespace WebAdmin.Repository
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task<BaseEntityList<T>> GetListAsync(Expression<Func<T, bool>> expression, Func<T, string> sort, bool desc, int page, int pageSize)
+        public virtual async Task<BaseEntityList<T>> GetListAsync(Expression<Func<T, bool>> expression, Func<T, object> sort, bool desc, int page, int pageSize)
         {
             var a = new BaseEntityList<T>();
             a.totalRecords = await CountAsync(expression);

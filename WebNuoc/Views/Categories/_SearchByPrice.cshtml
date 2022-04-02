@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+
+@model WebNuoc.Models.Home.SearchInput
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+    var settingParam = ViewData[WebNuoc.Services.ViewDataParam.ParamSetting] as IList<EntityFramework.Web.Entities.ParamSetting>;
+    var PriceMin = double.Parse(settingParam.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "PRIREMIN").FirstOrDefault().ParamValue);
+    var PriceMax = double.Parse(settingParam.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "PRIREMAX").FirstOrDefault().ParamValue);
+    var _PriceMin = (Model.min_price < PriceMin ? PriceMin : Model.min_price);
+    var _PriceMax = (Model.max_price > PriceMax ? PriceMax : Model.max_price);
+}
+<aside id="woocommerce_price_filter-9" class="widget woocommerce widget_price_filter">
+    <span class="widget-title shop-sidebar">@Localizer["Lọc theo giá"]</span>
+    <div class="is-divider small"></div>
+    <form id="frmSearchByPrice" asp-action="Search" asp-controller="Categories">
+        <div class="price_slider_wrapper">
+            <div class="price_slider" style="display:none;">
+                <input type="hidden" asp-for="SearchType" value="ByPrice" />
+            </div>
+            <div class="price_slider_amount" data-step="10">
+                <input type="number" asp-for="min_price" placeholder="@Localizer["Giá thấp nhất"]" value="@_PriceMin" data-min="@PriceMin" />
+                <input type="number" asp-for="max_price" placeholder="@Localizer["Giá cao nhất"]" value="@_PriceMax" data-max="@PriceMax" />
+                <button id="bntSearchByPrice" type="button" class="button" onclick="SearchSubmit_OnClick('ByPrice')">@Localizer["Lọc"]</button>
+                <div class="price_label" style="display:none;">
+                    @Localizer["Giá"] <span class="from">@_PriceMin</span> &mdash; <span class="to">@_PriceMax</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</aside>

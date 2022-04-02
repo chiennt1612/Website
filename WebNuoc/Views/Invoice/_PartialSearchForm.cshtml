@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.Home.SearchInput
+
+<form id="frmSearchByKeyword" name="frmSearchByKeyword" asp-action="Index" asp-controller="Invoice">
+    <div class="form-group row">
+        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Tra cứu hóa đơn"]</label>
+        <div class="col-md-7 col-sm-6">
+            <input class="form-control" type="text" asp-for="Keyword" 
+                   placeholder="@Localizer["Nhập mã khách, nhấn Enter để tra cứu hóa đơn"]" 
+                   onkeypress="searchInvoice(event);" />
+        </div><!--col-->
+    </div>
+</form>
+<script>
+    function searchInvoice(e) {
+        if (!e) e = window.event;
+        var keyCode = (e.keyCode ? e.keyCode : e.which);
+        if (keyCode == 13) {
+            document.frmSearchByKeyword.submit();
+        }
+    }
+</script>

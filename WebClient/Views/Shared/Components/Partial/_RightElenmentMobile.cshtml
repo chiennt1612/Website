@@ -1,0 +1,114 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Order.CreateOrder
+
+@if (Model != null)
+{
+    <div class="block-title">
+        <a href="/Order/Cart" style="display: block; width: 100%; color:#000;">@Localizer["Bạn có"] <span id="id_cart_mobile">@Model.OrderItems.Count()</span> @Localizer["sản phẩm"] </a>
+    </div>
+}
+else
+{
+    <div class="block-title">
+        <a href="/Order/Cart" style="display: block; width: 100%; color:#000;">@Localizer["Bạn có"] <span id="id_cart_mobile">0</span> @Localizer["sản phẩm"] </a>
+    </div>
+}
+@*
+    <div class="flex-col show-for-medium flex-right">
+        @if (Model != null)
+        {
+            <ul class="mobile-nav nav nav-right ">
+                <li class="cart-item has-icon">
+
+                    <div class="header-button">
+                        <a href="/Order/Cart" class="header-cart-link off-canvas-toggle nav-top-link icon primary button round is-small"
+                        title="@Localizer["Giỏ hàng"]">
+
+                            <i class="icon-shopping-basket"
+                               data-icon-label="@Model.OrderItems.Count()">
+                            </i>
+                        </a>
+                    </div>
+
+                    <!-- Cart Sidebar Popup -->
+                    <div id="cart-popup" class="mfp-hide widget_shopping_cart">
+                        <div class="cart-popup-inner inner-padding">
+                            <div class="cart-popup-title text-center">
+                                <h4 class="uppercase">@Localizer["Giỏ hàng"]</h4>
+                                <div class="is-divider"></div>
+                            </div>
+                            <div class="widget_shopping_cart_content">
+
+
+                                <ul class="woocommerce-mini-cart cart_list product_list_widget ">
+                                    @foreach (var item in Model.OrderItems)
+                                    {
+                                        <li class="woocommerce-mini-cart-item mini_cart_item">
+                                            <a asp-action="Remove" asp-controller="Order" asp-route-Id="@item.ProductId"
+                                               class="remove remove_from_cart_button" aria-label="@Localizer["Xóa sản phẩm này"]"
+                                               data-product_id="@item.ProductId">&times;</a>
+                                            <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@item.ProductName.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.ProductCode">
+
+                                                <img width="300" height="300"
+                                                     src="@item.ProductImg"
+                                                     data-src="@item.ProductImg?resize=300%2C300&amp;ssl=1"
+                                                     class="lazy-load attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image"
+                                                     alt="" loading="lazy" data-lazy-srcset=""
+                                                     data-srcset="@item.ProductImg?w=2160&amp;ssl=1 2160w, @item.ProductImg?resize=400%2C400&amp;ssl=1 400w, @item.ProductImg?resize=800%2C800&amp;ssl=1 800w, @item.ProductImg?resize=280%2C280&amp;ssl=1 280w, @item.ProductImg?resize=768%2C768&amp;ssl=1 768w, @item.ProductImg?resize=1536%2C1536&amp;ssl=1 1536w, @item.ProductImg?resize=2048%2C2048&amp;ssl=1 2048w, @item.ProductImg?resize=300%2C300&amp;ssl=1 300w, @item.ProductImg?resize=700%2C700&amp;ssl=1 700w, @item.ProductImg?resize=100%2C100&amp;ssl=1 100w"
+                                                     data-lazy-sizes="(max-width: 300px) 100vw, 300px"
+                                                     data-lazy-src="@item.ProductImg?resize=300%2C300&amp;ssl=1&amp;is-pending-load=1"
+                                                     srcset="@item.ProductImg" />
+                                                @item.ProductName @item.ProductCode
+                                            </a>
+                                            <span class="quantity">
+                                                @item.Units &times;
+                                                <span class="woocommerce-Price-amount amount">
+                                                    <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi>
+                                                </span>
+                                            </span>
+                                        </li>
+                                    }
+
+                                </ul>
+
+                                <p class="woocommerce-mini-cart__total total">
+                                    <strong>@Localizer["Tổng thanh toán"]:</strong>
+                                    <span class="woocommerce-Price-amount amount">
+                                        <bdi>@Model.Total.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi>
+                                    </span>
+                                </p>
+
+
+                                <p class="woocommerce-mini-cart__buttons buttons">
+                                    <a href="/Order/Cart" class="button wc-forward">@Localizer["Xem giỏ hàng"]</a>
+                                    <a href="/Order/Checkout" class="button checkout wc-forward">@Localizer["Thanh toán"]</a>
+                                </p>
+                            </div>
+                            <div class="cart-sidebar-content relative"></div>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        }
+        else
+        {
+            <ul class="mobile-nav nav nav-right">
+                <li class=cart-item has-icon">
+                    <div class="header-button">
+                        <a href="/Order/Cart" class="header-cart-link off-canvas-toggle nav-top-link icon primary button round is-small"
+                        title="@Localizer["Giỏ hàng"]">
+
+                            <i class="icon-shopping-basket"
+                               data-icon-label="0">
+                            </i>
+                        </a>
+                    </div>
+                    <div id="cart-popup" class="mfp-hide widget_shopping_cart"><p class="woocommerce-mini-cart__empty-message">@Localizer["Chưa có sản phẩm trong giỏ hàng"].</p></div>
+                </li>
+            </ul>
+        }
+    </div>
+*@

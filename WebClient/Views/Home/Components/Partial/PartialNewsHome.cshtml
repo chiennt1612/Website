@@ -1,0 +1,229 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IList<EntityFramework.Web.Entities.Article>
+
+
+@if (Model.Count() > 0)
+{
+    <div class="frame col-md-3 col-xs-6 text-center">
+        <h3 style="margin: 0;">
+            <a asp-controller="News" asp-action="Details" asp-route-Id="@Model[0].Id" asp-route-Title="@Model[0].Title.RemoveSign4VietnameseString()">
+                <img src="@Model[0].Img" class="img-circle da-hover img-responsive bannertron" /><hr />
+            </a>
+        </h3>
+    </div>
+}
+<div class="frame col-md-3 col-xs-6 text-center">
+    <h3 style="margin: 0;">
+        <a asp-controller="News" asp-action="Index" asp-route-Id="5">
+            <img src="https://bacngoctuan.com/Image/2015_10_15_Banner-tron-dich-vu.gif" class="img-circle da-hover img-responsive bannertron" /><hr />
+        </a>
+    </h3>
+</div>
+@if (Model.Count() > 1)
+{
+    <div class="frame col-md-3 col-xs-6 text-center">
+        <h3 style="margin: 0;">
+            <a asp-controller="News" asp-action="Details" asp-route-Id="@Model[1].Id" asp-route-Title="@Model[1].Title.RemoveSign4VietnameseString()">
+                <img src="@Model[1].Img" class="img-circle da-hover img-responsive bannertron" /><hr />
+            </a>
+        </h3>
+    </div>
+}
+@if (Model.Count() > 2)
+{
+    <div class="frame col-md-3 col-xs-6 text-center">
+        <h3 style="margin: 0;">
+            <a asp-controller="News" asp-action="Details" asp-route-Id="@Model[2].Id" asp-route-Title="@Model[2].Title.RemoveSign4VietnameseString()">
+                <img src="@Model[2].Img" class="img-circle da-hover img-responsive bannertron" /><hr />
+            </a>
+        </h3>
+    </div>
+}
+@*<div class="container section-title-container hide-for-medium">
+        <h3 class="section-title section-title-normal">
+            <b></b>
+            <span class="section-title-main" style="font-size:70%;">@Localizer["Tin tức - Chia sẻ"]</span>
+            <b></b>
+            <a href="/News" target=""><i class="icon-angle-right"></i></a>
+        </h3>
+    </div>
+
+    <style>
+        #row-1920469288 .grid-col-1{height: 500px}
+        #row-1920469288 .grid-col-1-2{height: 250px}
+        #row-1920469288 .grid-col-1-3{height:166.66666666667px}
+        #row-1920469288 .grid-col-2-3{height: 333.33333333333px}
+        #row-1920469288 .grid-col-1-4{height: 125px}
+        #row-1920469288 .grid-col-3-4{height: 375px}
+
+            /* Tablet */
+        @Html.Raw("@media (max-width: 850px){#row-1920469288 .grid-col-1{height: 333.33333333333px}#row-1920469288 .grid-col-1-2{height: 166.66666666667px}#row-1920469288 .grid-col-1-3{height:111.11111111111px}#row-1920469288 .grid-col-2-3{height: 222.22222222222px}#row-1920469288 .grid-col-1-4{height: 83.333333333333px}#row-1920469288 .grid-col-3-4{height: 250px}}")
+
+            /* Mobile */
+        @Html.Raw("@media (max-width: 550px){#row-1920469288 .grid-col-1{height: 333.33333333333px}#row-1920469288 .grid-col-1-2{height: 166.66666666667px}#row-1920469288 .grid-col-1-3{height:111.11111111111px}#row-1920469288 .grid-col-2-3{height: 222.22222222222px}#row-1920469288 .grid-col-1-4{height: 83.333333333333px}#row-1920469288 .grid-col-3-4{height: 250px}}")
+
+    </style>
+
+    <div id="row-1920469288" class="row hide-for-medium row-xsmall has-shadow row-box-shadow-1 row-grid" data-packery-options="{&quot;itemSelector&quot;: &quot;.col&quot;, &quot;gutter&quot;: 0, &quot;presentageWidth&quot; : true}" style="position: relative; height: 500px;">
+
+        @if (Model.Count > 0)
+        {
+        <div class="col post-item grid-col grid-col-1 large-6 medium-12" style="position: absolute; left: 0px; top: 0px;">
+            <div class="col-inner">
+                <a asp-controller="News" asp-route-Title="@Model[0].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[0].Id" class="plain">
+                    <div class="box box-shade dark box-text-bottom box-blog-post has-hover">
+                        <div class="box-image">
+                            <div class="image-cover" style="padding-top:56%;">
+                                <img width="301" height="400" src="@Model[0].Img" data-src="@Model[0].Img?fit=301%2C400&amp;ssl=1" class="lazy-load attachment-medium size-medium wp-post-image jetpack-lazy-image" alt="@Model[0].Title" loading="lazy" data-lazy-srcset="" data-srcset="@Model[0].Img?w=500&amp;ssl=1 500w, @Model[0].Img?resize=301%2C400&amp;ssl=1 301w" data-lazy-sizes="(max-width: 301px) 100vw, 301px" data-lazy-src="@Model[0].Img?fit=301%2C400&amp;ssl=1&amp;is-pending-load=1" srcset="@Model[0].Img">
+                                <div class="shade"></div>
+                            </div>
+                        </div>
+                        <div class="box-text text-left is-small" style="background-color:rgba(24, 24, 24, 0.34);">
+                            <div class="box-text-inner blog-post-inner">
+
+
+                                <h5 class="post-title is-larger uppercase">@Model[0].Title</h5>
+                                <div class="is-divider"></div>
+                                <p class="from_the_blog_excerpt ">@Model[0].Summary</p>
+                                <p class="from_the_blog_comments uppercase is-xsmall">
+                                    1 Comment
+                                </p>
+
+                                <button asp-controller="News" asp-route-Title="@Model[0].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[0].Id" class="button  is-outline is-small mb-0">
+                                    @Localizer["Xem thêm"]
+                                </button>
+                            </div>
+                        </div>
+                        <div class="badge absolute top post-date badge-circle-inside">
+                            <div class="badge-inner">
+                                <span class="post-date-day">@Model[0].DateCreator.ToString("dd")</span><br>
+                                <span class="post-date-month is-xsmall">@Localizer["Tháng"] @Model[0].DateCreator.ToString("MM")</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        }
+
+        @if (Model.Count > 1)
+        {
+        <div class="col post-item grid-col grid-col-1 large-3 medium-6" style="position: absolute; left: 540px; top: 0px;">
+            <div class="col-inner">
+                <a asp-controller="News" asp-action="Details" asp-route-Title="@Model[1].Title.RemoveSign4VietnameseString()" asp-route-Id="@Model[1].Id" class="plain">
+                    <div class="box box-shade dark box-text-bottom box-blog-post has-hover">
+                        <div class="box-image">
+                            <div class="image-cover" style="padding-top:56%;">
+                                <img width="585" height="359" src="@Model[1].Img" data-src="@Model[1].Img?fit=585%2C359&amp;ssl=1" class="lazy-load attachment-medium size-medium wp-post-image jetpack-lazy-image" alt="@Model[1].Title" loading="lazy" data-lazy-src="@Model[1].Img?fit=585%2C359&amp;ssl=1&amp;is-pending-load=1" srcset="" data-srcset="@Model[1].Img">
+                                <div class="shade"></div>
+                            </div>
+                        </div>
+                        <div class="box-text text-left is-small" style="background-color:rgba(24, 24, 24, 0.34);">
+                            <div class="box-text-inner blog-post-inner">
+
+
+                                <h5 class="post-title is-larger uppercase">@Model[1].Title</h5>
+                                <div class="is-divider"></div>
+                                <p class="from_the_blog_excerpt ">@Model[1].Summary</p>
+
+                                <button asp-controller="News" asp-route-Title="@Model[1].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[1].Id" class="button  is-outline is-small mb-0">
+                                    @Localizer["Xem thêm"]
+                                </button>
+
+
+                            </div>
+                        </div>
+                        <div class="badge absolute top post-date badge-circle-inside">
+                            <div class="badge-inner">
+                                <span class="post-date-day">@Model[1].DateCreator.ToString("dd")</span><br>
+                                <span class="post-date-month is-xsmall">@Localizer["Tháng"] @Model[1].DateCreator.ToString("MM")</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        }
+
+        @if (Model.Count > 2)
+        {
+        <div class="col post-item grid-col grid-col-1-2 large-3 medium-6" style="position: absolute; left: 810px; top: 0px;">
+            <div class="col-inner">
+                <a asp-controller="News" asp-route-Title="@Model[2].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[2].Id" class="plain">
+                    <div class="box box-shade dark box-text-bottom box-blog-post has-hover">
+                        <div class="box-image">
+                            <div class="image-cover" style="padding-top:56%;">
+                                <img width="280" height="280" src="@Model[2].Img" data-src="@Model[2].Img?resize=280%2C280&amp;ssl=1" class="lazy-load attachment-thumbnail size-thumbnail wp-post-image jetpack-lazy-image" alt="@Model[2].Title" loading="lazy" data-lazy-srcset="" data-srcset="@Model[2].Img?resize=280%2C280&amp;ssl=1 280w, @Model[2].Img?resize=300%2C300&amp;ssl=1 300w, @Model[2].Img?resize=100%2C100&amp;ssl=1 100w" data-lazy-sizes="(max-width: 280px) 100vw, 280px" data-lazy-src="@Model[2].Img?resize=280%2C280&amp;ssl=1&amp;is-pending-load=1" srcset="@Model[2].Img">
+                                <div class="shade"></div>
+                            </div>
+                        </div>
+                        <div class="box-text text-left is-small" style="background-color:rgba(24, 24, 24, 0.34);">
+                            <div class="box-text-inner blog-post-inner">
+
+
+                                <h5 class="post-title is-larger uppercase">@Model[2].Title</h5>
+                                <div class="is-divider"></div>
+
+                                <button asp-controller="News" asp-route-Title="@Model[2].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[2].Id" class="button  is-outline is-small mb-0">
+                                    @Localizer["Xem thêm"]
+                                </button>
+
+
+                            </div>
+                        </div>
+                        <div class="badge absolute top post-date badge-circle-inside">
+                            <div class="badge-inner">
+                                <span class="post-date-day">@Model[2].DateCreator.ToString("dd")</span><br>
+                                <span class="post-date-month is-xsmall">@Localizer["Tháng"] @Model[2].DateCreator.ToString("MM")</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        }
+
+        @if (Model.Count > 3)
+        {
+        <div class="col post-item grid-col grid-col-1-2 large-3 medium-6" style="position: absolute; left: 810px; top: 250px;">
+            <div class="col-inner">
+                <a asp-controller="News" asp-route-Title="@Model[3].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[3].Id" class="plain">
+                    <div class="box box-shade dark box-text-bottom box-blog-post has-hover">
+                        <div class="box-image">
+                            <div class="image-cover" style="padding-top:56%;">
+                                <img width="280" height="280" src="@Model[3].Img" data-src="@Model[3].Img?resize=280%2C280&amp;ssl=1" class="lazy-load attachment-thumbnail size-thumbnail wp-post-image jetpack-lazy-image" alt="@Model[3].Title" loading="lazy" data-lazy-srcset="" data-srcset="@Model[3].Img?w=700&amp;ssl=1 700w, @Model[3].Img?resize=300%2C300&amp;ssl=1 300w, @Model[3].Img?resize=100%2C100&amp;ssl=1 100w, @Model[3].Img?resize=400%2C400&amp;ssl=1 400w, @Model[3].Img?resize=280%2C280&amp;ssl=1 280w, @Model[3].Img?resize=600%2C600&amp;ssl=1 600w" data-lazy-sizes="(max-width: 280px) 100vw, 280px" data-lazy-src="@Model[3].Img?resize=280%2C280&amp;ssl=1&amp;is-pending-load=1" srcset="@Model[3].Img">
+                                <div class="shade"></div>
+                            </div>
+                        </div>
+                        <div class="box-text text-left is-small" style="background-color:rgba(24, 24, 24, 0.34);">
+                            <div class="box-text-inner blog-post-inner">
+
+
+                                <h5 class="post-title is-larger uppercase">@Model[3].Title</h5>
+                                <div class="is-divider"></div>
+                                <p class="from_the_blog_comments uppercase is-xsmall">
+                                    2 Comments
+                                </p>
+
+                                <button asp-controller="News" asp-route-Title="@Model[3].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[3].Id" class="button  is-outline is-small mb-0">
+                                    @Localizer["Xem thêm"]
+                                </button>
+
+
+                            </div>
+                        </div>
+                        <div class="badge absolute top post-date badge-circle-inside">
+                            <div class="badge-inner">
+                                <span class="post-date-day">@Model[3].DateCreator.ToString("dd")</span><br>
+                                <span class="post-date-month is-xsmall">@Localizer["Tháng"] @Model[3].DateCreator.ToString("MM")</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        }
+
+    </div>*@

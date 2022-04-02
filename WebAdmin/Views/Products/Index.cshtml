@@ -12,12 +12,24 @@
 
 <p>
     <a asp-action="Create">@Localizer["Thêm mới"]</a>
-</p>@if (Model.Count > 0)
+
+    <form method="get">
+        <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+        <br />
+        <label for="IsCategory">
+            <input value="true" data-val="true" type="checkbox" id="IsNotCategory" name="IsNotCategory" @(bool.Parse(ViewData["IsNotCategory"].ToString()) ? "checked" : " ") /> @Localizer["Hàng hóa chưa gán nhóm?"]
+        </label>
+        <br />
+        <input type="submit" value="Search" />
+    </form>
+
+</p>
+@if (Model.Count > 0)
 {
 <div class="pagination">
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
     of @Model.PageCount   @Html.PagedListPager(Model, page =>
-Url.Action("Index", new { page = page }),
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"], IsNotCategory = ViewData["IsNotCategory"] }),
 new PagedListRenderOptions
 {
 LiElementClasses = new string[] { "page-item" },
@@ -34,7 +46,7 @@ PageClasses = new string[] { "page-link" }
                                 @Html.DisplayNameFor(model => model[0].Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model[0].Categories)
+                                @Html.DisplayNameFor(model => model[0].CategoryMain)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model[0].CategoryReference)
@@ -131,13 +143,14 @@ PageClasses = new string[] { "page-link" }
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Categories.Name)
+                @Html.DisplayFor(modelItem => item.MainCategories.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryReference)
+                @Html.DisplayFor(modelItem => item.ReferCategories.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Img)
+                @*@Html.DisplayFor(modelItem => item.Img)*@
+                <img id="ShowImg" height="100" src="@item.Img" />
             </td>
             @*<td>
                     @Html.DisplayFor(modelItem => item.ImgSlide1)
@@ -224,7 +237,7 @@ PageClasses = new string[] { "page-link" }
                 </table><div class="pagination">
                     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
                     of @Model.PageCount   @Html.PagedListPager(Model, page =>
-Url.Action("Index", new { page = page }),
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"], IsNotCategory = ViewData["IsNotCategory"] }),
 new PagedListRenderOptions
 {
 LiElementClasses = new string[] { "page-item" },

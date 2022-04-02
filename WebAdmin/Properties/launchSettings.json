@@ -32,7 +32,7 @@
         "ASPNETCORE_URLS": "https://+:443;http://+:80",
         "ASPNETCORE_HTTPS_PORT": "5002"
       },
-      "httpPort": 5005,
+      "httpPort": 6002,
       "useSSL": true,
       "sslPort": 5002
     }

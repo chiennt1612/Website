@@ -1,0 +1,36 @@
+﻿@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model BaseEntityList<Article>
+
+@foreach (var article in Model.list)
+{
+    <article class="top-items borbot-e0-doted pb15 mb15 clearfix">
+        <figure class="pic lh0 w240 h157 relative fl">
+            <a class="w-full" asp-action="Index" asp-controller="Details" asp-route-Id="@article.Id" title="@article.Title">
+                <img alt="@article.Title" class="lazy"
+                     data-src="@article.Img" src="@article.Img">
+            </a>
+        </figure>
+        <header class="pl255 mb5">
+            <h3 class="font16 bold lh-1-3">
+                <a asp-action="Index" asp-controller="Details" asp-route-Id="@article.Id" title="@article.Title">
+                    @article.Title
+                </a>
+            </h3>
+        </header>
+        <footer class="pl255 mb5 gray-91 font12">
+            <span class="time-update mr10">@article.DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+            <span class="cout-cmt red font13" data-articleId="610916">
+
+                <i class="icon-comment-6 mr2"></i>
+                <span class="c-comment">
+                    0
+                </span>
+            </span>
+        </footer>
+        <p class="pl255 gray-51 font13">@article.Summary</p>
+    </article>
+}
+
+@await Html.PartialAsync("/Views/News/_PartialPageRender.cshtml", new WebClient.Models.Home.SearchInput() { Page = Model.page, TotalPage = (Model.totalRecords/ Model.pageSize), CategoryId = Model.CategoryId, TotalRow = Model.totalRecords, SearchType = "News"});

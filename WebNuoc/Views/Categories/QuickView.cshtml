@@ -1,0 +1,110 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model EntityFramework.Web.Entities.Product
+@{
+    Layout = null;
+}
+<div class="product-lightbox lightbox-content">
+    <div class="product-quick-view-container">
+        <div class="row row-collapse mb-0 product" id="product-@Model.Id">
+            <div class="product-gallery large-6 col">
+                <div class="slider slider-show-nav product-gallery-slider main-images mb-0 flickity-enabled is-draggable" tabindex="0">
+                    <div class="slide first is-selected" aria-selected="true" style="position: absolute; left: 200%;">
+                        <img width="700" height="700"
+                             src="@Model.Img"
+                             class="attachment-woocommerce_single size-woocommerce_single wp-post-image"
+                             alt="" loading="lazy" title="V46MAU000015(1)"
+                             srcset="@Model.Img?w=2160&amp;ssl=1 2160w, @Model.Img?resize=400%2C400&amp;ssl=1 400w, @Model.Img?resize=800%2C800&amp;ssl=1 800w, @Model.Img?resize=280%2C280&amp;ssl=1 280w, @Model.Img?resize=768%2C768&amp;ssl=1 768w, @Model.Img?resize=1536%2C1536&amp;ssl=1 1536w, @Model.Img?resize=2048%2C2048&amp;ssl=1 2048w, @Model.Img?resize=300%2C300&amp;ssl=1 300w, @Model.Img?resize=700%2C700&amp;ssl=1 700w, @Model.Img?resize=100%2C100&amp;ssl=1 100w"
+                             sizes="(max-width: 700px) 100vw, 700px">
+                    </div>
+                    @if (!String.IsNullOrEmpty(Model.ImgSlide1))
+                    {
+                        <div class="slide" aria-selected="false" style="position: absolute; left: 100%;">
+                            <img width="700" height="700"
+                                 src="@Model.ImgSlide1"
+                                 class="attachment-woocommerce_single size-woocommerce_single"
+                                 alt="" loading="lazy"
+                                 srcset="@Model.ImgSlide1?w=2160&amp;ssl=1 2160w, @Model.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @Model.ImgSlide1?resize=800%2C800&amp;ssl=1 800w, @Model.ImgSlide1?resize=280%2C280&amp;ssl=1 280w, @Model.ImgSlide1?resize=768%2C768&amp;ssl=1 768w, @Model.ImgSlide1?resize=1536%2C1536&amp;ssl=1 1536w, @Model.ImgSlide1?resize=2048%2C2048&amp;ssl=1 2048w, @Model.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @Model.ImgSlide1?resize=700%2C700&amp;ssl=1 700w, @Model.ImgSlide1?resize=100%2C100&amp;ssl=1 100w"
+                                 sizes="(max-width: 700px) 100vw, 700px">
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.ImgSlide2))
+                    {
+                        <div class="slide" aria-selected="false" style="position: absolute; left: 100%;">
+                            <img width="700" height="700"
+                                 src="@Model.ImgSlide2"
+                                 class="attachment-woocommerce_single size-woocommerce_single"
+                                 alt="" loading="lazy"
+                                 srcset="@Model.ImgSlide2?w=2160&amp;ssl=1 2160w, @Model.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @Model.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @Model.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @Model.ImgSlide2?resize=768%2C768&amp;ssl=1 768w, @Model.ImgSlide2?resize=1536%2C1536&amp;ssl=1 1536w, @Model.ImgSlide2?resize=2048%2C2048&amp;ssl=1 2048w, @Model.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @Model.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @Model.ImgSlide2?resize=100%2C100&amp;ssl=1 100w"
+                                 sizes="(max-width: 700px) 100vw, 700px">
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.ImgSlide3))
+                    {
+                        <div class="slide" aria-selected="false" style="position: absolute; left: 100%;">
+                            <img width="700" height="700"
+                                 src="@Model.ImgSlide3"
+                                 class="attachment-woocommerce_single size-woocommerce_single"
+                                 alt="" loading="lazy"
+                                 srcset="@Model.ImgSlide3?w=2160&amp;ssl=1 2160w, @Model.ImgSlide3?resize=400%2C400&amp;ssl=1 400w, @Model.ImgSlide3?resize=800%2C800&amp;ssl=1 800w, @Model.ImgSlide3?resize=280%2C280&amp;ssl=1 280w, @Model.ImgSlide3?resize=768%2C768&amp;ssl=1 768w, @Model.ImgSlide3?resize=1536%2C1536&amp;ssl=1 1536w, @Model.ImgSlide3?resize=2048%2C2048&amp;ssl=1 2048w, @Model.ImgSlide3?resize=300%2C300&amp;ssl=1 300w, @Model.ImgSlide3?resize=700%2C700&amp;ssl=1 700w, @Model.ImgSlide3?resize=100%2C100&amp;ssl=1 100w"
+                                 sizes="(max-width: 700px) 100vw, 700px">
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.ImgSlide4))
+                    {
+                        <div class="slide" aria-selected="false" style="position: absolute; left: 100%;">
+                            <img width="700" height="700"
+                                 src="@Model.ImgSlide4"
+                                 class="attachment-woocommerce_single size-woocommerce_single"
+                                 alt="" loading="lazy"
+                                 srcset="@Model.ImgSlide4?w=2160&amp;ssl=1 2160w, @Model.ImgSlide4?resize=400%2C400&amp;ssl=1 400w, @Model.ImgSlide4?resize=800%2C800&amp;ssl=1 800w, @Model.ImgSlide4?resize=280%2C280&amp;ssl=1 280w, @Model.ImgSlide4?resize=768%2C768&amp;ssl=1 768w, @Model.ImgSlide4?resize=1536%2C1536&amp;ssl=1 1536w, @Model.ImgSlide4?resize=2048%2C2048&amp;ssl=1 2048w, @Model.ImgSlide4?resize=300%2C300&amp;ssl=1 300w, @Model.ImgSlide4?resize=700%2C700&amp;ssl=1 700w, @Model.ImgSlide4?resize=100%2C100&amp;ssl=1 100w"
+                                 sizes="(max-width: 700px) 100vw, 700px">
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.ImgSlide5))
+                    {
+                        <div class="slide" aria-selected="false" style="position: absolute; left: 100%;">
+                            <img width="700" height="700"
+                                 src="@Model.ImgSlide5"
+                                 class="attachment-woocommerce_single size-woocommerce_single"
+                                 alt="" loading="lazy"
+                                 srcset="@Model.ImgSlide5?w=2160&amp;ssl=1 2160w, @Model.ImgSlide5?resize=400%2C400&amp;ssl=1 400w, @Model.ImgSlide5?resize=800%2C800&amp;ssl=1 800w, @Model.ImgSlide5?resize=280%2C280&amp;ssl=1 280w, @Model.ImgSlide5?resize=768%2C768&amp;ssl=1 768w, @Model.ImgSlide5?resize=1536%2C1536&amp;ssl=1 1536w, @Model.ImgSlide5?resize=2048%2C2048&amp;ssl=1 2048w, @Model.ImgSlide5?resize=300%2C300&amp;ssl=1 300w, @Model.ImgSlide5?resize=700%2C700&amp;ssl=1 700w, @Model.ImgSlide5?resize=100%2C100&amp;ssl=1 100w"
+                                 sizes="(max-width: 700px) 100vw, 700px">
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="product-info summary large-6 col entry-summary" style="font-size:90%;">
+                <div class="product-lightbox-inner" style="padding: 30px;">
+                    <a class="plain" asp-action="Details" asp-controller="Categories" asp-route-Id="@Model.Id">
+                        <h1>@Model.Name @Model.Code</h1>
+                    </a>
+                    <div class="is-divider small"></div>
+                    <div class="price-wrapper">
+                        <p class="price product-page-price ">
+                            <span class="woocommerce-Price-amount amount"><bdi>@((Model.Price - Model.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span>
+                        </p>
+                    </div>
+                    <form class="cart" action="" method="post" enctype="multipart/form-data">
+                        <div class="quantity buttons_added form-flat">
+                            <input type="button" value="-" class="minus button is-form">
+                            <label class="screen-reader-text" for="quantity_6097fde7ab08f">@Model.Name @Model.Code @Localizer["số lượng"]</label>
+                            <input type="number" id="quantity_6097fde7ab08f" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="SL" size="4" placeholder="" inputmode="numeric">
+                            <input type="button" value="+" class="plus button is-form">
+                        </div>
+                        <button type="submit" name="add-to-cart" value="@Model.Id" class="single_add_to_cart_button button alt">@Localizer["Thêm vào giỏ hàng"]</button>
+                    </form>
+                    <div class="product_meta">
+                        <span class="posted_in">@Localizer["Danh mục:"] <a href="/Categories" rel="tag">@Localizer["Khác"]</a>, <a href="/Categories/@Model.MainCategories.Id" rel="tag">@Model.MainCategories.Name</a> <br>@Model.Description</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

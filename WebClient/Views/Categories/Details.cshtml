@@ -1,0 +1,890 @@
+﻿@using Paygate.OnePay
+@using WebClient.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Category.ProductDetails
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+    IEnumerable<EntityFramework.Web.Entities.Categories> categories = (IEnumerable<EntityFramework.Web.Entities.Categories>)ViewData["CATEGORIES"];
+    var searchInput = ViewData.GetSearchInput();
+    var a = categories.Where(u => u.Id == searchInput.CategoryId).FirstOrDefault();
+    var b = categories.Where(u => u.ParentId == a.ParentId && u.Id != a.Id).ToList();
+}
+
+
+<div class="container link-lk-web">
+    <ul class="clearfix">
+        <li><a href="https://bacngoctuan.com">@Localizer["Trang chủ"]</a></li>
+        <li><a asp-controller="Categories" asp-action="Index" asp-route-Id="@Model.product.MainCategories.Id" asp-route-Page="1">@Model.product.MainCategories.Name</a></li>
+        <li><a href="/Categories/ProductHot">@Localizer["SẢN PHẨM NỔI BẬT"]</a></li>
+        <li><a href="/Categories/ProductNew">@Localizer["SALE SỐC"]</a></li>
+        @if (@Model.product.CategoryReference.HasValue)
+        {
+            <li><a asp-controller="Categories" asp-action="Index" asp-route-Id="@Model.product.ReferCategories.Id" asp-route-Page="1">@Model.product.ReferCategories.Name</a></li>
+        }
+    </ul>
+</div>
+
+<div class="bst-content container" itemscope itemtype="http://schema.org/Product">
+    <div class="gt-left col-md-7">
+        <h1 class="gt-title title" itemprop="name">@Model.product.Name @Model.product.Code</h1>
+        <div class="show-picture">
+            <div class="big-pic col-md-10 pull-right nopadding">
+                @if (Model.product.IsHot || Model.product.IsNews)
+                {
+                    <div class="frame-item-ns"><div class="frame-item-new">new</div></div>
+                }
+                <a class="MagicZoom" id="Zoomer" rel="selectors-effect-speed: 600" href="@Model.product.Img" title="@Model.product.Name @Model.product.Code">
+                    <img itemprop="image" src="@Model.product.Img" title="@Model.product.Name @Model.product.Code" alt="@Model.product.Name @Model.product.Code" class="img-responsive" />
+                </a>
+            </div>
+            <div class="small-pic col-md-2">
+                <div class="row">
+                    <span class="col-md-12 col-xs-3 nopadding">
+                        <a id="afisrt" href="@Model.product.Img" title="" rel="zoom-id:Zoomer;" rev="@Model.product.Img">
+                            <img src="@Model.product.Img" data-img="@Model.product.Img" alt="@Model.product.Name @Model.product.Code-1" class="img-responsive" />
+                        </a>
+                    </span>
+
+                    <span class="col-md-12 col-xs-3 nopadding">
+                        <a href="@Model.product.ImgSlide1" title="" rel="zoom-id:Zoomer;" rev="@Model.product.ImgSlide1">
+                            <img src="@Model.product.ImgSlide1" data-img="@Model.product.ImgSlide1" alt="@Model.product.Name @Model.product.Code-2" class="img-responsive" />
+                        </a>
+                    </span>
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide2))
+                    {
+                        <span class="col-md-12 col-xs-3 nopadding">
+                            <a href="@Model.product.ImgSlide2" title="" rel="zoom-id:Zoomer;" rev="@Model.product.ImgSlide2">
+                                <img src="@Model.product.ImgSlide2" data-img="@Model.product.ImgSlide2" alt="@Model.product.Name @Model.product.Code-3" class="img-responsive" />
+                            </a>
+                        </span>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide3))
+                    {
+                        <span class="col-md-12 col-xs-3 nopadding">
+                            <a href="@Model.product.ImgSlide3" title="" rel="zoom-id:Zoomer;" rev="@Model.product.ImgSlide3">
+                                <img src="@Model.product.ImgSlide3" data-img="@Model.product.ImgSlide3" alt="@Model.product.Name @Model.product.Code-3" class="img-responsive" />
+                            </a>
+                        </span>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide4))
+                    {
+                        <span class="col-md-12 col-xs-3 nopadding">
+                            <a href="@Model.product.ImgSlide4" title="" rel="zoom-id:Zoomer;" rev="@Model.product.ImgSlide4">
+                                <img src="@Model.product.ImgSlide4" data-img="@Model.product.ImgSlide4" alt="@Model.product.Name @Model.product.Code-3" class="img-responsive" />
+                            </a>
+                        </span>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide5))
+                    {
+                        <span class="col-md-12 col-xs-3 nopadding">
+                            <a href="@Model.product.ImgSlide5" title="" rel="zoom-id:Zoomer;" rev="@Model.product.ImgSlide5">
+                                <img src="@Model.product.ImgSlide5" data-img="@Model.product.ImgSlide5" alt="@Model.product.Name @Model.product.Code-3" class="img-responsive" />
+                            </a>
+                        </span>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-xs-12 hidden-md hidden-lg" style="padding: 0 !important;">
+            <div class="price-sp clearfix" style="padding: 10px 0;">
+                <div style="clear:both"></div>
+                <div class="price-l">
+                    <div style="clear:both"></div>
+                    @Localizer["Giá bán"]: <u class="price-new" style="font-size: 18px; ">@((Model.product.Price - Model.product.Discount).ToString().FormatNumber())<sup>đ</sup></u>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+
+            <div class="addto clearfix">
+                <a href="javascript:void(0)" class="minius-btn mipl">-</a>
+                <form id="AddCart" asp-controller="Order" asp-action="Add" asp-route-Id="@Model.product.Id">
+                    <input style="width:40px" id="qty-mobile" name="quantity" type="text" value="1" />
+                </form>
+                <a href="javascript:void(0)" class="plus-btn mipl">+</a>
+                <a class="addtocart" href="javascript:document.forms['AddCart'].submit();">@Localizer["MUA HÀNG"]</a>
+                @*<a class="addtocart" href="javascript:document.forms['AddCart'].submit();">BUY</a>*@
+                <div id="checkMesCart"></div>
+                <div class="clearfix"></div>
+                <a class="addtowish" href="#">@Localizer["thêm vào danh sách ưa thích"]</a>
+                <a class="addtowish_unlike" href="#" style="display: none;">@Localizer["Bỏ thích"]</a>
+                <span id="user_like_1" style="color:#f00; line-height: 20px; padding-left: 30px;"></span>
+                <div class="mxh" style="margin-bottom: 20px;">
+                    <p>FOLLOW BACNGOCTUAN.COM</p>
+                    <!-- AddThis Button BEGIN -->
+                    <div class="addthis_toolbox addthis_default_style">
+                        <a class="addthis_button_facebook_like" fb:like:layout="button_count" style="float: left; width: 85px; "></a>
+                        <a class="addthis_button_google_plusone" g:plusone:size="medium" style="float: left;"></a>
+                        <a class="addthis_counter addthis_pill_style" style="margin-left: -30px;" style="float: left;"></a>
+                    </div>
+
+                    <!-- AddThis Button END -->
+                </div>
+            </div>
+
+            <div class="product-specs">
+                <p class="title">@Localizer["Thông Tin Sản Phẩm"]</p>
+                <!--Sua-->
+                <!--EndS-->
+                <table>
+                    <tr>
+                        <td class="sku">
+                            <span style="color:red">* </span>@Localizer["Mã Sản Phẩm"]:
+                        </td>
+                        <td>
+                            <strong itemprop="sku">@Model.product.Code</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sku">
+                            <span style="color:red">* </span>@Localizer["Kho hàng"]:
+                        </td>
+                        @if (@Model.product.Quota > 0)
+                        {
+                            <td>
+                                @Localizer["Còn hàng"]
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Localizer["Hết hàng"]
+                            </td>
+                        }
+
+                    </tr>
+                    <tr>
+                        <td class="sku">
+                            <span style="color:red">* </span> @Localizer["Bảo Hành"]:
+                        </td>
+                        <td>
+                            @Localizer["Bảo hành vĩnh viễn"]
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sku">
+                            <span style="color:red">* </span> @Localizer["Khuyến mại"]:
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sku">
+                            <span style="color:red">* </span> @Localizer["Vận chuyển"]:
+                        </td>
+                        <td>
+                            @Localizer["Miễn phí vận chuyển với đơn trên"] @((Model.paramSetting.Where(u => u.ParamKey == "SHIPFREE" && u.Language == "all")).FirstOrDefault().ParamValue.FormatNumber()) đ<br />
+                            <span style="color:red; font-weight:800">(@Localizer["Không áp dụng với sản phẩm trong chương trình giảm giá"])</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sku">
+                            <span style="color:red">* </span> @Localizer["Giá"]:
+                        </td>
+                        <td>
+                            @Localizer["Đã bao gồm VAT"]
+                        </td>
+                    </tr>
+                </table>
+                <div><a href="#descprod" style="color:#3E00EB; text-align: left; display: block;" id="descClick">@Localizer["Xem thêm"]</a></div>
+            </div>
+            <div class="hotline">
+                <p class="title">@Localizer["Tư vấn khách hàng"]</p>
+                <p class="title">@Localizer["hotline"]: <span class="red"> @((Model.paramSetting.Where(u => u.ParamKey == "HOTLINE" && u.Language == "all")).FirstOrDefault().ParamValue)</span></p>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="text-content text-justify col-md-12 format-html">
+                <div class=" " id="descprod">
+                    <p><h2 class="chitietsp"> @Localizer["CHI TIẾT SẢN PHẨM"] </h2></p>
+                </div>
+                @Html.Raw(Model.product.Description)
+            </div>
+            <div class="text-content text-justify col-md-12 format-html">
+                <div class="">
+                    <p><h2 class="chitietsp"> @Localizer["MÔ TẢ SẢN PHẨM"]</h2> </p>
+                </div>
+                <div class="format-html">
+                    <p>
+                        <strong>@Model.product.Name @Model.product.Code</strong>
+                        @Localizer["chế tác từ chất liệu Bạc cao cấp 925 theo tiêu chuẩn quốc tế, nhập khẩu nguyên chiếc từ Thái Lan và được phân phối bởi thương hiệu Trang Sức Bạc Ngọc Tuấn uy tín"].
+                    </p>
+                    <p>
+                        @Localizer["Sản phẩm được Trang Sức Bạc Ngọc Tuấn bảo hành vĩnh viễn về độ sáng bóng và freeship toàn quốc. Ngoài ra, Qúy khách có thể tham khảo thêm một số mẫu khác tại danh mục:"]
+                        @if (b.Count() > 1)
+                        {
+                            for (var j = 0; j < b.Count() - 1; j++)
+                            {
+                                <a asp-controller="Categories" asp-action="Index" asp-route-Id="@b[j].Id">
+                                    @b[j].Name ,&nbsp;
+                                </a>
+                            }
+                            <a asp-controller="Categories" asp-action="Index" asp-route-Id="@b[b.Count() - 1].Id">
+                                @b[b.Count() - 1].Name
+                            </a>
+                        }
+                        else if (b.Count() == 1)
+                        {
+                            <a asp-controller="Categories" asp-action="Index" asp-route-Id="@b[0].Id">
+                                @b[0].Name
+                            </a>
+                        }
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        @*<div class="letters-related">
+                Tags:
+                <ul>
+                    <li><a href="/tag/123">123</a></li>
+                </ul>
+            </div>*@
+    </div>
+    <div class="gt-right col-md-5">
+        @if (Model.product.Discount > 0)
+        {
+            <div class="price-sp clearfix hidden-xs hidden-sm" style="position: relative;">
+                <!--Giảm % giá niêm yết-->
+                <span style="color:#fff" class="price-off">-@((Model.product.Discount * 100 / Model.product.Price).ToString().FormatNumber())<sup>%</sup></span>
+                <div style="clear:both"></div>
+                <div class="price-l">
+                    <s class="price-old">@Localizer["Giá niêm yết"]: @Model.product.Price.ToString().FormatNumber()</s><u><sup>đ</sup></u>
+                    <div style="clear:both"></div>
+                    @Localizer["Giá bán"]: <u class="price-new" style="font-size: 18px; ">@((Model.product.Price - Model.product.Discount).ToString().FormatNumber())<sup>đ</sup></u>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        }
+        else
+        {
+            <div class="price-sp clearfix" style="padding: 10px 0;">
+                <div style="clear:both"></div>
+                <div class="price-l">
+                    <div style="clear:both"></div>
+                    @Localizer["Giá bán"]: <u class="price-new" style="font-size: 18px; ">@((Model.product.Price - Model.product.Discount).ToString().FormatNumber())<sup>đ</sup></u>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        }
+
+        <div class="addto clearfix hidden-xs hidden-sm">
+            <a href="javascript:void(0)" class="minius-btn mipl">-</a>
+            <form id="AddCart1" asp-controller="Order" asp-action="Add" asp-route-Id="@Model.product.Id">
+                <input style="width:40px" id="qty" name="quantity" type="text" value="1" />
+            </form>
+            <a href="javascript:void(0)" class="plus-btn mipl">+</a>
+            <a class="addtocart" href="javascript:document.forms['AddCart1'].submit();">@Localizer["MUA HÀNG"]</a>
+            <div id="checkMesCart"></div>
+            <div class="clearfix"></div>
+            <a class="addtowish" href="#">@Localizer["thêm vào danh sách ưa thích"]</a>
+            <a class="addtowish_unlike" style="display: none;">@Localizer["Bỏ thích"]</a>
+            <span id="user_like" style="color:#f00; line-height: 20px; padding-left: 30px;"></span>
+        </div>
+
+        <div class="product-specs hidden-xs hidden-sm">
+
+            <!--start-->
+            <table>
+                <tr>
+                    <td class="sku">
+                        <span style="color:red">* </span> @Localizer["Mã s.phẩm"]:
+                    </td>
+                    <td>
+                        @Model.product.Code
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sku">
+                        <span style="color:red">* </span> @Localizer["Kho hàng"]:
+                    </td>
+                    @if (Model.product.Quota > 0)
+                    {
+                        <td>
+                            @Localizer["Còn hàng"]
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Localizer["Hết hàng"]
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td class="sku">
+                        <span style="color:red">* </span> @Localizer["Bảo Hành"]:
+                    </td>
+                    <td>
+                        @Model.product.Summary
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sku">
+                        <span style="color:red">* </span> @Localizer["Khuyến mại"]:
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sku">
+                        <span style="color:red">* </span> @Localizer["Vận chuyển"]:
+                    </td>
+                    <td>
+                        @Localizer["Miễn phí vận chuyển với đơn trên"] @((Model.paramSetting.Where(u => u.ParamKey == "SHIPFREE" && u.Language == "all")).FirstOrDefault().ParamValue.FormatNumber()) đ<br />
+                        <span style="color:red; font-weight:800">(@Localizer["Không áp dụng với sản phẩm trong chương trình giảm giá"])</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sku">
+                        <span style="color:red">* </span> @Localizer["Giá"]:
+                    </td>
+                    <td>
+                        @Localizer["Đã bao gồm VAT"]
+                    </td>
+                </tr>
+            </table>
+            <!-- End -->
+            <div><a href="#descprod" style="color:#3E00EB; text-align: left; display: block;" id="descClick">@Localizer["Xem thêm"]</a></div>
+
+        </div>
+        <div class="hotline hidden-xs hidden-sm">
+            <p class="title">@Localizer["Tư vấn khách hàng"]</p>
+            <p class="title">@Localizer["Hotline"]: <span class="red"><b> @((Model.paramSetting.Where(u => u.ParamKey == "HOTLINE" && u.Language == "all")).FirstOrDefault().ParamValue)</b></span></p>
+        </div>
+        <div class="mxh hidden-xs hidden-sm" style="margin-bottom: 20px;">
+            <p>FOLLOW BACNGOCTUAN.COM</p>
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style">
+                <a class="addthis_button_facebook_like" fb:like:layout="button_count" style="float: left; width: 85px; "></a>
+                <!--<a class="addthis_button_google_plusone" g:plusone:size="medium" style="float: left;"></a>
+            <a class="addthis_counter addthis_pill_style" style="margin-left: -30px;" style="float: left;"></a> -->
+            </div>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-529449f45eebfdff"></script>
+            <!-- AddThis Button END -->
+        </div>
+
+        <div class="clearfix"></div>
+        <!--Form gui y kien danh gia san pham-->
+        <!--<div class="wrap-end" id="boxcomment">
+
+        <p>@Localizer["Có"] <span class="commentCount">0</span> @Localizer["bình luận"]</p>
+        <div id="comment" class="wrapcomment">
+
+            <p><a href="javascript:void(0)" data-toggle="modal" data-target="#frm-login-register"><span style="color: blue">Đăng ký/Đăng nhập</span> </a>để viết đánh giá hoặc gửi liên hệ <a href="/lien-he" style="color:blue">TẠI ĐÂY!</a></p>
+
+        </div>-->
+        <!--comment-->
+        <!--<style>
+            .jHtmlArea, .ToolBar {
+                width: 100% !important;
+            }
+        </style>
+        <div class="infocomment">
+        </div>
+    </div>-->
+        <!-- end comment -->
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="product-relate">
+            <p class="title chitietsp splq"><b>@Localizer["SẢN PHẨM LIÊN QUAN"]</b></p>
+            <ul id="flexisel" class="owl-carousel" style="padding-left:0;">
+                @foreach (var item in Model.productRelated)
+                {
+                    <li class="item">
+                        <div class="frame-item text-center" onclick="window.location = '/@item.Name.RemoveSign4VietnameseString()-@item.Code'">
+                            <div class="frame-item-ns">
+                            </div>
+                            <img src="@item.Img" alt="@item.Name @item.Code" />
+                            <div class="frame-item-name">
+                                <p class="name-product">@item.Name @item.Code</p>
+                                @if (item.Discount > 0)
+                                {
+                                    <p class="price">
+                                        <s class="price-old">@item.Price.ToString().FormatNumber()</s><u><sup>đ</sup></u>
+                                        <u class="price-new">@Localizer["Giá bán"]: @((item.Price - item.Discount).ToString().FormatNumber())<sup>đ</sup></u>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="price">
+                                        <u class="price-new">@Localizer["Giá bán"]: @((item.Price ).ToString().FormatNumber())<sup>đ</sup></u>
+                                    </p>
+                                }
+                            </div>
+
+                            <div class="addtocart-wrapper">
+                                <form id="AddCart" asp-controller="Order" asp-action="Add" asp-route-Id="@item.Id">
+                                    <input type="hidden" name="quantity" value="1">
+                                </form>
+                                <a class="addtocart" href="javascript:document.forms['AddCart'].submit();">@Localizer["MUA HÀNG"]</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            <style>
+                .product-relate ul li img {
+                    width: 100%;
+                }
+            </style>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/template/default/script/magiczoom.js"></script>
+<link rel="stylesheet" href="/template/default/script/magiczoom.css" />
+<script type="text/javascript">
+    MagicZoom.options = {
+        'disable-zoom': false,
+        'selectors-change': 'click'
+    }
+</script>
+@*
+        <div class="shop-container">
+            <div class="container">
+                <div class="woocommerce-notices-wrapper"></div>
+            </div>
+            <div id="product-7221" class="product type-product post-7221 status-publish first instock product_cat-mat-bac-nu has-post-thumbnail shipping-taxable purchasable product-type-simple">
+                <div class="product-main">
+                    <div class="row content-row row-divided row-large">
+                        <div id="product-sidebar" class="col large-3 hide-for-medium shop-sidebar ">
+                            @await Component.InvokeAsync("Partial", new { _PartialName = "_MainMenuLeft" })
+                            <aside id="woocommerce_recently_viewed_products-8" class="widget woocommerce widget_recently_viewed_products">
+                                <span class="widget-title shop-sidebar">Xem gần đây</span>
+                                <div class="is-divider small"></div>
+                                <ul class="product_list_widget">
+                                    @foreach (var item in Model.productView)
+                                    {
+                                        <li>
+                                            <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@item.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Code">
+                                                @*asp-route-Id="@item.Id"
+    <img width="100" height="100" src="@item.Img?resize=100%2C100&amp;ssl=1" data-src="@item.Img?resize=100%2C100&amp;ssl=1"
+         class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active"
+         alt="" loading="eager"
+         data-srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w"
+         data-lazy-loaded="1" sizes="(max-width: 100px) 100vw, 100px"
+         srcset="@item.Img?w=700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w">
+    <span class="product-title">@item.Name @item.Code (@item.Quota)</span>
+                                        </a>
+    @if (item.Discount > 0)
+    {
+        <del>
+            <span class="woocommerce-Price-amount amount">
+                <bdi>@item.Price.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+            </span>
+        </del>
+    }
+
+    <ins>
+        <span class="woocommerce-Price-amount amount">
+            <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+        </span>
+    </ins>
+                                    </li>
+                                }
+                            </ul>
+                        </aside>
+                    </div>
+    <div class="col large-9">
+        <div class="row">
+            <div class="large-7 col">
+                <div class="product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="opacity: 1;">
+                    <div class="image-tools absolute top show-on-hover right z-3"></div>
+                    <figure class="woocommerce-product-gallery__wrapper product-gallery-slider slider slider-nav-small mb-half has-image-zoom is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{
+                                        &quot;cellAlign&quot;: &quot;center&quot;,
+                                        &quot;wrapAround&quot;: true,
+                                        &quot;autoPlay&quot;: false,
+                                        &quot;prevNextButtons&quot;:true,
+                                        &quot;adaptiveHeight&quot;: true,
+                                        &quot;imagesLoaded&quot;: true,
+                                        &quot;lazyLoad&quot;: 1,
+                                        &quot;dragThreshold&quot; : 15,
+                                        &quot;pageDots&quot;: false,
+                                        &quot;rightToLeft&quot;: false       }" tabindex="0">
+
+                        <div data-thumb="@Model.product.Img?fit=100%2C100&amp;ssl=1"
+                             class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                            <a href="@Model.product.Img?fit=2160%2C2160&amp;ssl=1">
+                                <img width="700" height="700"
+                                     src="@Model.product.Img?fit=2160%2C2160&amp;ssl=1"
+                                     class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                     title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                     data-src="@Model.product.Img?fit=2160%2C2160&amp;ssl=1"
+                                     data-large_image="@Model.product.Img?fit=2160%2C2160&amp;ssl=1"
+                                     data-large_image_width="2160" data-large_image_height="2160"
+                                     srcset="@Model.product.Img?w=2160&amp;ssl=1 2160w, @Model.product.Img?resize=400%2C400&amp;ssl=1 400w, @Model.product.Img?resize=800%2C800&amp;ssl=1 800w, @Model.product.Img?resize=280%2C280&amp;ssl=1 280w, @Model.product.Img?resize=768%2C768&amp;ssl=1 768w, @Model.product.Img?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.Img?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.Img?resize=300%2C300&amp;ssl=1 300w, @Model.product.Img?resize=700%2C700&amp;ssl=1 700w, @Model.product.Img?resize=100%2C100&amp;ssl=1 100w"
+                                     data-srcset="@Model.product.Img?w=2160&amp;ssl=1 2160w, @Model.product.Img?resize=400%2C400&amp;ssl=1 400w, @Model.product.Img?resize=800%2C800&amp;ssl=1 800w, @Model.product.Img?resize=280%2C280&amp;ssl=1 280w, @Model.product.Img?resize=768%2C768&amp;ssl=1 768w, @Model.product.Img?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.Img?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.Img?resize=300%2C300&amp;ssl=1 300w, @Model.product.Img?resize=700%2C700&amp;ssl=1 700w, @Model.product.Img?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                            </a>
+                        </div>
+
+                        @if (!String.IsNullOrEmpty(Model.product.ImgSlide1))
+                        {
+                            <div data-thumb="@Model.product.ImgSlide1?fit=100%2C100&amp;ssl=1"
+                                 class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                <a href="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1">
+                                    <img width="700" height="700"
+                                         src="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1"
+                                         class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                         title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                         data-src="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image="@Model.product.ImgSlide1?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image_width="2160" data-large_image_height="2160"
+                                         srcset="@Model.product.ImgSlide1?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide1?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide1?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide1?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide1?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide1?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide1?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide1?resize=100%2C100&amp;ssl=1 100w"
+                                         data-srcset="@Model.product.ImgSlide1?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide1?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide1?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide1?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide1?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide1?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide1?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide1?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide1?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                </a>
+                            </div>
+                        }
+
+                        @if (!String.IsNullOrEmpty(Model.product.ImgSlide2))
+                        {
+                            <div data-thumb="@Model.product.ImgSlide2?fit=100%2C100&amp;ssl=1"
+                                 class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                <a href="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1">
+                                    <img width="700" height="700"
+                                         src="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1"
+                                         class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                         title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                         data-src="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image="@Model.product.ImgSlide2?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image_width="2160" data-large_image_height="2160"
+                                         srcset="@Model.product.ImgSlide2?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide2?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide2?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide2?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide2?resize=100%2C100&amp;ssl=1 100w"
+                                         data-srcset="@Model.product.ImgSlide2?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide2?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide2?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide2?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide2?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                </a>
+                            </div>
+                        }
+
+                        @if (!String.IsNullOrEmpty(Model.product.ImgSlide3))
+                        {
+                            <div data-thumb="@Model.product.ImgSlide3?fit=100%2C100&amp;ssl=1"
+                                 class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                <a href="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1">
+                                    <img width="700" height="700"
+                                         src="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1"
+                                         class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                         title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                         data-src="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image="@Model.product.ImgSlide3?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image_width="2160" data-large_image_height="2160"
+                                         srcset="@Model.product.ImgSlide3?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide3?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide3?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide3?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide3?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide3?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide3?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide3?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide3?resize=100%2C100&amp;ssl=1 100w"
+                                         data-srcset="@Model.product.ImgSlide3?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide3?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide3?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide3?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide3?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide3?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide3?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide3?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide3?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                </a>
+                            </div>
+                        }
+
+                        @if (!String.IsNullOrEmpty(Model.product.ImgSlide4))
+                        {
+                            <div data-thumb="@Model.product.ImgSlide4?fit=100%2C100&amp;ssl=1"
+                                 class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                <a href="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1">
+                                    <img width="700" height="700"
+                                         src="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1"
+                                         class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                         title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                         data-src="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image="@Model.product.ImgSlide4?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image_width="2160" data-large_image_height="2160"
+                                         srcset="@Model.product.ImgSlide4?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide4?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide4?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide4?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide4?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide4?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide4?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide4?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide4?resize=100%2C100&amp;ssl=1 100w"
+                                         data-srcset="@Model.product.ImgSlide4?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide4?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide4?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide4?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide4?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide4?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide4?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide4?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide4?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                </a>
+                            </div>
+                        }
+
+                        @if (!String.IsNullOrEmpty(Model.product.ImgSlide5))
+                        {
+                            <div data-thumb="@Model.product.ImgSlide5?fit=100%2C100&amp;ssl=1"
+                                 class="woocommerce-product-gallery__image slide first is-selected is-ready">
+                                <a href="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1">
+                                    <img width="700" height="700"
+                                         src="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1"
+                                         class="wp-post-image skip-lazy lazy-load-active" alt="" loading="lazy"
+                                         title="@Model.product.Code (@Model.product.Quota)" data-caption=""
+                                         data-src="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image="@Model.product.ImgSlide5?fit=2160%2C2160&amp;ssl=1"
+                                         data-large_image_width="2160" data-large_image_height="2160"
+                                         srcset="@Model.product.ImgSlide5?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide5?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide5?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide5?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide5?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide5?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide5?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide5?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide5?resize=100%2C100&amp;ssl=1 100w"
+                                         data-srcset="@Model.product.ImgSlide5?w=2160&amp;ssl=1 2160w, @Model.product.ImgSlide5?resize=400%2C400&amp;ssl=1 400w, @Model.product.ImgSlide5?resize=800%2C800&amp;ssl=1 800w, @Model.product.ImgSlide5?resize=280%2C280&amp;ssl=1 280w, @Model.product.ImgSlide5?resize=768%2C768&amp;ssl=1 768w, @Model.product.ImgSlide5?resize=1536%2C1536&amp;ssl=1 1536w, @Model.product.ImgSlide5?resize=2048%2C2048&amp;ssl=1 2048w, @Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1 300w, @Model.product.ImgSlide5?resize=700%2C700&amp;ssl=1 700w, @Model.product.ImgSlide5?resize=100%2C100&amp;ssl=1 100w" sizes="(max-width: 700px) 100vw, 700px">
+                                </a>
+                            </div>
+                        }
+
+                    </figure>
+
+                    <div class="image-tools absolute bottom left z-3">
+                        <a href="#product-zoom" class="zoom-button button is-outline circle icon tooltip hide-for-small tooltipstered">
+                            <i class="icon-expand"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-thumbnails thumbnails slider-no-arrows slider row row-small row-slider slider-nav-small small-columns-4 is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{
+                                        &quot;cellAlign&quot;: &quot;left&quot;,
+                                        &quot;wrapAround&quot;: false,
+                                        &quot;autoPlay&quot;: false,
+                                        &quot;prevNextButtons&quot;: true,
+                                        &quot;asNavFor&quot;: &quot;.product-gallery-slider&quot;,
+                                        &quot;percentPosition&quot;: true,
+                                        &quot;imagesLoaded&quot;: true,
+                                        &quot;pageDots&quot;: false,
+                                        &quot;rightToLeft&quot;: false,
+                                        &quot;contain&quot;: true
+                                    }" tabindex="0">
+
+                    <div class="col first is-nav-selected is-selected">
+                        <a>
+                            <img src="@Model.product.Img?resize=300%2C300&amp;ssl=1"
+                                 alt="" width="300" height="300" class="attachment-woocommerce_thumbnail">
+                        </a>
+                    </div>
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide1))
+                    {
+                        <div class="col" aria-selected="false">
+                            <a>
+                                <img src="@Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1"
+                                     data-src="@Model.product.ImgSlide1?resize=300%2C300&amp;ssl=1"
+                                     alt="" width="300" height="300"
+                                     class="attachment-woocommerce_thumbnail lazy-load-active">
+                            </a>
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide2))
+                    {
+                        <div class="col" aria-selected="false">
+                            <a>
+                                <img src="@Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                     data-src="@Model.product.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                     alt="" width="300" height="300"
+                                     class="attachment-woocommerce_thumbnail lazy-load-active">
+                            </a>
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide3))
+                    {
+                        <div class="col" aria-selected="false">
+                            <a>
+                                <img src="@Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1"
+                                     data-src="@Model.product.ImgSlide3?resize=300%2C300&amp;ssl=1"
+                                     alt="" width="300" height="300"
+                                     class="attachment-woocommerce_thumbnail lazy-load-active">
+                            </a>
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide4))
+                    {
+                        <div class="col" aria-selected="false">
+                            <a>
+                                <img src="@Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1"
+                                     data-src="@Model.product.ImgSlide4?resize=300%2C300&amp;ssl=1"
+                                     alt="" width="300" height="300"
+                                     class="attachment-woocommerce_thumbnail lazy-load-active">
+                            </a>
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.product.ImgSlide5))
+                    {
+                        <div class="col" aria-selected="false">
+                            <a>
+                                <img src="@Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1"
+                                     data-src="@Model.product.ImgSlide5?resize=300%2C300&amp;ssl=1"
+                                     alt="" width="300" height="300"
+                                     class="attachment-woocommerce_thumbnail lazy-load-active">
+                            </a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+            <div class="product-info summary entry-summary col col-fit product-summary text-left form-flat">
+                <h1 class="product-title product_title entry-title">
+                    @Model.product.Name @Model.product.Code
+                </h1>
+
+                <div class="is-divider small"></div>
+                <div class="price-wrapper">
+                    <p class="price product-page-price ">
+                        <span class="woocommerce-Price-amount amount">
+                            <bdi>
+                                @((Model.product.Price - Model.product.Discount).ToString().FormatNumber())
+                                <span class="woocommerce-Price-currencySymbol">₫</span>
+                            </bdi>
+                        </span>
+                    </p>
+                </div>
+
+                <form id="AddCart" asp-controller="Order" asp-action="Add" asp-route-Id="@Model.product.Id">
+                    <div class="quantity buttons_added form-flat">
+                        <input type="button" value="-" class="minus button is-form">
+                        <label class="screen-reader-text" for="quantity_609805980f62d">@Model.product.Name @Model.product.Code @Localizer["số lượng"]</label>
+                        <input type="number" id="quantity_609805980f62d" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="@Localizer["số lượng"]" size="4" placeholder="@Localizer["số lượng"]" inputmode="numeric">
+                        <input type="button" value="+" class="plus button is-form">
+                    </div>
+                    <button type="button" onclick="document.forms['AddCart'].submit();" class="single_add_to_cart_button button alt">@Localizer["Thêm vào giỏ hàng"]</button>
+                </form>
+                <div style="background: #fff8d4; border-radius: 10px; padding: 5px; font-size: 15px; color: #171717; margin-bottom: 10px;">
+                    <ul>
+                        <li>@Localizer["Liên hệ hotline"] <span style="color:red; font-weight:700">@Model.paramSetting.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "HOTLINE").FirstOrDefault().ParamValue</span> @Localizer["hoặc chat"]</li>
+                        <li>
+                            @Localizer["Miễn phí vận chuyển đơn hàng từ "] @Model.paramSetting.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "SHIPFREE").FirstOrDefault().ParamValue.FormatNumber() đ
+                            <br>
+                            <i>
+                                (@Localizer["Xem chính sách"]
+                                <a href="/About/2" @*target="_blank" style="color:red">@Localizer["tại đây"]</a>)
+                            </i>
+                        </li>
+                        <li>@Localizer["Bảo hành đánh sáng miễn phí trọn đời!"]</li>
+                    </ul>
+                </div>
+                <div class="product_meta">
+                    <span class="posted_in">@Localizer["Danh mục"]: <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model.product.MainCategories.Id" rel="tag">@Model.product.MainCategories.Name</a></span>
+                </div>
+                <div class="social-icons share-icons share-row relative">
+                    <a href="whatsapp://send?text=@((Model.product.Name + Model.product.Code).UrlEncode()) - @(Context.ProductUrl(Model.product.Name, Model.product.Code))"
+                       data-action="share/whatsapp/share"
+                       class="icon button circle is-outline tooltip whatsapp show-for-medium tooltipstered">
+                        <i class="icon-whatsapp"></i>
+                    </a>
+                    <a href="//www.facebook.com/sharer.php?u=@(Context.ProductUrl(Model.product.Name, Model.product.Code))"
+                       data-label="Facebook"
+                       onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                       rel="noopener noreferrer nofollow"
+                       target="_blank" class="icon button circle is-outline tooltip facebook tooltipstered">
+                        <i class="icon-facebook"></i>
+                    </a>
+                    <a href="//twitter.com/share?url=@(Context.ProductUrl(Model.product.Name, Model.product.Code))"
+                       onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                       rel="noopener noreferrer nofollow" target="_blank"
+                       class="icon button circle is-outline tooltip twitter tooltipstered">
+                        <i class="icon-twitter"></i>
+                    </a>
+                    <a href="mailto:enteryour@addresshere.com?subject=@((Model.product.Name + Model.product.Code).UrlEncode())&amp;body=Check%20this%20out:%20@(Context.ProductUrl(Model.product.Name, Model.product.Code))"
+                       rel="nofollow"
+                       class="icon button circle is-outline tooltip email tooltipstered">
+                        <i class="icon-envelop"></i>
+                    </a>
+                    <a href="//pinterest.com/pin/create/button/?url=@(Context.ProductUrl(Model.product.Name, Model.product.Code))&amp;media=@Model.product.Img?fit=800%2C800&amp;ssl=1&amp;description=@((Model.product.Name + Model.product.Code).UrlEncode())"
+                       onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                       rel="noopener noreferrer nofollow"
+                       target="_blank" class="icon button circle is-outline tooltip pinterest tooltipstered">
+                        <i class="icon-pinterest"></i>
+                    </a>
+                    <a href="//www.linkedin.com/shareArticle?mini=true&amp;url=@(Context.ProductUrl(Model.product.Name, Model.product.Code))&amp;title=@((Model.product.Name + Model.product.Code).UrlEncode())"
+                       onclick="window.open(this.href,this.title,'width=500,height=500,top=300px,left=300px');  return false;"
+                       rel="noopener noreferrer nofollow" target="_blank" class="icon button circle is-outline tooltip linkedin tooltipstered">
+                        <i class="icon-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="product-footer">
+            <div class="product-page-accordian">
+                <div class="accordion" rel="1">
+                    <div class="accordion-item">
+                        <a class="accordion-title plain active" href="javascript:void();">
+                            <button class="toggle"><i class="icon-angle-down"></i></button>
+                            @Localizer["Chính sách bảo hành"]
+                        </a>
+                        <div class="accordion-inner" style="display: block;">
+                            @Localizer["- Bạc Ngọc Tuấn cam kết bảo hành vĩnh viễn độ sáng bóng sản phẩm cho khách hàng. Sản phẩm trong quá trình sử dụng bị đen, xỉn do tác động của môi trường hoặc cơ địa người sử dụng, khách hàng có thể mang sản phẩm và thẻ bảo hành đến bất kỳ cửa hàng, chi nhánh nào của Bạc Ngọc Tuấn để được hưởng Quy chế bảo hành độ sáng bóng vĩnh viễn."]<br>
+                            @Localizer["- Ngoài ra, các sản phẩm được hàn, nối, cắt miễn phí lần đầu. Các lần tiếp theo sẽ do nhân viên Bạc Ngọc Tuấn báo giá trước cho khách hàng trước khi tiến hành sửa chữa sản phẩm."]<br>
+                            @Localizer["- Thông tin bảo hành chính là thông tin cá nhân của Khách hàng bao gồm: Họ và tên, Số điện thoại, Địa chỉ nhà riêng, Email. Khi mang sản phẩm đến bảo hành, Khách hàng chỉ cần cung cấp các Thông tin cá nhân đã cung cấp trước đó để được bảo hành. Bạc Ngọc Tuấn chỉ cấp thẻ cứng trong trường hợp khách không cung cấp thông tin cá nhân."]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="related related-products-wrapper product-section">
+                <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+                    @Localizer["Sản phẩm tương tự"]
+                </h3>
+                <div class="row large-columns-4 medium-columns-4 small-columns-2 row-small slider row-slider slider-nav-reveal slider-nav-push is-draggable flickity-enabled slider-lazy-load-active" data-flickity-options="{&quot;imagesLoaded&quot;: true, &quot;groupCells&quot;: &quot;100%&quot;, &quot;dragThreshold&quot; : 5, &quot;cellAlign&quot;: &quot;left&quot;,&quot;wrapAround&quot;: true,&quot;prevNextButtons&quot;: true,&quot;percentPosition&quot;: true,&quot;pageDots&quot;: false, &quot;rightToLeft&quot;: false, &quot;autoPlay&quot; : false}" tabindex="0">
+                    @foreach (var item in Model.productRelated)
+                    {
+                        <div class="product-small col has-hover product type-product post-@item.Id status-publish instock product_cat-mat-bac product_cat-mat-bac-nu product_tag-mat-day-chuyen-nu has-post-thumbnail purchasable product-type-simple is-selected">
+                            <div class="col-inner">
+                                <div class="product-small box ">
+                                    <div class="box-image">
+                                        <div class="image-fade_in_back">
+                                            <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@item.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Code">
+                                                @*asp-route-Id="@item.Id"
+                                                <img width="300" height="300"
+                                                     src="@item.Img?resize=300%2C300&amp;ssl=1"
+                                                     data-src="@item.Img?resize=300%2C300&amp;ssl=1"
+                                                     class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active"
+                                                     alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager"
+                                                     data-srcset="@item.Img?w=1000&amp;ssl=1 1000w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w, @item.Img?resize=700%2C700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=800%2C800&amp;ssl=1 800w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=768%2C768&amp;ssl=1 768w"
+                                                     data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px"
+                                                     srcset="@item.Img?w=1000&amp;ssl=1 1000w, @item.Img?resize=300%2C300&amp;ssl=1 300w, @item.Img?resize=100%2C100&amp;ssl=1 100w, @item.Img?resize=700%2C700&amp;ssl=1 700w, @item.Img?resize=400%2C400&amp;ssl=1 400w, @item.Img?resize=800%2C800&amp;ssl=1 800w, @item.Img?resize=280%2C280&amp;ssl=1 280w, @item.Img?resize=768%2C768&amp;ssl=1 768w">
+                                                <img width="300" height="300"
+                                                     src="@item.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                                     data-src="@item.ImgSlide2?resize=300%2C300&amp;ssl=1"
+                                                     class="show-on-hover absolute fill hide-for-small back-image jetpack-lazy-image jetpack-lazy-image--handled lazy-load-active"
+                                                     alt="@item.Name @Localizer["mã"] @item.Code (@item.Quota)" loading="eager"
+                                                     data-srcset="@item.ImgSlide2?w=1000&amp;ssl=1 1000w, @item.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide2?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @item.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @item.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @item.ImgSlide2?resize=768%2C768&amp;ssl=1 768w"
+                                                     data-lazy-loaded="1" sizes="(max-width: 300px) 100vw, 300px"
+                                                     srcset="@item.ImgSlide2?w=1000&amp;ssl=1 1000w, @item.ImgSlide2?resize=300%2C300&amp;ssl=1 300w, @item.ImgSlide2?resize=100%2C100&amp;ssl=1 100w, @item.ImgSlide2?resize=700%2C700&amp;ssl=1 700w, @item.ImgSlide2?resize=400%2C400&amp;ssl=1 400w, @item.ImgSlide2?resize=800%2C800&amp;ssl=1 800w, @item.ImgSlide2?resize=280%2C280&amp;ssl=1 280w, @item.ImgSlide2?resize=768%2C768&amp;ssl=1 768w">
+                                            </a>
+                                        </div>
+                                        <div class="image-tools is-small top right show-on-hover">
+                                        </div>
+                                        <div class="image-tools is-small hide-for-small bottom left show-on-hover">
+                                        </div>
+                                        <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                            <a class="quick-view" data-prod="@item.Id" href="#quick-view">@Localizer["Xem nhanh"]</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="box-text box-text-products">
+                                        <div class="title-wrapper">
+                                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">@item.MainCategories.Name</p>
+                                            <p class="name product-title woocommerce-loop-product__title">
+                                                <a href="/Categories/@item.MainCategories.Id"></a>
+                                            </p>
+                                        </div>
+                                        <div class="price-wrapper">
+                                            <span class="price">
+                                                @if (item.Discount > 0)
+                                                {
+                                                    <del>
+                                                        <span class="woocommerce-Price-amount amount">
+                                                            <bdi>@item.Price.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                        </span>
+                                                    </del>
+                                                }
+                                                <ins>
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <bdi>@((item.Price - item.Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                    </span>
+                                                </ins>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+*@

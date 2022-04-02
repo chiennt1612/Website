@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
+using SSO.DBContext.SeekData;
+using SSO.Helpers;
 using System;
 using System.IO;
 using System.Linq;
-using SSO.DBContext.SeekData;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog.Sinks.SystemConsole.Themes;
-using SSO.Helpers;
 
 namespace SSO
 {
@@ -27,7 +27,7 @@ namespace SSO
                    // uncomment to write to Azure diagnostics stream
                    .WriteTo.File(
                        Directory.GetCurrentDirectory() + @"\Log\SSO.txt",
-                       fileSizeLimitBytes: 10_000,
+                       fileSizeLimitBytes: 10000000,
                        rollOnFileSizeLimit: true,
                        rollingInterval: RollingInterval.Hour,
                        shared: true,

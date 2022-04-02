@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EntityFramework.Web.DBContext;
+﻿using EntityFramework.Web.DBContext;
 using EntityFramework.Web.Entities;
+using Microsoft.AspNetCore.Http;
 using WebAdmin.Repository.Interfaces;
 
 namespace WebAdmin.Repository

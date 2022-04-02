@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SSO.Extensions;
 using SSO.Helpers;
 using SSO.Services.Interface;

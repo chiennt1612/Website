@@ -70,11 +70,38 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ảnh banner.
+        /// </summary>
+        public static string AdvImg {
+            get {
+                return ResourceManager.GetString("AdvImg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quảng cáo JS.
+        /// </summary>
+        public static string AdvScript {
+            get {
+                return ResourceManager.GetString("AdvScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mã nhóm.
         /// </summary>
         public static string CateCode {
             get {
                 return ResourceManager.GetString("CateCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ảnh nhóm.
+        /// </summary>
+        public static string CategoryImage {
+            get {
+                return ResourceManager.GetString("CategoryImage", resourceCulture);
             }
         }
         
@@ -106,11 +133,20 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Các nhóm liên quan.
+        ///   Looks up a localized string similar to Nhóm liên quan.
         /// </summary>
         public static string CateRefer {
             get {
                 return ResourceManager.GetString("CateRefer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thành phố.
+        /// </summary>
+        public static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
             }
         }
         
@@ -138,6 +174,24 @@ namespace EntityFramework.Web.Resources {
         public static string CompanySince {
             get {
                 return ResourceManager.GetString("CompanySince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nước.
+        /// </summary>
+        public static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên khách.
+        /// </summary>
+        public static string CustomerName {
+            get {
+                return ResourceManager.GetString("CustomerName", resourceCulture);
             }
         }
         
@@ -196,7 +250,25 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hiển thị trên menu chính.
+        ///   Looks up a localized string similar to Hiển thị trang chủ.
+        /// </summary>
+        public static string DisplayOnHome {
+            get {
+                return ResourceManager.GetString("DisplayOnHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hiển thị menu trái.
+        /// </summary>
+        public static string DisplayOnMenuLeft {
+            get {
+                return ResourceManager.GetString("DisplayOnMenuLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu chân trang.
         /// </summary>
         public static string DisplayOnMenuMain {
             get {
@@ -210,6 +282,33 @@ namespace EntityFramework.Web.Resources {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ngày hết hạn.
+        /// </summary>
+        public static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên đầy đủ.
+        /// </summary>
+        public static string Fullname {
+            get {
+                return ResourceManager.GetString("Fullname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đối tượng thực hiện.
+        /// </summary>
+        public static string GroupIdList {
+            get {
+                return ResourceManager.GetString("GroupIdList", resourceCulture);
             }
         }
         
@@ -268,6 +367,33 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Từ khóa.
+        /// </summary>
+        public static string Keyword {
+            get {
+                return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ngôn ngữ.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giá lớn.
+        /// </summary>
+        public static string MaxPrice {
+            get {
+                return ResourceManager.GetString("MaxPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meta data box.
         /// </summary>
         public static string MetaBox {
@@ -313,6 +439,24 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giá nhỏ.
+        /// </summary>
+        public static string MinPrice {
+            get {
+                return ResourceManager.GetString("MinPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nhóm tin.
         /// </summary>
         public static string NewsCategories {
@@ -322,11 +466,56 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngày đơn.
+        /// </summary>
+        public static string OrderDate {
+            get {
+                return ResourceManager.GetString("OrderDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trạng thái đơn.
+        /// </summary>
+        public static string OrderStatus {
+            get {
+                return ResourceManager.GetString("OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biến tham số.
+        /// </summary>
+        public static string ParamKey {
+            get {
+                return ResourceManager.GetString("ParamKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giá trị tham số.
+        /// </summary>
+        public static string ParamValue {
+            get {
+                return ResourceManager.GetString("ParamValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Số điện thoại.
         /// </summary>
         public static string Phone {
             get {
                 return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vị trí đặt banner.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
             }
         }
         
@@ -439,11 +628,56 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ảnh dịch vụ.
+        /// </summary>
+        public static string ServiceImage {
+            get {
+                return ResourceManager.GetString("ServiceImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên dịch vụ.
+        /// </summary>
+        public static string ServiceName {
+            get {
+                return ResourceManager.GetString("ServiceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ngày bắt đầu.
+        /// </summary>
+        public static string StartDate {
+            get {
+                return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bang/Vùng.
+        /// </summary>
+        public static string State {
+            get {
+                return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hiển thị.
         /// </summary>
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đường phố.
+        /// </summary>
+        public static string Street {
+            get {
+                return ResourceManager.GetString("Street", resourceCulture);
             }
         }
         
@@ -480,6 +714,15 @@ namespace EntityFramework.Web.Resources {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số lượng.
+        /// </summary>
+        public static string Units {
+            get {
+                return ResourceManager.GetString("Units", resourceCulture);
             }
         }
         
@@ -525,6 +768,15 @@ namespace EntityFramework.Web.Resources {
         public static string UserModify {
             get {
                 return ResourceManager.GetString("UserModify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã vùng.
+        /// </summary>
+        public static string ZipCode {
+            get {
+                return ResourceManager.GetString("ZipCode", resourceCulture);
             }
         }
     }

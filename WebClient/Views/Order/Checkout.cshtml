@@ -1,0 +1,257 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Order.CheckoutModel
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+    var FreeShip = double.Parse(ViewData.GetSettingByKey("all", "SHIPFREE"));
+    double FeeShip = 0;
+    if(Model.order != null) FeeShip = (FreeShip <= Model.order.Total ? 0 : double.Parse(ViewData.GetSettingByKey("all", "SHIPFEE")));
+}
+
+<style>
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    a.text-success:hover, a.text-success:focus {
+        color: #19692c !important;
+    }
+
+    .text-info {
+        color: #17a2b8 !important;
+    }
+
+    a.text-info:hover, a.text-info:focus {
+        color: #0f6674 !important;
+    }
+
+    .text-warning {
+        color: #ffc107 !important;
+    }
+
+    a.text-warning:hover, a.text-warning:focus {
+        color: #ba8b00 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    a.text-danger:hover, a.text-danger:focus {
+        color: #a71d2a !important;
+    }
+
+    input.input-validation-error {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+</style>
+
+<div class="checkout-page-title page-title">
+    <div class="page-title-inner flex-row medium-flex-wrap container">
+        <div class="flex-col flex-grow medium-text-center">
+            <nav class="breadcrumbs flex-row flex-row-center heading-font checkout-breadcrumbs text-center strong h2 uppercase">
+                <a href="/Order/Cart" class="hide-for-small">
+                    @Localizer["Giỏ hàng"]
+                </a>
+                <span class="divider hide-for-small"><i class="icon-angle-right"></i></span>
+                <a href="/Order/Checkout" class="current">
+                    @Localizer["Thanh toán"]
+                </a>
+                <span class="divider hide-for-small"><i class="icon-angle-right"></i></span>
+                <a href="#" class="no-click hide-for-small">
+                    @Localizer["Hoàn thành"]
+                </a>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="cart-container container page-wrapper page-checkout">
+    <div class="woocommerce">
+        <div class="woocommerce-notices-wrapper"></div>
+        <div class="woocommerce-notices-wrapper">@ViewData.GetNotification()</div>
+        <form id="Checkout" name="Checkout" asp-action="Complete" asp-controller="Order" class="checkout woocommerce-checkout ">
+            <div class="row pt-0 ">
+                <div class="large-7 col  ">
+                    <div id="customer_details">
+                        <div class="clear">
+                            <div class="woocommerce-billing-fields">
+                                <h3>@Localizer["Thông tin thanh toán"]</h3>
+                                <div class="woocommerce-billing-fields__field-wrapper">
+                                    <p class="form-row form-row-wide thwcfd-field-wrapper thwcfd-field-text validate-required" id="billing_first_name_field" data-priority="10">
+                                        <label asp-for="Fullname" class="control-label screen-reader-text"></label>
+                                        <span asp-validation-for="Fullname" class="text-danger"></span>
+                                        <input asp-for="Fullname" class="form-control input-text" placeholder="@Localizer["Họ Tên"] (*)" autocomplete="given-name" />
+
+                                    </p>
+                                    <p class="form-row form-row-wide address-field thwcfd-field-wrapper thwcfd-field-text validate-required" id="billing_address_1_field" data-priority="50">
+                                        <label asp-for="Address" class="control-label screen-reader-text"></label>
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                        <input asp-for="Address" class="form-control input-text" placeholder="@Localizer["Địa chỉ"] (*)" autocomplete="address-line1" />
+
+                                    </p>
+                                    <p class="form-row form-row-wide thwcfd-field-wrapper thwcfd-field-tel validate-required validate-phone" id="billing_phone_field" data-priority="100">
+                                        <label asp-for="Mobile" class="control-label screen-reader-text"></label>
+                                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                                        <input asp-for="Mobile" class="form-control input-text" placeholder="Mobile (*)" autocomplete="tel" />
+
+                                    </p>
+                                    <p class="form-row form-row-wide thwcfd-field-wrapper thwcfd-field-email validate-required validate-email" id="billing_email_field" data-priority="110">
+                                        <label asp-for="Email" class="control-label screen-reader-text"></label>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        <input asp-for="Email" class="form-control input-text" placeholder="Email (*)" autocomplete="email username" />
+
+                                    </p>
+                                    <p class="form-row form-row-wide thwcfd-field-wrapper thwcfd-field-email validate-required validate-email" id="billing_email_field" data-priority="110">
+                                        <label asp-for="Description" class="control-label"></label>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "5", @cols = "5", @autocomplete = "off", @placeholder = "Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn." })
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="clear">
+                            <div class="woocommerce-shipping-fields">
+                            </div>
+                            <div class="woocommerce-additional-fields">
+                                <h3>@Localizer["Thông tin bổ sung"]</h3>
+                                <div class="woocommerce-additional-fields__field-wrapper">
+                                    <p class="form-row notes thwcfd-field-wrapper thwcfd-field-textarea" id="order_comments_field" data-priority="">
+                                        <label asp-for="Description" class="control-label"></label>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "5", @cols = "5", @autocomplete = "off", @placeholder = "Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn." })
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+
+                <div class="large-5 col">
+                    <div class="col-inner has-border">
+                        <div class="checkout-sidebar sm-touch-scroll">
+                            <h3 id="order_review_heading">@Localizer["Đơn hàng của bạn"]</h3>
+                            <div id="order_review" class="woocommerce-checkout-review-order">
+                                <table class="shop_table woocommerce-checkout-review-order-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-name">@Localizer["Sản phẩm"]</th>
+                                            <th class="product-total">@Localizer["Tạm tính"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.order.OrderItems)
+                                        {
+                                            <tr class="cart_item">
+                                                <td class="product-name">
+                                                    @item.ProductName @item.ProductCode&nbsp;
+                                                    <strong class="product-quantity">&times;&nbsp;@item.Units</strong>
+                                                </td>
+                                                <td class="product-total">
+                                                    <span class="woocommerce-Price-amount amount"><bdi>@item.Total.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="cart-subtotal">
+                                            <th>@Localizer["Phí ship"] <font color="red">(@Localizer["Miễn phí ship đơn hàng > "] @FreeShip.ToString().FormatNumber())</font></th>
+                                            <td data-title="@Localizer["Phí ship"]">
+                                            <span class="woocommerce-Price-amount amount">
+                                                <bdi>@FeeShip.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi>
+                                            </span>
+                                                <input type="hidden" id="FeeShip" name="FeeShip" value="@FeeShip" />
+                                            </td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>@Localizer["Tổng"]</th>
+                                            <td data-title="@Localizer["Tổng"]">
+                                                <strong>
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <bdi>@((Model.order.Total + FeeShip).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi>
+                                                    </span>
+                                                </strong>
+                                                <input type="hidden" id="Total" name="Total" value="@Model.order.Total" />
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div id="payment" class="woocommerce-checkout-payment">
+                                    <ul class="wc_payment_methods payment_methods methods">
+                                        <li class="wc_payment_method payment_method_cod">
+                                            <input onclick="OptionPay()" id="payment_method_cod" type="radio" class="input-radio" name="payment_method" value="1" checked='checked' data-order_button_text="" />
+                                            <label for="payment_method_cod">
+                                                @Localizer["Trả tiền mặt khi nhận hàng"]
+                                            </label>
+                                            <div id="_payment_method_cod" class="payment_box payment_method_cod">
+                                                <p>@Localizer["Trả tiền mặt khi giao hàng"]</p>
+                                            </div>
+                                        </li>
+                                        <li class="wc_payment_method payment_method_bacs">
+                                            <input onclick="OptionPay()" id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="2" data-order_button_text="" />
+                                            <label for="payment_method_bacs">
+                                                @Localizer["Chuyển khoản ngân hàng"]
+                                            </label>
+                                            <div id="_payment_method_bacs" class="payment_box payment_method_bacs" style="display:none;">
+                                                <p>
+                                                    @Localizer["Quý khách vui lòng chuyển khoản theo thông tin tài khoản bên dưới:"]<br />
+                                                    @ViewData.GetSettingByKey(requestCulture, "BANKACCT_COMPANY")
+                                                </p>
+                                                <p>
+                                                    @ViewData.GetSettingByKey(requestCulture, "BANKACCT_DIRECTOR")
+                                                </p>
+                                                <p>
+                                                    @ViewData.GetSettingByKey(requestCulture, "INVOICE_REQUEST")
+                                                </p>
+                                            </div>
+                                        </li>
+                                        @*<li class="wc_payment_method payment_method_paygate">
+                                            <input onclick="OptionPay()" id="payment_method_paygate" type="radio" class="input-radio" name="payment_method" value="3" data-order_button_text="" />
+                                            <label for="payment_method_paygate">
+                                                @Localizer["Thanh toán online"]
+                                            </label>
+                                        </li>*@
+                                        <li class="wc_payment_method">
+                                            <input asp-for="IsAgree" class="input-radio" type="checkbox" />
+                                            <label asp-for="IsAgree">
+                                                @Localizer["Tôi đã đọc và Đồng ý với <u><a href=\"/About/2\">Điều khoản</a></u> thanh toán!"]
+                                            </label>
+                                            
+                                            <span asp-validation-for="IsAgree" class="text-danger"></span>
+                                        </li>
+                                    </ul>
+                                    <div class="form-row place-order">
+                                        <noscript>
+                                            @Localizer["Trình duyệt của bạn không hỗ trợ JavaScript, hoặc nó bị vô hiệu hóa, hãy đảm bảo bạn nhấp vào <em>Cập nhật giỏ hàng</em> trước khi bạn thanh toán. Bạn có thể phải trả nhiều hơn số tiền đã nói ở trên, nếu bạn không làm như vậy."]
+                                            <br />
+                                            <button type="submit" class="button alt" name="woocommerce_checkout_update_totals" value="@Localizer["Cập nhật tổng"]">@Localizer["Cập nhật tổng"]</button>
+                                        </noscript>
+                                        <div class="woocommerce-terms-and-conditions-wrapper">
+                                        </div>
+                                        
+                                        <button type="button" onclick="document.forms['Checkout'].submit();" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="@Localizer["Đặt hàng"]" data-value="@Localizer["Đặt hàng"]">@Localizer["Đặt hàng"]</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="woocommerce-privacy-policy-text">
+                                <p>
+                                    @Localizer["Chúng tôi sẽ lưu lại những thông tin mà khách hàng đã cung cấp như họ, tên, địa chỉ, email, số điện thoại, mobile, nghề nghiệp… để có thể phục vụ cho việc tư vấn, giao hàng được dễ dàng và thuận tiện nhất.<br />BNT cam kết bảo mật thông tin cá nhân của bạn bằng mọi cách thức có thể. Chúng tôi sẽ sử dụng công nghệ bảo mật thông tin khác nhau nhằm bảo vệ thông tin này không bị truy lục, sử dụng hoặc tiết lộ ngoài ý muốn."]
+                                    <a href="/About/2" class="woocommerce-privacy-policy-link" @*target="_blank"*@>@Localizer["chính sách riêng tư"]</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

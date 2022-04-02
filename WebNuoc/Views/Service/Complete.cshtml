@@ -1,0 +1,314 @@
+﻿@using EntityFramework.Web.Entities
+@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model InvoiceResultModel
+
+@{
+    ViewData["Title"] = @Localizer["Liên hệ"];
+    var serviceDetail = ViewData["ServiceDetail"] as Service;
+
+}
+
+@if (!Model.IsInvoice)
+{
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+            .switch input {
+                display: none;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+            }
+
+        /* include generated hidden field here */
+        input[type="checkbox"]:checked + input[type="hidden"] + .slider,
+        input[type="checkbox"]:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        /* include generated hidden field here */
+        input[type="checkbox"]:focus + input[type="hidden"] + .slider,
+        input[type="checkbox"]:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        /* include generated hidden field here */
+        input[type="checkbox"]:checked + input[type="hidden"] + .slider:before,
+        input[type="checkbox"]:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+
+    <section class="head-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12 left-side">
+                </div><!--left-->
+                <div class="col-md-6 col-12 right-side">
+                    <div id="breadcrumb">
+                        <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="/" itemprop="url" class="nopad-l">
+                                <span itemprop="title">@Localizer["Trang chủ"]</span>
+                            </a>
+                        </div>
+                        <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                            &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                            <a href="" itemprop="url">
+                                <span itemprop="title">@Localizer["Đăng ký dịch vụ"]</span>
+                            </a>
+                        </div>
+                    </div>
+                </div><!--right-->
+            </div><!--row-->
+        </div><!--container-->
+    </section>
+
+    <section id="register-service">
+        <div class="wrap">
+            <div class="head">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>@Localizer["Đăng ký dịch vụ"]</h1>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <p>@Localizer["Xin chào bạn: "]<b>@User.Claims.GetClaimValue("name")</b></p>
+                        }
+                        else
+                        {
+                            <p>@Localizer["Bạn đã có tài khoản."] <a asp-action="Login" asp-controller="Account" asp-route-UrlBack="@Context.Request.Path.Value.ToString().UrlEncode()">@Localizer["Đăng nhập"]</a> @Localizer["để đăng ký dịch vụ nhanh hơn"]</p>
+                        }
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form">
+                <form asp-action="Register" asp-controller="Service">
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Lựa chọn dịch vụ"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <input type="text" class="form-control" disabled value="@Model.order.Services.Title" />
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Đăng ký công ty?"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <label class="switch">
+                                @Html.CheckBoxFor(model => model.order.IsCompany, new { disabled = "disabled" })
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Phí dịch vụ"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <span style="color: Red; font-weight:bold">@serviceDetail.Price.ToString().FormatNumber() VNĐ</span>
+                            <input type="hidden" name="Price" value="@serviceDetail.Price">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Phương thức thanh toán"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.PaymentMethod" class="text-danger"></span>
+                            <select disabled asp-for="order.PaymentMethod" class="form-control select2" asp-items="Paygate.OnePay.Tools.PaymentMethod()">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="order.Fullname" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.Fullname" class="text-danger"></span>
+                            <input disabled asp-for="order.Fullname" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="order.Address" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.Address" class="text-danger"></span>
+                            <input disabled asp-for="order.Address" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="order.Mobile" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.Mobile" class="text-danger"></span>
+                            <input disabled asp-for="order.Mobile" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="order.Email" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.Email" class="text-danger"></span>
+                            <input disabled asp-for="order.Email" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">
+                            @Localizer["CMND, CCCD<br>Mã số thuế nếu là công ty"]
+                        </label>
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.CompanyName" class="text-danger"></span>
+                            <input disabled asp-for="order.CompanyName" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="order.Description" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+
+                        <div class="col-md-7 col-sm-6">
+                            <span asp-validation-for="order.Description" class="text-danger"></span>
+                            <textarea disabled rows="10" asp-for="order.Description" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">
+                            @(Localizer["Tình trạng đơn"])
+                        </label>
+                        <div class="col-md-7 col-sm-6">
+                            <ul>
+                                <li>Ngày đơn: @Model.order.ContactDate.Value.ToString("dd/MM/yyyy HH:mm")</li>
+                                <li>Trạng thái: @Model.order.OrderStatus.Name</li>
+                                <li>Mã đơn: @Model.order.Id / @(Model.order.Id + Paygate.OnePay.Tools.StartIdOrder) / @Model.order.CookieID</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </form>
+            </div><!--form-->
+        </div><!--wrap-->
+    </section>
+}
+else
+{
+    <section class="head-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12 left-side">
+                </div><!--left-->
+                <div class="col-md-6 col-12 right-side">
+                    <div id="breadcrumb">
+                        <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="/" itemprop="url" class="nopad-l">
+                                <span itemprop="title">@Localizer["Trang chủ"]</span>
+                            </a>
+                        </div>
+                        <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                            &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                            <a href="" itemprop="url">
+                                <span itemprop="title">@Localizer["Kết quả thanh toán hóa đơn nước"]</span>
+                            </a>
+                        </div>
+                    </div>
+                </div><!--right-->
+            </div><!--row-->
+        </div><!--container-->
+    </section>
+
+    <section id="register-service">
+        <div class="wrap">
+            <div class="form">
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Hóa đơn số"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        <input type="text" class="form-control" disabled value="@Model.invoiceNo" />
+                    </div><!--col-->
+                </div>
+
+                @if (Model.invoiceResult == null)
+                {
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Thông tin đơn thanh toán"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <input type="text" class="form-control" disabled value="@Model.vpc_OrderInfo" />
+                        </div><!--col-->
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Mã khách"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <input type="text" class="form-control" disabled value="@Model.invoiceResult.ItemsData.CustomerCode" />
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Họ tên"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <input type="text" class="form-control" disabled value="@Model.invoiceResult.ItemsData.CustomerName" />
+                        </div><!--col-->
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Địa chỉ"]</label>
+                        <div class="col-md-7 col-sm-6">
+                            <input type="text" class="form-control" disabled value="@Model.invoiceResult.ItemsData.Address" />
+                        </div><!--col-->
+                    </div>
+                }
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Tổng tiền"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        <input type="text" class="form-control" disabled value="@Model.invoiceAmount.ToString().FormatNumber()" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">
+                        @(Localizer["Tình trạng đơn"])
+                    </label>
+                    <div class="col-md-7 col-sm-6">
+                        <ul>
+                            <li>@Localizer["Ngày-giờ"]: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</li>
+                            <li>@Localizer["Mã đơn"]: @Model.invoiceNo</li>
+                            <li>@Localizer["Kết quả thanh toán"]: @Model.vpc_TxnResponseCode / @Model.vpc_Message</li>
+                            <li>@Localizer["Mã giao dịch OnePay"]: @Model.onePayID</li>
+                            <li>@Localizer["Gạch nợ hóa đơn"]: @(Model.payResult != null? $"{Model.payResult.PayStatus} / {Model.payResult.Message}" : "")</li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!--form-->
+        </div><!--wrap-->
+    </section>
+}

@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Partial.HeaderContact
+
+<p>
+    @Localizer["CSKH:"]<span> <strong style="color: red; ">@Model.Hotline</strong></span></p>
+
+@*<li class="">
+    <a class="tooltip" title="@Model.TimeOpen">
+        <i class="icon-clock" style="font-size:16px;"></i><span>@Model.TimeOpen</span>
+    </a>
+</li>
+<li class="">
+    <a href="tel:@Model.Hotline" class="tooltip" title="@Model.Hotline">
+        <i class="icon-phone" style="font-size:16px;"></i><span>@Model.Hotline</span>
+    </a>
+</li>*@

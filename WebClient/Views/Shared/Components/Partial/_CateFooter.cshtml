@@ -1,0 +1,14 @@
+﻿@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<Categories>
+@*<div id="custom_html-3" class="widget_text col pb-0 widget widget_custom_html">
+    <div class="textwidget custom-html-widget">
+        <ol style="font-size:14px">*@
+            @foreach (var item in Model)
+            {
+                <li><a href="/Categories/@item.Id">@item.Name.ToUpper()</a></li>
+            }
+        @*</ol>
+    </div>
+</div>*@

@@ -1,0 +1,267 @@
+﻿@using EntityFramework.Web.Entities
+@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model ServiceInput
+
+@{
+    ViewData["Title"] = @Localizer["Liên hệ"];
+    var serviceDetail = ViewData["ServiceDetail"] as Service;
+}
+<style>
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    a.text-success:hover, a.text-success:focus {
+        color: #19692c !important;
+    }
+
+    .text-info {
+        color: #17a2b8 !important;
+    }
+
+    a.text-info:hover, a.text-info:focus {
+        color: #0f6674 !important;
+    }
+
+    .text-warning {
+        color: #ffc107 !important;
+    }
+
+    a.text-warning:hover, a.text-warning:focus {
+        color: #ba8b00 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    a.text-danger:hover, a.text-danger:focus {
+        color: #a71d2a !important;
+    }
+    input.input-validation-error {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            display: none;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+    /* include generated hidden field here */
+    input[type="checkbox"]:checked + input[type="hidden"] + .slider,
+    input[type="checkbox"]:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    /* include generated hidden field here */
+    input[type="checkbox"]:focus + input[type="hidden"] + .slider,
+    input[type="checkbox"]:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    /* include generated hidden field here */
+    input[type="checkbox"]:checked + input[type="hidden"] + .slider:before,
+    input[type="checkbox"]:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="" itemprop="url">
+                            <span itemprop="title">@Localizer["Đăng ký dịch vụ"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section>
+
+<section id="register-service">
+    <div class="wrap">
+        <div class="head">
+            <div class="row">
+                <div class="col-12">
+                    <h1>@Localizer["Đăng ký dịch vụ"]</h1>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <p>@Localizer["Xin chào bạn: "]<b>@User.Claims.GetClaimValue("name")</b></p>
+                    }
+                    else
+                    {
+                        <p>@Localizer["Bạn đã có tài khoản."] <a asp-action="Login" asp-controller="Account" asp-route-UrlBack="@Context.Request.Path.Value.ToString().UrlEncode()">@Localizer["Đăng nhập"]</a> @Localizer["để đăng ký dịch vụ nhanh hơn"]</p>
+                    }
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form">
+            <form asp-action="Register" asp-controller="Service">
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Lựa chọn dịch vụ"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        <select asp-for="ServiceId" class="form-control select2" asp-items="ViewBag.ServiceList" onchange="window.location.href='/Service/Register/' + this.value">
+                            <option value="">@Localizer["Lựa chọn dịch vụ"]</option>
+                        </select>
+                    </div><!--col-->
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Đăng ký công ty?"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        <label class="switch">
+                            @Html.CheckBoxFor(model => model.IsCompany)
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Phí dịch vụ"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        <span style="color: Red; font-weight:bold">@serviceDetail.Price.ToString().FormatNumber() VNĐ</span>
+                        <input type="hidden" name="Price" value="@serviceDetail.Price">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Phương thức thanh toán"]</label>
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                        <select asp-for="PaymentMethod" class="form-control select2" asp-items="Paygate.OnePay.Tools.PaymentMethod()">
+                        </select>
+                        @*<input type="radio" id="PaymentMethod1" name="PaymentMethod" value="1" checked class="col-md-2 col-sm-2" />
+                <label for="PaymentMethod1" class="col-md-8 col-sm-8 col-form-label">@Localizer["Thanh toán tiền mặt"]</label>
+
+                <input type="radio" id="PaymentMethod2" name="PaymentMethod" value="2" class="col-md-2 col-sm-2" />
+                <label for="PaymentMethod2" class="col-md-8 col-sm-8 col-form-label">@Localizer["Chuyển khoản"]</label>
+
+                <input type="radio" id="PaymentMethod3" name="PaymentMethod" value="3" class="col-md-2 col-sm-2" />
+                <label for="PaymentMethod3" class="col-md-8 col-sm-8 col-form-label">@Localizer["Thanh toán online"]</label>*@
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="Fullname" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="Fullname" class="text-danger"></span>
+                        <input asp-for="Fullname" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="Address" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                        <input asp-for="Address" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="Mobile" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                        <input asp-for="Mobile" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="Email" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right">
+                        @Localizer["CMND, CCCD<br>Mã số thuế nếu là công ty"]
+                    </label>
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                        <input asp-for="CompanyName" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="Description" class="col-md-3 col-sm-4 col-form-label text-right"></label>
+
+                    <div class="col-md-7 col-sm-6">
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <textarea rows="10" asp-for="Description" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3 col-sm-4"></div>
+
+                    <div class="col-md-7 col-sm-6">
+                        <input asp-for="IsAgree" class="col-md-1 col-sm-1" />
+                        <label asp-for="IsAgree" class="col-md-10 col-sm-10 col-form-label text-right">@Localizer["Tôi đã đọc và Đồng ý với <u><a href=\"/About/9\">Điều khoản</a></u> thanh toán!"]</label>
+                        <span asp-validation-for="IsAgree" class="col-md-12 col-sm-12 text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-sm-4 col-form-label text-right"></label>
+                    <div class="col-md-7 col-sm-6">
+                        <input type="submit" value="@Localizer["Gửi đăng ký"]" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </form>
+        </div><!--form-->
+    </div><!--wrap-->
+</section>

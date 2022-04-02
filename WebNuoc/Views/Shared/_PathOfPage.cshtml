@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    WebNuoc.Models.Home.PathOfPage m = ViewData[WebNuoc.Services.ViewDataParam.PageOfPage] as WebNuoc.Models.Home.PathOfPage;
+}
+@if (m.IsProduct > 1)
+{
+    <div class="shop-page-title category-page-title page-title ">
+        <div class="page-title-inner flex-row  medium-flex-wrap container">
+            <div class="flex-col flex-grow medium-text-center">
+                <div class="is-large">
+                    <nav class="woocommerce-breadcrumb breadcrumbs uppercase">
+                        <a href="/">@Localizer["Trang chủ"]</a>
+                        @foreach (var item in m.PathName)
+                        {
+                            <span class="divider">&#47;</span> @item
+                        }
+                    </nav>
+                </div>
+                @if (m.IsProduct == 2)
+                {
+                    <div class="category-filtering category-filter-row show-for-medium">
+                        <a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
+                            <i class="icon-equalizer"></i>
+                            <strong>@Localizer["Lọc"]</strong>
+                        </a>
+                        <div class="inline-block">
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="flex-col medium-text-center">
+                @if (m.IsProduct == 2)
+                {
+                    <p class="woocommerce-result-count hide-for-medium">
+                        @Localizer["Hiển thị"] @m.Page&ndash;@m.TotalPage @Localizer["của"] @m.Total @Localizer["kết quả"]
+                    </p>
+                    <form class="woocommerce-ordering" method="get">
+                        <select name="orderby" class="orderby" aria-label="@Localizer["Đơn hàng của cửa hàng"]">
+                            @foreach (var item in m.pOrders)
+                            {
+                                <option value="@item.OrderValue">@item.OrderName</option>
+                            }
+                        </select>
+                        <input type="hidden" name="paged" value="1" />
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}

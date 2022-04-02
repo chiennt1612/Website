@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IList<EntityFramework.Web.Entities.FAQ>
+
+
+    <div class="faq col col-lg-6 col-md-12">
+        <div class="content-box">
+            <div class="title"><i class="fa fa-question-circle"></i> <h2>@Localizer["Câu hỏi thường gặp"]</h2></div>
+            @foreach (var item in Model)
+            {
+                <div class="item">
+                    <div class="icon"><i class="fa fa-comment"></i> </div>
+                    <div class="right-side">
+                        <div class="ask">
+                        <a asp-controller="Home" asp-action="FAQDetails" asp-route-Id="@item.Id">@item.Title</a> 
+                        </div>
+                        <p class="answer">@Html.Raw(item.Summary)</p>
+                    </div>
+                </div><!--item-->
+            }
+            <p class="viewmore text-right"><a asp-controller="Home" asp-action="FAQ">@Localizer["Xem thêm..."]</a> </p>
+        </div><!--content-box-->
+    </div><!--col-->

@@ -1,0 +1,121 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model EntityFramework.Web.Entities.Article
+
+
+<div class="container link-lk-web">
+    <ul class="clearfix">
+        <li><a href="/">@Localizer["Trang chủ"]</a></li>
+        <li><a asp-controller="News" asp-action="Index" asp-route-Id="@Model.CategoryMain">@Model.MainCategories.Name</a></li>
+        <li><a>@Model.Title</a></li>
+    </ul>
+</div>
+<div class="gt container">
+    <div class="gt-left col-md-9">
+        <h6 class="gt-title title">@Model.Title</h6>
+        <div class="date-poster ">
+            <ul class="clearfix">
+                <li class="date">@Model.DateCreator.ToString("dd/MM/yyyy HH:mm:ss")</li>
+                <li class="poster"></li>
+            </ul>
+        </div>
+        <div class="text-content text-justify format-html">
+            @Html.Raw(Model.Description)
+        </div>
+        <!-- start comment -->
+        <!-- 	<div class="clearfix"></div>-->
+        <!--<h3 style="font-size:12px"><strong>Mời Bạn Viết Đánh Giá</strong></h3>
+        <script type="text/javascript" src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+        <script type="text/javascript">
+                    tinyMCE.init({
+                        selector: "textarea",
+                        plugins: "emoticons",
+                        toolbar: "emoticons | styleselect | bold italic | image |",
+                        theme_advanced_layout_manager: "CustomLayout",
+                        theme_advanced_toolbar_location: "bottom",
+                        statusbar: false,
+                        menubar: false
+                    });
+        </script>-->
+        <!--Form gui y kien danh gia san pham-->
+        <!--<div class="wrap-end" id="boxcomment">
+            <div id="comment" class="wrapcomment">
+
+                <p><a href="javascript:void(0)" data-toggle="modal" data-target="#frm-login-register" style="font-size:12px">Hãy <span style="color: blue; ">Đăng ký/Đăng nhập</span> để viết đánh giá!</a></p>
+
+            </div>
+
+
+        </div>
+        <script>
+                    function checkPost() {
+                        if ($("#txtContent").val() == '') {
+                            alert("Bạn chưa điền nội dung comment");
+                            return false;
+                        } else {
+                            alert("Bạn đã gửi thành công. Đánh giá của bạn sẽ được kiểm duyệt trước khi hiển thị");
+                            return true;
+                        }
+
+                    }
+                    function checkReply() {
+                        if ($("#txtContentReply").val() == '') {
+                            alert("Bạn chưa điền nội dung comment");
+                            return false;
+                        } else {
+                            alert("Bạn đã gửi thành công. Đánh giá của bạn sẽ được kiểm duyệt trước khi hiển thị");
+                            return true;
+                        }
+
+                    }
+        </script>-->
+        <div class="mxh">
+            <div class="col-md-5 col-sm-6 ft-mobi-2 ">
+                <a href="skype:ngoctuansilver?call"><img src="/Image/Sky.png" /></a>
+                <a href="ymsgr:SendIM?bacngoctuan"> <img src="/Image/Ya.png" /></a>
+                <a href="//twitter.com/bacngoctuan"><img src="/Image/Tw.png" /></a>
+                <a href="//plus.google.com/u/0/103481941410538798498"><img src="/Image/G.png" /></a>
+                <a href="//instagram.com/bacngoctuan/"><img src="/Image/ITG.png" /></a>
+            </div>
+        </div>
+
+        <div class="related">
+            <p class="title" style="clear:both; padding-top:10px;color:green">@Localizer["Bài viết liên quan"]</p>
+            @{
+                IEnumerable<EntityFramework.Web.Entities.Article> _relatedArticle = (IEnumerable<EntityFramework.Web.Entities.Article>)ViewData["ArticleRelated"];
+            }
+            @foreach (var item in _relatedArticle)
+            {
+                <p>
+                    <a asp-controller="News" asp-action="Details" asp-route-Id="@item.Id" asp-route-Title="@item.Title.RemoveSign4VietnameseString()">
+                        @item.Title
+                    </a>
+                </p>
+            }
+        </div>
+        <div>
+        </div>
+        <!-- end comment -->
+    </div>
+
+    <!--T-->
+    <div class="gt-right gt-vieo col-md-3 ">
+        <div class="gt-title title">@Localizer["Danh sách Video"] </div>
+        <hr />
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialBannerRight" })
+
+    </div>
+    <script>
+        (function () {
+            var cx = '005180372118349934645:eetydilknbc';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+    </script>
+    <gcse:search></gcse:search>
+</div>

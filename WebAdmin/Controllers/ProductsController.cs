@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using WebAdmin.Helpers;
 using WebAdmin.Services.Interfaces;
 
 namespace WebAdmin.Controllers
 {
+    [SecurityHeaders]
     [Authorize]
     public class ProductsController : Controller
     {
@@ -32,14 +32,31 @@ namespace WebAdmin.Controllers
 
         // GET: Products
         [Authorize(Roles = "Admin,Mod")]
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, string Keyword, bool? IsNotCategory)
         {
             int pageSize = Constants.PageSize;
             int pageIndex = 1;
             pageIndex = page.HasValue ? page.Value : 1;
 
-            Expression<Func<Product, bool>> sqlWhere = item => (item.IsDeleted == false);
-            Func<Product, string> sqlOrder = s => "DateCreator";
+            bool INC = (IsNotCategory.HasValue ? IsNotCategory.Value : false);
+            ViewData["IsNotCategory"] = INC;
+
+            Expression<Func<Product, bool>> sqlWhere;
+            if (!String.IsNullOrEmpty(Keyword))
+            {
+                ViewData["Keyword"] = Keyword;
+                sqlWhere = item => (
+                (INC && !item.CategoryMain.HasValue || !INC && item.CategoryMain.HasValue) &&
+                item.IsDeleted == false &&
+                (item.Code.Contains(Keyword) || item.Name.Contains(Keyword) || item.Summary.Contains(Keyword) || item.Description.Contains(Keyword))
+                );
+            }
+            else
+            {
+                ViewData["Keyword"] = "";
+                sqlWhere = item => ((INC && !item.CategoryMain.HasValue || !INC && item.CategoryMain.HasValue) && item.IsDeleted == false);
+            }
+            Func<Product, object> sqlOrder = s => s.Id;
 
             return View(await _service.GetListAsync(sqlWhere, sqlOrder, true, pageIndex, pageSize));
         }
@@ -77,14 +94,22 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Code,Name,CategoryMain,CategoryReference,Img,ImgSlide1,ImgSlide2,ImgSlide3,ImgSlide4,ImgSlide5,Summary,Description,IsNews,Status,Discount,Quota,IsSale,IsHot,MetaTitle,MetaDescription,MetaKeyword,MetaBox,MetaRobotTag,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] Product product)
+        public async Task<IActionResult> Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                //_context.Add(product);
-                //await _context.SaveChangesAsync();
-                await _service.AddAsync(product);
-                return RedirectToAction(nameof(Index));
+                // Check category
+                if (!product.CategoryMain.HasValue)
+                {
+                    ModelState.AddModelError("CategoryMain", _localizer.GetString("Trường bắt buộc, không để trống"));
+                }
+                else
+                {
+                    //_context.Add(product);
+                    //await _context.SaveChangesAsync();
+                    await _service.AddAsync(product);
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["CategoryMain"] = new SelectList(await _service.CateGetAllAsync(), "Id", "Name", product.CategoryMain);
             return View(product);
@@ -115,7 +140,7 @@ namespace WebAdmin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Mod")]
-        public async Task<IActionResult> Edit(long id, [Bind("Code,Name,CategoryMain,CategoryReference,Img,ImgSlide1,ImgSlide2,ImgSlide3,ImgSlide4,ImgSlide5,Summary,Description,IsNews,Status,Discount,Quota,IsSale,IsHot,MetaTitle,MetaDescription,MetaKeyword,MetaBox,MetaRobotTag,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] Product product)
+        public async Task<IActionResult> Edit(long id, Product product)
         {
             if (id != product.Id)
             {
@@ -126,9 +151,19 @@ namespace WebAdmin.Controllers
             {
                 try
                 {
-                    //_context.Update(product);
-                    //await _context.SaveChangesAsync();
-                    await _service.UpdateAsync(product);
+                    // Check category
+                    if (!product.CategoryMain.HasValue)
+                    {
+                        ModelState.AddModelError("CategoryMain", _localizer.GetString("Trường bắt buộc, không để trống"));
+                        ViewData["CategoryMain"] = new SelectList(await _service.CateGetAllAsync(), "Id", "Name", product.CategoryMain);
+                        return View(product);
+                    }
+                    else
+                    {
+                        //_context.Update(product);
+                        //await _context.SaveChangesAsync();
+                        await _service.UpdateAsync(product);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -157,9 +192,9 @@ namespace WebAdmin.Controllers
             }
 
             var product = await _service.GetByIdAsync(id.Value);
-                //await _context.Products
-                //.Include(p => p.Categories)
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //await _context.Products
+            //.Include(p => p.Categories)
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();

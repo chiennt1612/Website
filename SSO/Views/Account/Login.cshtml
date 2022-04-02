@@ -1,8 +1,24 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model LoginViewModel
 
 <div class="login-page">
     <div class="lead">
-        <h1>Đăng nhập hệ thống</h1>
+
+        @if (!String.IsNullOrEmpty(Model.ClientLogo))
+        {
+        <h1>
+            @Localizer["Đăng nhập hệ thống"]
+            <a href="@((String.IsNullOrEmpty(Model.ClientUri) ? "#" : Model.ClientUri))">@Model.ClientName <img src="@Model.ClientLogo" height="34" /></a>
+        </h1>
+        }
+        else
+        {
+    <h1>
+        @Localizer["Đăng nhập hệ thống SSO"]
+    </h1>
+        }
+
     </div>
 
     <partial name="_ValidationSummary" />
@@ -14,7 +30,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Tài khoản SSO</h2>
+                        <h2>@Localizer["Tài khoản SSO"]</h2>
                     </div>
 
                     <div class="card-body">
@@ -34,9 +50,7 @@
                                 <div class="form-group">
                                     <div class="form-check">
                                         <input class="form-check-input" asp-for="RememberLogin">
-                                        <label class="form-check-label" asp-for="RememberLogin">
-                                            Ghi nhớ đăng nhập
-                                        </label>
+                                        <label class="form-check-label" asp-for="RememberLogin"></label>
                                     </div>
                                 </div>}
 
@@ -44,10 +58,14 @@
                                 <p>The default users are alice/bob, password: Pass123$</p>
                             </div>
 
-                            <button class="btn btn-primary" name="button" value="login">Đăng nhập</button>
-                            <button class="btn btn-secondary" name="button" value="cancel">Hủy</button>
-                            <button action="/Account/ForgotPassword" class="btn btn-secondary" name="button" value="forgotpassword">Quên mật khẩu</button>
-                            @*<button class="btn btn-secondary" name="button" value="register">Register</button>*@
+                            <button class="btn btn-primary" name="button" value="login">@Localizer["Đăng nhập"]</button>
+                            <button class="btn btn-secondary" name="reset" type="reset">@Localizer["Nhập lại"]</button>
+
+                            <a asp-action="ForgotPassword" asp-controller="Account" asp-route-ReturnUrl="@Model.ReturnUrl" class="btn btn-secondary">@Localizer["Quên mật khẩu"]</a>
+                            <a asp-action="Register" asp-controller="Account" asp-route-ReturnUrl="@($"/Account/Login?ReturnUrl={System.Net.WebUtility.UrlEncode(Model.ReturnUrl)}")" class="btn btn-success">@Localizer["Đăng ký"]</a>
+
+                            @*<button action="/Account/ForgotPassword" class="btn btn-secondary" name="button" value="forgotpassword">Quên mật khẩu</button>
+                                <button class="btn btn-success" name="button" value="register">Đăng ký</button>*@
                         </form>
                     </div>
                 </div>
@@ -59,7 +77,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Tài khoản Gmail, Facebook</h2>
+                        <h2>@Localizer["Tài khoản Gmail, Facebook"]</h2>
                     </div>
                     <div class="card-body">
                         <ul class="list-inline">
@@ -83,10 +101,10 @@
 
         @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
         {
-            <div class="alert alert-warning">
-                <strong>Tên tài khoản, mật khẩu không có</strong>
-                Không có thông tin cấu hình đăng nhập bằng tài khoản Gmail, Facebook
-            </div>
+    <div class="alert alert-warning">
+        <strong>@Localizer["Tên tài khoản, mật khẩu không có"]</strong>
+        @Localizer["Không có thông tin cấu hình đăng nhập bằng tài khoản Gmail, Facebook"]
+    </div>
         }
     </div>
 </div>

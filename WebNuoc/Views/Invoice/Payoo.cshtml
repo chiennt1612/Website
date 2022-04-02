@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="" itemprop="url">
+                            <span itemprop="title">@Localizer["Thanh toán hóa đơn nước - Payoo"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section class="list-faq">
+    <div class="container">
+        <script type="text/javascript" language="javascript">
+            var ifresize = function (event) {
+                if (event.data == 'Reload') {
+                    window.location = window.location.href.split("?")[0];
+                }
+                else {
+                    var ifresize = document.getElementById('ifpaybill');
+                    if (ifresize) {
+                        ifresize.style.height = event.data + "px";
+                    }
+                }
+            };
+            if (window.addEventListener) {
+                window.addEventListener("message", ifresize, false);
+            } else if (window.attachEvent) {
+                window.attachEvent("onmessage", ifresize);
+            }
+
+            var FrameManager =
+            {
+                registerFrame: function (frame) {
+                }
+            };
+        </script>
+        <iframe style="height: 542px; width: inherit" id="ifpaybill" name="ifpaybill" src="https://bill.payoo.vn/embed/mng/20503" frameborder="0" scrolling="no"></iframe>
+    </div>
+</section>

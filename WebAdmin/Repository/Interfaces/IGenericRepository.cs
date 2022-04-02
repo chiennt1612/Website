@@ -1,11 +1,9 @@
-﻿using System;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using X.PagedList;
 
 namespace WebAdmin.Repository.Interfaces
@@ -34,7 +32,7 @@ namespace WebAdmin.Repository.Interfaces
         void DeleteRange(params T[] entities);
 
         Task<IPagedList<T>> GetListByPage(
-            Expression<Func<T, bool>> expression, Func<T, string> sort, bool desc = false,
+            Expression<Func<T, bool>> expression, Func<T, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize);
         // Get an entity by int id
         Task<T> GetByIdAsync(TKey id);
@@ -45,7 +43,7 @@ namespace WebAdmin.Repository.Interfaces
         // Gets entities using delegate
         IEnumerable<T> GetMany(Func<T, bool> where);
 
-        Task<BaseEntityList<T>> GetListAsync(Expression<Func<T, bool>> expression, Func<T, string> sort, bool desc, int page, int pageSize);
+        Task<BaseEntityList<T>> GetListAsync(Expression<Func<T, bool>> expression, Func<T, object> sort, bool desc, int page, int pageSize);
 
         Task<int> CountAsync(Expression<Func<T, bool>> expression);
     }

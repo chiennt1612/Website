@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
-using X.PagedList.Mvc.Core;
-using X.PagedList;
-using WebAdmin.Services.Interfaces;
+using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using WebAdmin.Helpers;
+using WebAdmin.Services.Interfaces;
 
 namespace WebAdmin.Controllers
 {
+    [SecurityHeaders]
     [Authorize(Roles = "Admin,Mod")]
     public class ArticlesController : Controller
     {
@@ -33,14 +31,27 @@ namespace WebAdmin.Controllers
         }
 
         // GET: Articles
-        public async Task<IActionResult> IndexAsync(int? page)
+        public async Task<IActionResult> Index(string Keyword, int? page)
         {
             int pageSize = Constants.PageSize;
             int pageIndex = 1;
             pageIndex = page.HasValue ? page.Value : 1;
 
-            Expression<Func<Article, bool>> sqlWhere = item => (item.IsDeleted == false);
-            Func<Article, string> sqlOrder = s => "DateCreator";
+            Expression<Func<Article, bool>> sqlWhere;
+            if (!String.IsNullOrEmpty(Keyword))
+            {
+                ViewData["Keyword"] = Keyword;
+                sqlWhere = item => (
+                item.IsDeleted == false &&
+                (item.Title.Contains(Keyword) || item.Summary.Contains(Keyword))
+                );
+            }
+            else
+            {
+                ViewData["Keyword"] = "";
+                sqlWhere = item => (item.IsDeleted == false);
+            }
+            Func<Article, object> sqlOrder = s => s.Id;
 
             return View(await _service.GetListAsync(sqlWhere, sqlOrder, true, pageIndex, pageSize));
         }
@@ -76,12 +87,20 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryMain,CategoryReference,TagsReference,Title,Img,ImgBanner,Summary,Description,IsNews,Status,Publisher,MetaTitle,MetaDescription,MetaKeyword,MetaBox,MetaRobotTag,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] Article article)
+        public async Task<IActionResult> Create(Article article)
         {
             if (ModelState.IsValid)
             {
+                if (article.Summary != null) 
+                    article.Summary = article.Summary
+                                            .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
+                                            .Replace(@"../Upload/", Util.UrlHostUpload(Request));
+                if (article.Description != null)
+                    article.Description = article.Description
+                                            .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
+                                            .Replace(@"../Upload/", Util.UrlHostUpload(Request));
                 await _service.AddAsync(article);
-                return RedirectToAction(nameof(IndexAsync));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryMain"] = new SelectList(await _service.CateGetAllAsync(), "Id", "Name", article.CategoryMain);
             return View(article);
@@ -110,7 +129,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("CategoryMain,CategoryReference,TagsReference,Title,Img,ImgBanner,Summary,Description,IsNews,Status,Publisher,MetaTitle,MetaDescription,MetaKeyword,MetaBox,MetaRobotTag,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] Article article)
+        public async Task<IActionResult> Edit(long id, Article article)
         {
             if (id != article.Id)
             {
@@ -123,6 +142,14 @@ namespace WebAdmin.Controllers
                 {
                     //_context.Update(article);
                     //await _context.SaveChangesAsync();
+                    if (article.Summary != null)
+                        article.Summary = article.Summary
+                                                .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
+                                                .Replace(@"../Upload/", Util.UrlHostUpload(Request));
+                    if (article.Description != null) 
+                        article.Description = article.Description
+                                                .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
+                                                .Replace(@"../Upload/", Util.UrlHostUpload(Request));
                     await _service.UpdateAsync(article);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -136,7 +163,7 @@ namespace WebAdmin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(IndexAsync));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryMain"] = new SelectList(await _service.CateGetAllAsync(), "Id", "Name", article.CategoryMain);
             return View(article);
@@ -152,9 +179,9 @@ namespace WebAdmin.Controllers
             }
 
             var article = await _service.GetByIdAsync(id.Value);
-                //await _context.Articles
-                //.Include(a => a.NewsCategories)
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //await _context.Articles
+            //.Include(a => a.NewsCategories)
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
                 return NotFound();
@@ -173,7 +200,7 @@ namespace WebAdmin.Controllers
             //_context.Articles.Remove(article);
             //await _context.SaveChangesAsync();
             await _service.DeleteByIdAsync(id);
-            return RedirectToAction(nameof(IndexAsync));
+            return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> ArticleExists(long id)

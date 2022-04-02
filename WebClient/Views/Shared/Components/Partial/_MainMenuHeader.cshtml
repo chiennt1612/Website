@@ -1,0 +1,283 @@
+﻿@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@using WebClient.Services
+
+@inject IViewLocalizer Localizer
+@model IEnumerable<Categories>
+
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li class="dropdown megamenu-fw">
+            <a onClick="location.href='/Categories/48'" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="100" data-close-others="false">
+                <span style="margin: 0;font-size: 14px;">@Localizer["Trang Sức"]</span>
+            </a>
+            <ul class="dropdown-menu fullwidth">
+                <li class="megamenu-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        var _id = 1;
+                                        var a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        var cnt = a1.Count();
+                                        var cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["NHẪN BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 5;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["LẮC BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 2;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["DÂY CHUYỀN BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 3;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["MẶT BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 4;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["HOA TAI BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 6;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["ĐỒNG HỒ BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 128;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["CHARM BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 9;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["MỸ NGHỆ BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 8;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["PHỤ KIỆN THỜI TRANG"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <ul>
+                                    @{
+                                        _id = 7;
+                                        a1 = Model.Where(u => u.ParentId == _id).ToList();
+                                        cnt = a1.Count();
+                                        cntFor = (cnt > 4 ? 4 : cnt);
+                                    }
+                                    <li class="title"><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1">@Localizer["KHUYÊN BẠC"]</a></li>
+                                    @for (var i = 0; i < cntFor; i++)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+                                    }
+
+                                    @if (cnt > 4)
+                                    {
+                                    <li><a asp-action="index" asp-controller="Categories" asp-route-Id="@_id" asp-route-Page="1" style="color:#3E00EB">@Localizer["Xem tất cả"]</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a asp-controller="News" asp-action="Details" asp-route-Id="6" asp-route-Title="thiet-ke-rieng"><span style="margin: 0;font-size: 14px;">@Localizer["Thiết Kế Riêng"]</span></a>
+        </li>
+
+        <li>
+            <a asp-action="ProductNew" asp-controller="Categories"><span style="margin: 0;font-size: 14px;">@Localizer["SẢN PHẨM MỚI"]</span></a>
+        </li>
+
+        <li class="bnt-salesoc">
+            <a asp-action="ProductHot" asp-controller="Categories">
+                <span style="margin:0;font-size: 14px;">
+                    @Localizer["SALE SỐC"]
+                </span>
+            </a>
+        </li>
+
+        <li class="last">
+            <a asp-action="index" asp-controller="Categories" asp-route-Id="98">
+                <span style="margin: 0; font-size: 14px;">
+                    @Localizer["TRANG SỨC TÂM LINH"]
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>
+@*<ul id="mega-menu-primary" class="mega-menu max-mega-menu mega-menu-horizontal mega-no-js" data-event="hover" data-effect="fade_up" data-effect-speed="200" data-effect-mobile="disabled" data-effect-speed-mobile="0" data-mobile-force-width="false" data-second-click="go" data-document-click="collapse" data-vertical-behaviour="standard" data-breakpoint="768" data-unbind="true" data-mobile-state="collapse_all" data-hover-intent-timeout="300" data-hover-intent-interval="100">
+        <li class='mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-home mega-align-bottom-left mega-menu-flyout mega-menu-item-0' id='mega-menu-item-0'><a class="mega-menu-link" href="/" tabindex="0">@Localizer["Trang chủ"]</a></li>
+        <li class='mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-current-menu-parent mega-current_page_parent mega-current_page_ancestor mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-1' id='mega-menu-item-1'>
+            <a class="mega-menu-link" href="/Categories/1" aria-haspopup="true" aria-expanded="false" tabindex="0">@Localizer["Trang Sức"]<span class="mega-indicator"></span></a>
+            <ul class="mega-sub-menu">
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_MenuProductWithId1" })
+            </ul>
+        </li>
+        <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-2' id='mega-menu-item-2'>
+            <a class="mega-menu-link" href="/Categories/2" aria-haspopup="true" aria-expanded="false" tabindex="0">@Localizer["Charm Bạc"]<span class="mega-indicator"></span></a>
+            <ul class="mega-sub-menu">
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_MenuProductWithId2" })
+            </ul>
+        </li>
+        <li class='mega-menu-item mega-menu-item-type-taxonomy mega-menu-item-object-product_cat mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-3' id='mega-menu-item-3'>
+            <a class="mega-menu-link" asp-action="Index" asp-controller="Categories" asp-route-Id="98" aria-haspopup="true" aria-expanded="false" tabindex="0">@Localizer["Trang Sức Tâm linh"]<span class="mega-indicator"></span></a>
+            <ul class="mega-sub-menu">
+                @await Component.InvokeAsync("Partial", new { _PartialName = "_MenuProductWithId3" })
+            </ul>
+        </li>
+        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-7' id='mega-menu-item-7'>
+            <a class="mega-menu-link" asp-controller="News" asp-action="Details" asp-route-Id="6" asp-route-Title="thiet-ke-rieng">@Localizer["Thiết Kế Riêng"]</a>
+        </li>
+    </ul>*@

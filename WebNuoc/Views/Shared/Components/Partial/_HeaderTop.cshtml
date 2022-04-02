@@ -1,0 +1,39 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.ParamSetting>
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+    var Email = Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "EMAIL").FirstOrDefault().ParamValue;
+    var HOTLINE = Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "HOTLINE").FirstOrDefault().ParamValue;
+    var PHONE = Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "PHONE").FirstOrDefault().ParamValue;
+}
+
+<section id="menu-top" class="d-md-none d-none d-lg-block">
+    <div class="container">
+        @*<div class="item">
+            @await Html.PartialAsync("_SelectLanguagePartial")
+        </div>*@
+        <div class="item"><i class="fa fa-map-marker-alt"></i> @Localizer["Thôn Tạ Thượng - Chính Nghĩa - Kim Động - Hưng Yên"]</div>
+        <div class="item"><i class="fa fa-envelope-open"></i> <a href="mailto:@Email">@Email</a> </div>
+        <div class="item"><i class="fa fa-phone"></i> <a href="tel:@HOTLINE">@HOTLINE</a> - <a href="tel:@PHONE">@PHONE</a></div>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="item">
+                <i class="fa fa-user"></i>
+                <a href="@(EntityFramework.Web.DBContext.Constants.Authority)/Account/Register?returnUrl=@((Context.MerchantUrl() + "/Account/Login").UrlEncode())">@Localizer["Đăng ký"]</a> /
+                <a asp-action="Login" asp-controller="Account">@Localizer["Đăng nhập"]</a>
+            </div>
+        }
+        else
+        {
+    <div class="item">
+        <i class="fa fa-user"></i>
+        <a asp-action="Logout" asp-controller="Account">@Localizer["Thoát"]</a> /
+        <a asp-action="Profile" asp-controller="Account">@Localizer["Hồ sơ"]</a>
+    </div>
+        }
+    </div>
+</section>

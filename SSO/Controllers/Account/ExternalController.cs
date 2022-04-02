@@ -1,23 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using SSO.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SSO.Helpers;
 using SSO.Entities;
 using SSO.Extensions;
+using SSO.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SSO.Controllers
 {
@@ -62,20 +61,20 @@ namespace SSO.Controllers
                 // user might have clicked on a malicious link - should be logged
                 throw new Exception("invalid return URL");
             }
-            
+
             // start challenge and roundtrip the return URL and scheme 
             var props = new AuthenticationProperties
             {
-                RedirectUri = Url.Action(nameof(Callback)), 
+                RedirectUri = Url.Action(nameof(Callback)),
                 Items =
                 {
-                    { "returnUrl", returnUrl }, 
+                    { "returnUrl", returnUrl },
                     { "scheme", scheme },
                 }
             };
 
             return Challenge(props, scheme);
-            
+
         }
 
         /// <summary>
@@ -113,14 +112,14 @@ namespace SSO.Controllers
             var additionalLocalClaims = new List<Claim>();
             var localSignInProps = new AuthenticationProperties();
             ProcessLoginCallback(result, additionalLocalClaims, localSignInProps);
-            
+
             // issue authentication cookie for user
             // we must issue the cookie maually, and can't use the SignInManager because
             // it doesn't expose an API to issue additional claims from the login workflow
             var principal = await _signInManager.CreateUserPrincipalAsync(user);
             additionalLocalClaims.AddRange(principal.Claims);
-            var name = principal.FindFirst(JwtClaimTypes.Name)?.Value ?? user.Id.ToString ();
-            
+            var name = principal.FindFirst(JwtClaimTypes.Name)?.Value ?? user.Id.ToString();
+
             var isuser = new IdentityServerUser(user.Id.ToString())
             {
                 DisplayName = name,
@@ -177,7 +176,7 @@ namespace SSO.Controllers
             // find external user
             var user = await _userManager.FindByLoginAsync(provider, providerUserId);
 
-            if (!(userEmailClaim == null ) && user == null)
+            if (!(userEmailClaim == null) && user == null)
             {
                 user = await _userManager.FindByEmailAsync(userEmailClaim.Value);
                 if (user != null) providerUserId = user.Id.ToString();
@@ -251,7 +250,7 @@ namespace SSO.Controllers
                 filtered.Add(new Claim(JwtClaimTypes.Address, address));
             }
 
-            var fix = provider.Substring(0,2);
+            var fix = provider.Substring(0, 2);
             switch (provider.ToLower())
             {
                 case "google":
@@ -271,17 +270,21 @@ namespace SSO.Controllers
                     break;
             }
 
+            var UserName = fix + "_" + email.Substring(0, email.ToString().IndexOf("@")).Replace(".", "");
             var user = new AppUser
             {
-                UserName = fix + "_"+ email.Substring(0, email.ToString ().IndexOf("@")).Replace(".", ""),
+                UserName = UserName,
                 Email = email,
                 //Fullname = name,
-               // OldId = Guid.NewGuid().ToString()
+                OldId = "0",
+                EmailConfirmed = true,
+                IsUserAdmin = false,
+                TwoFactorEnabled = true
             };
             var identityResult = await _userManager.CreateAsync(user);
             if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
 
-            filtered.Add(new Claim("oldid", user.OldId.ToString()));
+            //filtered.Add(new Claim("oldid", user.OldId.ToString()));
 
             if (filtered.Any())
             {

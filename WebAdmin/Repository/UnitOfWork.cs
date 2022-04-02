@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EntityFramework.Web.DBContext;
+using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
 using WebAdmin.Repository.Interfaces;
 
 namespace WebAdmin.Repository
@@ -22,13 +19,24 @@ namespace WebAdmin.Repository
         #region data members
 
         private readonly IHttpContextAccessor _httpContext;
-        private IArticleRepository _ArticleRepository ;
-        private ICategoriesRepository _CategoriesRepository ;
-        private INewsCategoriesRepository _NewsCategoriesRepository ;
-        private IMenuMainFooterRepository _MenuMainFooterRepository ;
-        private IMenuSubFooterRepository _MenuSubFooterRepository ;
-        private IParamSettingRepository _ParamSettingRepository ;
-        private IProductRepository _ProductRepository ;
+        private IAboutRepository _AboutRepository;
+        private IFAQRepository _FAQRepository;
+        private IServiceRepository _ServiceRepository;
+        private IArticleRepository _ArticleRepository;
+        private ICategoriesRepository _CategoriesRepository;
+        private INewsCategoriesRepository _NewsCategoriesRepository;
+        private IMenuMainFooterRepository _MenuMainFooterRepository;
+        private IMenuSubFooterRepository _MenuSubFooterRepository;
+        private IParamSettingRepository _ParamSettingRepository;
+        private IProductRepository _ProductRepository;
+        private IContactRepository _ContactRepository;
+
+        private IAdvRepository _AdvRepository;
+        private IAdvPositionRepository _AdvPositionRepository;
+
+        private IOrderRepository _OrderRepository;
+        private IAddressRepository _AddressRepository;
+        private IOrderStatusRepository _OrderStatusRepository;
         #endregion
 
         /// <summary>
@@ -56,11 +64,59 @@ namespace WebAdmin.Repository
         /// <summary>
         /// Get UserRepository
         /// </summary>
+        public IAdvRepository advRepository
+        {
+            get
+            {
+                return _AdvRepository = _AdvRepository ?? new AdvRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IFAQRepository fAQRepository
+        {
+            get
+            {
+                return _FAQRepository = _FAQRepository ?? new FAQRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IAdvPositionRepository advPositionRepository
+        {
+            get
+            {
+                return _AdvPositionRepository = _AdvPositionRepository ?? new AdvPositionRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IContactRepository contactRepository
+        {
+            get
+            {
+                return _ContactRepository = _ContactRepository ?? new ContactRepository(_appDbContext, _httpContext);
+            }
+        }
+
         public IArticleRepository articleRepository
         {
             get
             {
                 return _ArticleRepository = _ArticleRepository ?? new ArticleRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IAboutRepository aboutRepository
+        {
+            get
+            {
+                return _AboutRepository = _AboutRepository ?? new AboutRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IServiceRepository serviceRepository
+        {
+            get
+            {
+                return _ServiceRepository = _ServiceRepository ?? new ServiceRepository(_appDbContext, _httpContext);
             }
         }
 
@@ -109,6 +165,30 @@ namespace WebAdmin.Repository
             get
             {
                 return _ProductRepository = _ProductRepository ?? new ProductRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IOrderRepository orderRepository
+        {
+            get
+            {
+                return _OrderRepository = _OrderRepository ?? new OrderRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IAddressRepository addressRepository
+        {
+            get
+            {
+                return _AddressRepository = _AddressRepository ?? new AddressRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IOrderStatusRepository orderStatusRepository
+        {
+            get
+            {
+                return _OrderStatusRepository = _OrderStatusRepository ?? new OrderStatusRepository(_appDbContext, _httpContext);
             }
         }
 

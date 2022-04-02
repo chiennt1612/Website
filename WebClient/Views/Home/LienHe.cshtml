@@ -1,0 +1,217 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+
+@model EntityFramework.Web.Entities.Contact
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+    string noties = "";
+    bool reContact = true;
+    if (ViewData["Notification"] != null) noties = ViewData["Notification"].ToString();
+    if (ViewData["Re-Contact"] != null) reContact = bool.Parse(ViewData["Re-Contact"].ToString());
+}
+
+<style>
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    a.text-success:hover, a.text-success:focus {
+        color: #19692c !important;
+    }
+
+    .text-info {
+        color: #17a2b8 !important;
+    }
+
+    a.text-info:hover, a.text-info:focus {
+        color: #0f6674 !important;
+    }
+
+    .text-warning {
+        color: #ffc107 !important;
+    }
+
+    a.text-warning:hover, a.text-warning:focus {
+        color: #ba8b00 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    a.text-danger:hover, a.text-danger:focus {
+        color: #a71d2a !important;
+    }
+
+    input.input-validation-error {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+</style>
+
+
+@*<div id="content" role="main" class="container section-title-container">
+        <h4>@noties</h4>
+        <div class="col-md">
+            <form asp-action="Contact" asp-controller="Home">
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fullname" class="control-label"> </label>
+                    <span asp-validation-for="Fullname" class="text-danger"></span>
+                    <input asp-for="Fullname" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Mobile" class="control-label"></label>
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                    <input asp-for="Mobile" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <textarea rows="10" asp-for="Description" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@Localizer["Gửi"]" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>*@
+<div class="container link-lk-web">
+    <ul class="clearfix">
+        <li><a href="/">@Localizer["Trang chủ"]</a></li>
+        <li><a href="#">@Localizer["Liên hệ"]</a></li>
+    </ul>
+</div>
+
+<!-- Bản đồ-->
+<div class="contact container" style="border:1px solid Grey;">
+    <!-- -->
+
+    <div class="contact-info row" style="border-bottom:1px dashed Grey;">
+        <!-- cot1 -->
+        <div class="contact-customer col-sm-4 col-xs-12">
+            <h3>@noties</h3>
+            <form asp-action="Contact" asp-controller="Home">
+                <div class="form-group">
+                    <label asp-for="Fullname" class="control-label"> </label>
+                    <span asp-validation-for="Fullname" class="text-danger"></span>
+                    <input asp-for="Fullname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Mobile" class="control-label"></label>
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                    <input asp-for="Mobile" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <textarea rows="10" asp-for="Description" class="form-control"></textarea>
+                </div>
+                @*<div class="form-group">
+                <label>Mã bảo vệ</label>
+                <input type="text" size="10" id='captcha' name="captcha" class="form-control" />
+                <img src="/includes/captcha/captcha.php?v=" id='captchar_holder' style="float:left;" />
+            </div>*@
+
+                <div class="form-group pull-right">
+                    <input type="submit" value="@Localizer["Gửi"]" class="btn btn-primary" @(reContact ? "" : "disabled") />
+                </div>
+            </form>
+
+        </div>
+
+        <!-- cot2-->
+        <div class="contact-img col-sm-4 col-xs-12" style="padding-bottom:10px">
+            @{
+                IEnumerable<EntityFramework.Web.Entities.ParamSetting> paramSetting = (IEnumerable<EntityFramework.Web.Entities.ParamSetting>)ViewData["ParamSetting"];
+            }
+            <img src="/Image/anh_cong_ty.jpg" alt="" class="img-responsive" />
+            <br />
+            <br />
+            <div class="lh">
+                <p>@((paramSetting.Where(u => u.ParamKey == "COMPANYNAME" && (u.Language == requestCulture || u.Language == "all"))).FirstOrDefault().ParamValue)</p>
+                <p class="address">
+                    @((paramSetting.Where(u => u.ParamKey == "STREETADDRESS" && u.Language == "all")).FirstOrDefault().ParamValue),
+                    @((paramSetting.Where(u => u.ParamKey == "CITYADDRESS" && u.Language == "all")).FirstOrDefault().ParamValue)
+                </p>
+                <p class="phone">@((paramSetting.Where(u => u.ParamKey == "PHONEFOOTER" && u.Language == "all")).FirstOrDefault().ParamValue)</p>
+                <p class="phone-3">@((paramSetting.Where(u => u.ParamKey == "EMAILFOOTER" && u.Language == "all")).FirstOrDefault().ParamValue)</p>
+                <a asp-action="Details" asp-controller="News" asp-route-Id="2" asp-route-Title="danh-sach-dai-ly" target="_blank" style="background-color:#000098; border-radius:0px; color: white;font-size:12px; text-shadow:none;">@Localizer["ĐẠI LÝ CHÍNH HÃNG"]</a>
+            </div>
+        </div>
+        <!-- Endcot2-->
+        <!-- cot3-->
+        <div class="contact-address col-sm-4 col-xs-12" style="font-size:12px">
+            @{
+                EntityFramework.Web.Entities.About about = (EntityFramework.Web.Entities.About)ViewData["About10"];
+            }
+            @Html.Raw(about.Description)
+        </div>
+        <!-- Endcot3-->
+    </div>
+
+    <b id="mapp" style="padding-bottom:10px;"> @Localizer["BẢN ĐỒ ĐẠI LÝ CHÍNH HÃNG"]</b>
+    <div>
+        <div class="maps-list row">
+
+            <div class="col-md-3 col-xs-12">
+
+                <select class="city form-control" onchange="change_area(this.value)" name="city">
+                    <option id="0"><i>@Localizer["Chọn quận"]</i></option>
+                    <optgroup label="Hà Nội" style="font-size:13px;font-weight:bold;" id="opt_hn">
+                    </optgroup>
+                </select>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <select class="store form-control" name="selshow" id="selshow" onchange="change_shop(this.value)" disabled>
+                    <option> <i>@Localizer["Chọn cửa hàng"] </i></option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="contact-map" id="hn_badinh_kimma">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14896.097397681571!2d105.8256669!3d21.0317117!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x652a2c887c9622eb!2zQ-G7rWEgSMOgbmcgQuG6oWMgTmfhu41jIFR14bqlbg!5e0!3m2!1svi!2s!4v1498556869209" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div><!-- contact map -->
+
+        <div class="contact-map" id="hn_hoankiem_phohue">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.3342670507946!2d105.84956461543467!3d21.019307086003504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab92a5fc12ef%3A0x6bc48a6e899154e2!2zQuG6oWMgTmfhu41jIFR14bqlbg!5e0!3m2!1svi!2s!4v1498556907937" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div><!-- contact map -->
+
+        <div class="contact-map" id="hn_hoankiem_hangbac">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14896.631116831817!2d105.82615766841333!3d21.026371959983425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab6e9ca47125%3A0xd659ef8c186c963e!2zQ-G7rWEgaMOgbmcgdHJhbmcgc-G7qWMgQuG6oWMgTmfhu41jIFR14bqlbg!5e0!3m2!1svi!2s!4v1531291525362" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div><!-- contact map -->
+
+        <div class="contact-map" id="hn_dongda_tonducthang">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14896.922718893842!2d105.832304!3d21.023454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc18724cf38f2e48f!2zVHJhbmcgU-G7qWMgQuG6oWMgOTI1IC0gQuG6oWMgTmfhu41jIFR14bqlbg!5e0!3m2!1svi!2s!4v1498557021036" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div><!-- contact map -->
+
+        <div class="contact-map" id="hn_caugiay_caugiay">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9125705703773!2d105.78818831535474!3d21.036183992899844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab49d6599bd7%3A0xfdc2a2aa6a634130!2zMzY5IEPhuqd1IEdp4bqleSwgROG7i2NoIFbhu41uZywgQ-G6p3UgR2nhuqV5LCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1531292000741" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div> <!-- contact map -->
+
+        <div class="contact-map" id="hn_thanhxuan_nguyentrai">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.8547265254833!2d105.81087061493211!3d20.998459686014744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac90965848d9%3A0xe71a79213a20b1fe!2zMTk4IE5ndXnhu4VuIFRyw6NpLCBUaGFuaCBYdcOibiBUcnVuZywgxJDhu5FuZyDEkGEsIEjDoCBO4buZaQ!5e0!3m2!1svi!2s!4v1578277158312!5m2!1svi!2s" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+        </div><!-- contact map -->
+
+        <div class="contact-map default" id="googleMap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14896.922718893842!2d105.832304!3d21.023454!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc18724cf38f2e48f!2zVHJhbmcgU-G7qWMgQuG6oWMgOTI1IC0gQuG6oWMgTmfhu41jIFR14bqlbg!5e0!3m2!1svi!2s!4v1498557021036" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+        <!-- End bando-->
+    </div>

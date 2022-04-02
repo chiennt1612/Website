@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.ParamSetting>
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+}
+
+<p><span itemprop="name">@Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "COMPANYNAME").FirstOrDefault().ParamValue</span></p>
+<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    <p class="address">
+        <span itemprop="streetAddress">@Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "STREETADDRESS").FirstOrDefault().ParamValue</span>,
+        <span itemprop="addressLocality">@Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "CITYADDRESS").FirstOrDefault().ParamValue</span>
+    </p>
+</div>
+<p class="phone "><span itemprop="telephone">@Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "PHONEFOOTER").FirstOrDefault().ParamValue</span></p>
+<p class="phone-3 lh"><span itemprop="email">@Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "EMAILFOOTER").FirstOrDefault().ParamValue</span></p>
+@*<div id="custom_html-2" class="widget_text col pb-0 widget widget_custom_html">
+    <div class="textwidget custom-html-widget">
+        <div style="text-align:center">
+            <img src="@settingParam[0].Logo?w=1020&#038;ssl=1"
+                             data-recalc-dims="1"
+                             data-lazy-src="@settingParam[0].Logo?w=1020&amp;is-pending-load=1#038;ssl=1"
+                             srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                             class=" jetpack-lazy-image">
+                        <noscript>
+                            <img src="@settingParam[0].Logo?w=1020&#038;ssl=1"
+                                 data-recalc-dims="1" />
+                        </noscript>
+                    <img src="@Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "LOGO").FirstOrDefault().ParamValue" />
+                    <br />
+                    @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "WEBSITE").FirstOrDefault().ParamValue<br />
+                    @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "SINCE").FirstOrDefault().ParamValue<br />
+                </div><hr />
+                      <div style="font-size:13px">
+                          @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "COMPANYNAME").FirstOrDefault().ParamValue<br />
+                          @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "ADDRESS").FirstOrDefault().ParamValue<br />
+                          @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "HOTLINEFOOTER").FirstOrDefault().ParamValue<br />
+                          @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "PHONEFOOTER").FirstOrDefault().ParamValue<br />
+                          @Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "EMAILFOOTER").FirstOrDefault().ParamValue<br />
+                          @Html.Raw(Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "SHOPADDRESS").FirstOrDefault().ParamValue)
+                      </div>
+            </div>
+        </div>*@

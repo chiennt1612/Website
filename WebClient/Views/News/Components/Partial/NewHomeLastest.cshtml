@@ -1,0 +1,207 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IList<EntityFramework.Web.Entities.Article>
+<div class="ms-topnews mt20 line-col relative pb20 clearfix">
+    <section class="fl w525 pr15">
+        @if (Model.Count > 0)
+        {
+            <article class="top-items mb15 relative">
+                <figure class="lh0 relative pic w510 h333">
+                    <a class="w-full" asp-controller="News" asp-route-Title="@Model[0].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[0].Id" title="@Model[0].Title">
+                        <img width="510" alt="@Model[0].Title" class="lazy"
+                             data-src="@Model[0].Img" src="@Model[0].Img">
+                        <div class="gradient-shadow abs08"></div>
+                    </a>
+                </figure>
+                <header class=" abs08">
+                    <h2 class="font24 bold lh-1-3">
+                        <a asp-controller="News" asp-route-Title="@Model[0].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[0].Id" title="@Model[0].Title" class="white pd10">
+                            @Model[0].Title
+                            <span class="cout-cmt font15 white ml5" data-articleId="611098">
+                                <i class="icon-comment-6 mr2"></i><span class="c-comment">0</span>
+                            </span>
+                        </a>
+                    </h2>
+                </header>
+            </article>
+        }
+
+        @if (Model.Count > 1)
+        {
+            <article class="items w245 fl">
+                <figure class="pic lh0 w245 h160 relative">
+                    <a class="w-full" asp-controller="News" asp-route-Title="@Model[1].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[1].Id" title="@Model[1].Title">
+                        <img width="245" alt="@Model[1].Title" class="lazy"
+                             data-src="@Model[1].Img" src="@Model[1].Img">
+                    </a>
+                </figure>
+                <header class="mt8">
+                    <h2 class="font15 bold lh-1-3">
+                        <a asp-controller="News" asp-route-Title="@Model[1].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[1].Id" title="@Model[1].Title">
+                            @Model[1].Title
+                        </a>
+                    </h2>
+                </header>
+                <footer class="mt5 gray-91 font12">
+                    <span class="time-update mr10">@Model[1].DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+                    <span class="cout-cmt red font13" data-articleId="@Model[1].Id">
+                        <i class="icon-comment-6 mr2"></i>
+                        <span class="c-comment">
+                            0
+                        </span>
+                    </span>
+                </footer>
+            </article>
+        }
+
+        @if (Model.Count > 2)
+        {
+            <article class="items w245 fl">
+                <figure class="pic lh0 w245 h160 relative">
+                    <a class="w-full" asp-controller="News" asp-route-Title="@Model[2].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[2].Id" title="@Model[2].Title">
+                        <img width="245" alt="@Model[2].Title" class="lazy"
+                             data-src="@Model[2].Img" src="@Model[2].Img">
+                    </a>
+                </figure>
+                <header class="mt8">
+                    <h2 class="font15 bold lh-1-3">
+                        <a asp-controller="News" asp-route-Title="@Model[2].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[2].Id" title="@Model[2].Title">
+                            @Model[2].Title
+                        </a>
+                    </h2>
+                </header>
+                <footer class="mt5 gray-91 font12">
+                    <span class="time-update mr10">@Model[2].DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+                    <span class="cout-cmt red font13" data-articleId="@Model[2].Id">
+                        <i class="icon-comment-6 mr2"></i>
+                        <span class="c-comment">
+                            0
+                        </span>
+                    </span>
+                </footer>
+            </article>
+        }
+
+    </section>
+
+    <section class="fl w255 pl15">
+        <div class="new-home-lastest">
+            @if (Model.Count > 3)
+            {
+                <article class="top-items bor-bot-e5 pb10 mb10">
+                    <figure class="pic lh0 w240 h158 relative">
+                        <a class="w-full" asp-controller="News" asp-route-Title="@Model[3].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[3].Id" title="@Model[3].Title">
+                            <img width="240" alt="@Model[3].Title" class="lazy"
+                                 data-src="@Model[3].Img" src="@Model[3].Img">
+                        </a>
+                    </figure>
+                    <header class="mt8">
+                        <h2 class="font15 bold lh-1-3">
+                            <a asp-controller="News" asp-route-Title="@Model[3].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[3].Id" title="@Model[3].Title">
+                                @Model[3].Title
+                            </a>
+                        </h2>
+                    </header>
+                    <footer class="mt5 gray-91 font12">
+                        <span class="time-update mr10">@Model[3].DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+                        <span class="cout-cmt red font13" data-articleId="@Model[3].Id">
+
+                            <i class="icon-comment-6 mr2"></i><span class="c-comment">
+                                4
+                            </span>
+                        </span>
+                    </footer>
+                </article>
+            }
+
+            @if (Model.Count > 4)
+            {
+                <article class="items bor-bot-e5 pb13 mb13 clearfix ">
+                    <figure class="pic lh0 w80 h53 relative mt2 fl">
+                        <a class="w-full" asp-controller="News" asp-route-Title="@Model[4].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[4].Id" title="@Model[4].Title">
+                            <img width="80" alt="@Model[4].Title" class="lazy"
+                                 data-src="@Model[4].Img" src="@Model[4].Img">
+                        </a>
+                    </figure>
+                    <header class="pl90">
+                        <h2 class="font13 semibold lh-1-3">
+                            <a asp-controller="News" asp-route-Title="@Model[4].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[4].Id" title="@Model[4].Title">
+                                @Model[4].Title
+                            </a>
+                        </h2>
+                    </header>
+                    <footer class="pl90 mt5 gray-91 font12">
+                        <span class="time-update mr10">@Model[4].DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+                        <span class="cout-cmt red font13" data-articleId="@Model[4].Id">
+
+                            <i class="icon-comment-6 mr2"></i>
+                            <span class="c-comment">
+                                0
+                            </span>
+                        </span>
+                    </footer>
+                </article>
+            }
+
+            @if (Model.Count > 5)
+            {
+                <article class="items bor-bot-e5 pb13 mb13 clearfix ">
+                    <figure class="pic lh0 w80 h53 relative mt2 fl">
+                        <a class="w-full" asp-controller="News" asp-route-Title="@Model[5].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[5].Id" title="@Model[5].Title">
+                            <img width="80" alt="@Model[5].Title" class="lazy"
+                                 data-src="@Model[5].Img" src="@Model[5].Img">
+                        </a>
+                    </figure>
+                    <header class="pl90">
+                        <h2 class="font13 semibold lh-1-3">
+                            <a asp-controller="News" asp-route-Title="@Model[5].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[5].Id" title="@Model[5].Title">
+                                @Model[5].Title
+                            </a>
+                        </h2>
+                    </header>
+                    <footer class="pl90 mt5 gray-91 font12">
+                        <span class="time-update mr10">@Model[5].DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+                        <span class="cout-cmt red font13" data-articleId="@Model[5].Id">
+
+                            <i class="icon-comment-6 mr2"></i>
+                            <span class="c-comment">
+                                2
+                            </span>
+                        </span>
+                    </footer>
+                </article>
+            }
+
+            @if (Model.Count > 6)
+            {
+                <article class="items bor-bot-e5 pb13 mb13 clearfix last">
+                    <figure class="pic lh0 w80 h53 relative mt2 fl">
+                        <a class="w-full" asp-controller="News" asp-route-Title="@Model[6].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[6].Id" title="@Model[6].Title">
+                            <img width="80" alt="@Model[6].Title" class="lazy"
+                                 data-src="@Model[6].Img" src="@Model[6].Img">
+                        </a>
+                    </figure>
+                    <header class="pl90">
+                        <h2 class="font13 semibold lh-1-3">
+                            <a asp-controller="News" asp-route-Title="@Model[6].Title.RemoveSign4VietnameseString()" asp-action="Details" asp-route-Id="@Model[6].Id" title="@Model[6].Title">
+                                @Model[6].Title
+                            </a>
+                        </h2>
+                    </header>
+                    <footer class="pl90 mt5 gray-91 font12">
+                        <span class="time-update mr10">@Model[6].DateCreator.ToString("HH:mm dd/MM/yyyy")</span>
+                        <span class="cout-cmt red font13" data-articleId="@Model[6].Id">
+
+                            <i class="icon-comment-6 mr2"></i>
+                            <span class="c-comment">
+                                3
+                            </span>
+                        </span>
+                    </footer>
+                </article>
+            }
+
+        </div>
+    </section>
+</div>

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
+﻿using EntityFramework.Web.Entities;
 
 namespace WebAdmin.Repository.Interfaces
 {
-    public interface IMenuMainFooterRepository: IGenericRepository<MenuMainFooter, long>
+    public interface IMenuMainFooterRepository : IGenericRepository<MenuMainFooter, long>
     {
     }
 }

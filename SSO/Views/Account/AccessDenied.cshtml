@@ -1,7 +1,8 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 <div class="container">
     <div class="lead">
-        <h1>Không có quyền truy cập</h1>
-        <p>Bạn không có quyền truy cập chức năng.</p>
+        <h1>@Localizer["Không có quyền truy cập"]</h1>
+        <p>@Localizer["Bạn không có quyền truy cập chức năng."]</p>
     </div>
 </div>

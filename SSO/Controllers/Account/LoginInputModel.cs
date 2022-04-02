@@ -9,16 +9,16 @@ namespace SSO.Controllers
     public class LoginInputModel
     {
         [Required]
-        [Display(Name = "Tên đăng nhập")]
+        [Display(Name = "UserName", ResourceType = typeof(LanguageAll.Language))]
         public string Username { get; set; }
         [Required]
-        [Display(Name = "Mật khẩu")]
+        [Display(Name = "Password", ResourceType = typeof(LanguageAll.Language))]
         public string Password { get; set; }
-        [Display(Name = "Ghi nhớ đăng nhập")]
+        [Display(Name = "RememberLogin", ResourceType = typeof(LanguageAll.Language))]
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Remember", ResourceType = typeof(LanguageAll.Language))]
         public bool RememberMe { get; set; }
     }
 }

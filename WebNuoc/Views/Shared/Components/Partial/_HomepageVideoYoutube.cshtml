@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Adv>
+<!--Thanh - Thêm ảnh dự án -->
+@if (Model.Count() > 0)
+{
+<section id="image-home-carousel">
+    <div class="container">
+        <h2>@Localizer["VIDEO TIN TỨC VỀ NƯỚC SẠCH"]</h2>
+        <p class="summary">@Localizer["Cập nhật video mới nhất về công ty và các hoạt động"]</p>
+        <div class="owl-carousel owl-theme">
+            @foreach (var item in Model)
+                {
+            <div class="item">
+                @Html.Raw(item.AdvScript)
+                <p>✅ @item.CustomerName</p>
+            </div>
+                }
+        </div>
+    </div>
+</section>
+}

@@ -1,0 +1,124 @@
+﻿@using WebAdmin.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model WebAdmin.Models.FileInfoModel
+
+@{
+    ViewData["Title"] = Localizer["Danh sách"];
+}
+
+<h1>@Localizer["Danh sách"]</h1>
+
+<p>
+    <a asp-action="Upload">@Localizer["Thêm mới"]</a>
+    <form method="get">
+        <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+        <input type="submit" value="Search" />
+    </form>
+</p>
+@using (Html.BeginForm())
+{@*@if (Model.Count > 0)
+        {*@
+<div class="pagination">
+    Page @(Model.fileInfos.PageCount < Model.fileInfos.PageNumber ? 0 : Model.fileInfos.PageNumber)
+    of @Model.fileInfos.PageCount   @Html.PagedListPager(Model.fileInfos, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.fileInfos[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fileInfos[0].Extension)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fileInfos[0].FullName)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.fileInfos[0].Directory.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fileInfos[0].Directory.FullName)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.fileInfos[0].CreationTime)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.fileInfos[0].LastAccessTime)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.fileInfos)
+        {
+
+                        var filePath = item.FullName.GetUrlFile(Context.Request, ViewData["SubFolder"].ToString(), ViewData["OriginDirectory"].ToString());
+                        var fileName = item.Name;
+                        var fileExtention = item.Extension.Replace(".", "");
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Extension)
+            </td>
+            <td>
+                <input id="FileName" name="FileName" width="60" class="form-control" value="@filePath" />
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Directory.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Directory.FullName)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationTime)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.LastAccessTime)
+                </td>*@
+            <td>
+
+                @if(",.png,.jpeg,.gif,.jpg,".IndexOf($",{item.Extension},") > -1)
+                {
+                <img class="content-img" src="@filePath" height="50" />
+                    }
+                    else if (",.avi,.mov,.wmv,.mp4,.mp3,.mpg,.mpeg,.flv,".IndexOf($",{item.Extension},") > -1)
+                {
+                <video class="content-img" controls height="50">
+                    <source src="@filePath" type="video/@fileExtention" />
+                    This br @fileName owser does not support the HTML5 video element.
+                </video>
+                }
+                else
+                {
+                <a href="@filePath"><img height="24" title="@(fileExtention).png" src="@(Util.UrlHostUpload(Context.Request) + fileExtention).png"></a>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<div class="pagination">
+    Page @(Model.fileInfos.PageCount < Model.fileInfos.PageNumber ? 0 : Model.fileInfos.PageNumber)
+    of @Model.fileInfos.PageCount   @Html.PagedListPager(Model.fileInfos, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>}

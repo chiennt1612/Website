@@ -1,16 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using WebAdmin.Repository.Interfaces;
 using WebAdmin.Services.Interfaces;
 using X.PagedList;
-using EntityFramework.Web.DBContext;
 
 namespace WebAdmin.Services
 {
@@ -30,12 +28,12 @@ namespace WebAdmin.Services
             {
                 await unitOfWork.productRepository.AddAsync(_Product);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Save object {JsonConvert.SerializeObject(_Product)} Is OK");
+                ilogger.LogInformation($"Save object Is OK");//{JsonConvert.SerializeObject(_Product)}
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Save object {JsonConvert.SerializeObject(_Product)} Is Fail {ex.Message}");
+                ilogger.LogError($"Save object  Is Fail {ex.Message}");//{JsonConvert.SerializeObject(_Product)}
                 return false;
             }
         }
@@ -61,7 +59,14 @@ namespace WebAdmin.Services
             try
             {
                 var a = await unitOfWork.productRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                try
+                {
+                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                }
+                catch (Exception ex)
+                {
+                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {ex.Message}");
+                }
                 return a;
             }
             catch (Exception ex)
@@ -82,7 +87,7 @@ namespace WebAdmin.Services
             return await unitOfWork.productRepository.CateGetAllAsync();
         }
         public async Task<IPagedList<Product>> GetListAsync(
-            Expression<Func<Product, bool>> expression, Func<Product, string> sort, bool desc = false,
+            Expression<Func<Product, bool>> expression, Func<Product, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             try
@@ -104,12 +109,12 @@ namespace WebAdmin.Services
             {
                 unitOfWork.productRepository.Update(_Product);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Update object {JsonConvert.SerializeObject(_Product)} Is OK");
+                ilogger.LogInformation($"Update object Is OK");//{JsonConvert.SerializeObject(_Product)} 
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Update object {JsonConvert.SerializeObject(_Product)} Is Fail {ex.Message}");
+                ilogger.LogError($"Update object Is Fail {ex.Message}");//{JsonConvert.SerializeObject(_Product)} 
                 return false;
             }
         }

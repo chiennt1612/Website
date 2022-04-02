@@ -1,16 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using WebAdmin.Repository.Interfaces;
 using WebAdmin.Services.Interfaces;
 using X.PagedList;
-using EntityFramework.Web.DBContext;
 
 namespace WebAdmin.Services
 {
@@ -59,7 +57,7 @@ namespace WebAdmin.Services
         public async Task<IEnumerable<Categories>> GetAllAsync()
         {
             ilogger.LogInformation($"GetAllAsync");
-            return await unitOfWork.categoriesRepository.GetAllAsync(); 
+            return await unitOfWork.categoriesRepository.GetAllAsync();
         }
 
         public async Task<Categories> GetByIdAsync(long Id)
@@ -78,7 +76,7 @@ namespace WebAdmin.Services
         }
 
         public async Task<IPagedList<Categories>> GetListAsync(
-            Expression<Func<Categories, bool>> expression, Func<Categories, string> sort, bool desc = false,
+            Expression<Func<Categories, bool>> expression, Func<Categories, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             try

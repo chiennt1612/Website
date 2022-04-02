@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SSO.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SSO.DBContext
 {
@@ -21,7 +17,8 @@ namespace SSO.DBContext
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
-            builder.Entity<AppUser>(u1 => {
+            builder.Entity<AppUser>(u1 =>
+            {
                 u1.HasKey(u => u.Id);
                 u1.Property(u => u.Email)
                     .HasMaxLength(200)
@@ -39,7 +36,8 @@ namespace SSO.DBContext
                 u1.ToTable("Users");
             });
 
-            builder.Entity<AppRole>(u1 => {
+            builder.Entity<AppRole>(u1 =>
+            {
                 u1.HasKey(u => u.Id);
 
                 u1.HasIndex(u => u.Name).IsUnique();

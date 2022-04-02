@@ -1,0 +1,16 @@
+﻿@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@using WebClient.Services
+
+@inject IViewLocalizer Localizer
+@model IEnumerable<Categories>
+
+@{
+    var a1 = Model.Where(u => u.ParentId == 48).ToList(); 
+    //var a1 = Model.Where(u => u.DisplayOnMenuMain).ToList(); 
+}
+
+@for (var i = 0; i < a1.Count(); i++)
+{
+<li><a asp-action="index" asp-controller="Categories" asp-route-Id="@a1[i].Id" asp-route-Page="1">@a1[i].Name</a></li>
+}

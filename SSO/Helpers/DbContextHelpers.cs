@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 
 namespace SSO.Helpers

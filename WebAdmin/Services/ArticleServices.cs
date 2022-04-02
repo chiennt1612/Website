@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using WebAdmin.Repository.Interfaces;
 using WebAdmin.Services.Interfaces;
 using X.PagedList;
-using EntityFramework.Web.DBContext;
 
 namespace WebAdmin.Services
 {
@@ -31,12 +28,12 @@ namespace WebAdmin.Services
             {
                 await unitOfWork.articleRepository.AddAsync(article);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Save object {JsonConvert.SerializeObject(article)} Is OK");
+                ilogger.LogInformation($"Save object  Is OK");//{JsonConvert.SerializeObject(article)}
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Save object {JsonConvert.SerializeObject(article)} Is Fail {ex.Message}");
+                ilogger.LogError($"Save object  Is Fail {ex.Message}");//{JsonConvert.SerializeObject(article)}
                 return false;
             }
         }
@@ -71,7 +68,14 @@ namespace WebAdmin.Services
             try
             {
                 var a = await unitOfWork.articleRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                try
+                {
+                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                }
+                catch (Exception ex)
+                {
+                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {ex.Message}");
+                }
                 return a;
             }
             catch (Exception ex)
@@ -82,7 +86,7 @@ namespace WebAdmin.Services
         }
 
         public async Task<IPagedList<Article>> GetListAsync(
-            Expression<Func<Article, bool>> expression, Func<Article, string> sort, bool desc = false,
+            Expression<Func<Article, bool>> expression, Func<Article, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             try
@@ -104,12 +108,12 @@ namespace WebAdmin.Services
             {
                 unitOfWork.articleRepository.Update(article);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Update object {JsonConvert.SerializeObject(article)} Is OK");
+                ilogger.LogInformation($"Update object  Is OK");//{JsonConvert.SerializeObject(article)}
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Update object {JsonConvert.SerializeObject(article)} Is Fail {ex.Message}");
+                ilogger.LogError($"Update object  Is Fail {ex.Message}");//{JsonConvert.SerializeObject(article)}
                 return false;
             }
         }

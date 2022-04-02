@@ -1,0 +1,64 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Home.SearchInput
+@{
+//List<SelectListItem> s = new List<SelectListItem>();
+//var abc = ViewData.GetCategory();
+//if (abc != null)
+//    s = abc
+//        .Where(u => u.DisplayOnMenuMain)
+//        .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+//        .ToList();
+}
+
+<form method="get" action="/tim" onsubmit="return false;">
+    <a href="javascript:void(0)" class="ut-close-icon">close utility</a>
+    <a href="javascript:searchHeader();" class="fixed-search">@Localizer["Tìm Kiếm"]</a>
+    <input type="search" placeholder="@Localizer["Ví dụ: nhẫn bạc nữ có đá"]" maxlength="600" name="q" id="qheader" autocomplete="off">
+    <div class="autocomplete-suggestions"></div>
+</form>
+@*<form id="frmSearchByKeyword" asp-action="Search" asp-controller="Categories">
+    <a href="javascript:void(0)" class="ut-close-icon">close utility</a>
+    <a href="javascript:SearchSubmit_OnClick('ByKeyword');" class="fixed-search">@Localizer["Tìm kiếm"]</a>
+    <input type="text" asp-for="Keyword" placeholder="@Localizer["Ví dụ: nhẫn bạc nữ có đá"]" autocomplete="off" maxlength="200" />
+    <div class="autocomplete-suggestions"></div>
+    <input type="hidden" asp-for="CategoryId" />
+    <input type="hidden" asp-for="min_price" />
+    <input type="hidden" asp-for="max_price" />
+    <input type="hidden" asp-for="OrderValue" />
+</form>*@
+@*<div class="flex-col hide-for-medium flex-left flex-grow">
+    <ul class="header-nav header-nav-main nav nav-left  nav-uppercase">
+        <li class="header-search-form search-form html relative has-icon">
+            <div class="header-search-form-wrapper">
+                <div class="searchform-wrapper ux-search-box relative form-flat is-normal">
+
+                    <form id="frmSearchByKeyword" asp-action="Search" asp-controller="Categories" class="searchform">
+                        <div class="flex-row relative">
+                            <div class="flex-col search-form-categories">
+                                <select asp-for="CategoryId" asp-items="s">
+                                    <option value="" selected='selected'>All</option>
+                                </select>
+
+                            </div>
+                            <div class="flex-col flex-grow">
+                                <label class="screen-reader-text" for="woocommerce-product-search-field-1">@Localizer["Tìm kiếm"]:</label>
+                                <input type="text" asp-for="Keyword" class="search-field mb-0" placeholder="@Localizer["Ví dụ: nhẫn bạc nữ có đá"]" />
+                                <input type="hidden" asp-for="SearchType" value="ByKeyword" />
+                            </div>
+                            <div class="flex-col">
+                                <button id="bntSearchByKeyword" onclick="SearchSubmit_OnClick('ByKeyword')" type="button" value="@Localizer["Tìm kiếm"]" class="ux-search-submit submit-button secondary button icon mb-0">
+                                    <i class="icon-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="live-search-results text-left z-top"></div>
+                    </form>
+
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>*@

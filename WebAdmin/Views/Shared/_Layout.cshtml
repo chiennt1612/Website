@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="~/css/select2.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/tinymce.min.js"></script>
     <script src="~/js/select2.full.js"></script>
     <script src="~/js/select2totree.js"></script>
     <style>
@@ -68,20 +67,222 @@
         </div>
     </footer>
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
+
+    <script src="/tinymce/tinymce.min.js"></script>
     <script>
-        $(function () {
-            $('select.select2:not([multiple])').select2();
-            $('select.select2[multiple]').each(function () {
-                initSelect2Multi($(this));
-            });
-            $('select.tree-search').select2ToTree();
-        });
         function initSelect2Multi(a) {
             a.select2({ closeOnSelect: false });
             var b = a.attr('onchange');
             a.removeAttr('onchange');
             a.on('select2:close', function () { eval(b); });
+        }
+
+        $(function () {
+            if ($('#Img').length > 0) $('#Img').removeAttr("readonly");
+            if ($('#ImgSlide1').length > 0) $('#ImgSlide1').removeAttr("readonly");
+            if ($('#ImgSlide2').length > 0) $('#ImgSlide2').removeAttr("readonly");
+            if ($('#ImgSlide3').length > 0) $('#ImgSlide3').removeAttr("readonly");
+            if ($('#ImgSlide4').length > 0) $('#ImgSlide4').removeAttr("readonly");
+            if ($('#ImgSlide5').length > 0) $('#ImgSlide5').removeAttr("readonly");
+            if ($('#ImgBanner').length > 0) $('#ImgBanner').removeAttr("readonly");
+
+            $('select.select2:not([multiple])').select2();
+            $('select.select2[multiple]').each(function () {
+                initSelect2Multi($(this));
+            });
+            $('select.tree-search').select2ToTree();
+
+            // when a file is selected, upload it to the server
+            $('input:file').on("change", function (e) {
+                UpLoad($(this).attr("name"));
+            });
+        
+            tinymce.init({
+                selector: '.tinyEditor',
+                height: 480,
+                theme: 'modern',
+                paste_data_images: true,
+                external_plugins: {
+                    'image': '/tinymce/plugins/image/plugin.min.js',
+                    'media': '/tinymce/plugins/media/plugin.min.js',
+                    'emoticons': '/tinymce/plugins/emoticons/plugin.min.js',
+                    'anchor': '/tinymce/plugins/anchor/plugin.min.js',
+                    'code': '/tinymce/plugins/code/plugin.min.js',
+                    'textcolor': '/tinymce/plugins/textcolor/plugin.min.js',
+                    'lineheight': '/tinymce/plugins/lineheight/plugin.min.js',
+                    'contextmenu': '/tinymce/plugins/contextmenu/plugin.min.js'
+                },
+                plugins: 'searchreplace autolink directionality  visualblocks visualchars image image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount   imagetools    contextmenu colorpicker textpattern help',
+                toolbar: 'imageupload | fontselect fontsize   fontsizeselect formatselect | bold italic strikethrough forecolor backcolor |   image link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                table_toolbar: "tableprops tabledelete tablemergecells tablesplitcells | tableinsertrowbefore tableinsertrowafter tabledeleterow tablerowprops  | tableinsertcolbefore tableinsertcolafter tabledeletecol tablecellprops",
+                image_advtab: true,
+                fontsize_formats: "8pt 10pt 12pt 14pt 6pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt 32pt 34pt 36pt",
+                setup: function (editor) {
+                    initImageUpload('pic1', editor);
+                }
+            });
+
+            tinymce.init({
+                selector: '.productEditor',
+                height: 80,
+                theme: 'modern',
+                paste_data_images: true,
+                external_plugins: {
+                    'image': '/tinymce/plugins/image/plugin.min.js',
+                    'media': '/tinymce/plugins/media/plugin.min.js',
+                    'emoticons': '/tinymce/plugins/emoticons/plugin.min.js',
+                    'anchor': '/tinymce/plugins/anchor/plugin.min.js',
+                    'code': '/tinymce/plugins/code/plugin.min.js',
+                    'textcolor': '/tinymce/plugins/textcolor/plugin.min.js',
+                    'lineheight': '/tinymce/plugins/lineheight/plugin.min.js',
+                    'contextmenu': '/tinymce/plugins/contextmenu/plugin.min.js'
+                },
+                plugins: 'searchreplace autolink directionality  visualblocks visualchars image image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount   imagetools    contextmenu colorpicker textpattern help',
+                toolbar: 'imageupload | fontselect fontsize   fontsizeselect formatselect | bold italic strikethrough forecolor backcolor |   image link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                table_toolbar: "tableprops tabledelete tablemergecells tablesplitcells | tableinsertrowbefore tableinsertrowafter tabledeleterow tablerowprops  | tableinsertcolbefore tableinsertcolafter tabledeletecol tablecellprops",
+                image_advtab: true,
+                fontsize_formats: "8pt 10pt 12pt 14pt 6pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt 32pt 34pt 36pt",
+                setup: function (editor) {
+                    initImageUpload('pic2', editor);
+                }
+            });
+        });
+
+        function initImageUpload(u, editor) {
+            // create input and insert in the DOM
+            var inp = $('<input id="' + u + '" type="file" name="' + u + '" style="display:none">');
+            $(editor.getElement()).parent().append(inp);
+
+            // add the image upload button to the editor toolbar
+            editor.addButton('imageupload', {
+                text: '',
+                icon: 'image',
+                onclick: function (e) { // when toolbar button is clicked, open file select modal
+                    inp.trigger('click');
+                }
+            });
+
+            // when a file is selected, upload it to the server
+            inp.on("change", function (e) {
+                uploadFile(u, editor);
+            });
+        }
+
+        function uploadFile(inp, editor) {
+            var fd = new FormData();
+            var files = $('#' + inp)[0].files;
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('pic', files[0]);
+                $.ajax({
+                    url: "/Medias/Upload",
+                    processData: false,
+                    contentType: false,
+                    data: fd,
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.substr(0, "Error:".length) == "Error:") {
+                            editor.insertContent(' [<span class="text-danger">' + result + '</span>] ');
+                        }
+                        else {
+                            var fileName = result;
+                            var i = fileName.lastIndexOf(".");
+                            var fileExtention = "";
+                            if (i > -1) fileExtention = fileName.substr(i + 1);
+                            var subFolder = /Upload/;
+                            i = fileName.lastIndexOf(subFolder);
+                            var hostSubFolder = fileName.substr(0, i) + subFolder;
+                            switch (fileExtention) {
+                                case "png":
+                                case "jpeg":
+                                case "gif":
+                                case "jpg":
+                                    editor.insertContent('<img class="content-img" src="' + result + '"/>');
+                                    break;
+                                case "avi":
+                                case "mov":
+                                case "wmv":
+                                case "mp4":
+                                case "mp3":
+                                case "mpg":
+                                case "mpeg":
+                                case "flv":
+                                    editor.insertContent('<video  class="content-img" controls width="250" height="200"> <source src="' + fileName + '" type="video/' + fileExtention + '">This br + fileName + owser does not support the HTML5 video element.</video>');
+                                    break;
+                                default:
+                                    editor.insertContent('<a href="' + fileName + '"><img height="24" title="' + fileExtention + '.png" src="' + hostSubFolder + fileExtention + '.png"></a>');
+                                    break;
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function UpLoad(name) {
+            var fd = new FormData();
+            var files = $('#' + name)[0].files;
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('pic', files[0]);
+                $.ajax({
+                    url: "/Medias/Upload",
+                    processData: false,
+                    contentType: false,
+                    data: fd,
+                    type: 'POST',
+                    success: function (result) {
+                        var fileName = result;
+                        var i = fileName.lastIndexOf(".");
+                        var fileExtention = "";
+                        if (i > -1) fileExtention = fileName.substr(i + 1);
+                        var subFolder = /Upload/;
+                        i = fileName.lastIndexOf(subFolder);
+                        var hostSubFolder = fileName.substr(0, i) + subFolder;
+                        name = name.substring(3);
+                        $("#" + name).val(result);
+                        $("#" + name).attr("readonly", "");
+                        switch (fileExtention) {
+                            case "png":
+                            case "jpeg":
+                            case "gif":
+                            case "jpg":
+                                if ($('#Show' + name).length > 0) {
+                                    $("#Show" + name).attr("src", result);
+                                    $("#Show" + name).attr("style", "display:block");
+                                    $("#Show" + name).attr("height", 100);
+                                }
+                                else if ($('#ShowFiles' + name).length > 0) {
+                                    $('#ShowFiles' + name).html('<img class="content-img" src="' + result + '"/>');
+                                    $("#ShowFiles" + name).attr("style", "display:block");
+                                }
+                                break;
+                            case "avi":
+                            case "mov":
+                            case "wmv":
+                            case "mp4":
+                            case "mp3":
+                            case "mpg":
+                            case "mpeg":
+                            case "flv":
+                                if ($('#ShowFiles' + name).length > 0) {
+                                    $('#ShowFiles' + name).html('<video  class="content-img" controls width="250" height="200"> <source src="' + fileName + '" type="video/' + fileExtention + '">This br + fileName + owser does not support the HTML5 video element.</video>');
+                                    $("#ShowFiles" + name).attr("style", "display:block");
+                                }
+                                break;
+                            default:
+                                if ($('#ShowFiles' + name).length > 0) {
+                                    $('#ShowFiles' + name).html('<a href="' + fileName + '"><img height="24" title="' + fileExtention + '.png" src="' + hostSubFolder + fileExtention + '.png"></a>');
+                                    $("#ShowFiles" + name).attr("style", "display:block");
+                                }
+                                break;
+                        }
+                        
+                        
+                    }
+                });
+            }
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)

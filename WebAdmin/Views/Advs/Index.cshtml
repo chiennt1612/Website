@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@*@model IEnumerable<EntityFramework.Web.Entities.Adv>*@
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<EntityFramework.Web.Entities.Adv>
+
+@{
+    ViewData["Title"] = Localizer["Danh sách"];
+}
+
+<h1>@Localizer["Danh sách"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["Thêm mới"]</a>
+    <form method="get">
+        <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+        <input type="submit" value="Search" />
+    </form>
+</p>
+@using (Html.BeginForm())
+{@*@if (Model.Count > 0)
+        {*@
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Mobile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Website)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Pos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Img)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AdvScript)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Status)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Website)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pos)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Img)*@
+                    <img id="ShowImg" height="100" src="@item.Img" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AdvScript)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Sửa"]</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Chi tiết"]</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Xóa"]</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>}

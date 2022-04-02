@@ -1,0 +1,289 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
+@using WebNuoc.Services
+@inject IViewLocalizer Localizer
+@inject IHttpContextAccessor httpContext
+
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <link rel="shortcut icon" href="/Image/favicon.png" type="image/x-icon" />
+
+        <title>@Localizer["Nhà Máy Nước Sạch Ngọc Tuấn - Nagaoka | Nước sạch Hưng Yên chuẩn Bộ Y tế"]</title>
+        <meta name="keywords" content="0">
+        <meta name="description" content="@Localizer["Công ty TNHH Nước Sạch Ngọc Tuấn - Nagaoka được hình thành từ năm 2016 với ngành nghề đăng ký kinh doanh chính là sản xuất đồ uống không cồn, nước khoáng, khai thác, cung cấp xử lý nước; tư vấn thiết kế xây dựng công trình và xử lý nước thải."]">
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href="@(httpContext.HttpContext.Request.Scheme + "://" + httpContext.HttpContext.Request.Host)" />
+        <!--Open Graph Meta Tags-->
+        <meta property="og:title" content="@Localizer["Nhà Máy Nước Sạch Ngọc Tuấn - Nagaoka | Nước sạch Hưng Yên chuẩn Bộ Y tế"]">
+        <meta property="og:description" content="@Localizer["Công ty TNHH Nước Sạch Ngọc Tuấn - Nagaoka được hình thành từ năm 2016 với ngành nghề đăng ký kinh doanh chính là sản xuất đồ uống không cồn, nước khoáng, khai thác, cung cấp xử lý nước; tư vấn thiết kế xây dựng công trình và xử lý nước thải."]">
+        <meta itemprop="image" content="@(httpContext.HttpContext.Request.Scheme + "://" + httpContext.HttpContext.Request.Host + "/Image/metaBanner.jpg")">
+
+        <!--css-->
+        <link rel="stylesheet" href="/css/nuoc/owl.carousel.css" />
+        <link href="/css/nuoc/style.css?v=666666" rel="stylesheet" />
+
+        <!--Array
+    (
+        [name] => home
+        [view] => home
+        [view_id] => 0
+    )
+    1-->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136221326-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-136221326-1');
+        </script>
+
+    </head>
+    <body>
+        @await Component.InvokeAsync("Partial", new { _PartialName = "_HeaderTop" })
+
+        <section id="header">
+            <div class="container">
+                <a href="/" id="logo"><img src="/Image/logo_logo_Logo.png" alt="@Localizer["Nước Ngọc Tuấn"]" /></a>
+                <a asp-action="Profile" asp-controller="Account" id="header-account-mobile" class="d-lg-none d-md-block">
+                    <i class="fa fa-user"></i>
+                </a>
+                <div class="icon-menu-mobile d-lg-none d-md-block">
+                    <span></span><span></span><span></span>
+                </div>
+
+                <nav id="nav-mobile">
+                    <div class="container">
+                        <div class="item"><a href="/">@Localizer["Trang chủ"]</a> </div>
+                        <div class="item root">
+                            <a>@Localizer["Thanh toán Online"]<i class="fa fa-caret-down"></i></a>
+                            <div class="sub">
+                                <a href="/About/11">@Localizer["Các hình thức thanh toán hóa đơn nước"]</a>
+                                <a href="/About/2">@Localizer["Hướng dẫn Thanh toán Online"]</a>
+                                <a href="/Invoice">@Localizer["Thanh toán qua OnePay"]</a>
+                                <a href="/Invoice/Payoo">@Localizer["Thanh toán qua Payoo"]</a>
+                                <a href="/Invoice/InvoiceHist">@Localizer["Lịch sử hóa đơn"]</a>
+                            </div>
+                        </div>
+                        <div class="item root">
+                            <a href="/Service">@Localizer["Đăng ký dịch vụ"]<i class="fa fa-caret-down"></i></a>
+                            @await Component.InvokeAsync("Partial", new { _PartialName = "_ListServicesMenu" })
+                        </div>
+                        <div class="item"><a href="/FAQ">@Localizer["Câu hỏi thường gặp"]</a> </div>
+                        <div class="item"><a href="/News">@Localizer["Tin tức"]</a> </div>
+                        <div class="item"><a href="/About/6">@Localizer["Tuyển dụng"]</a> </div>
+                        <div class="item"><a href="/Contact">@Localizer["liên hệ"]</a> </div>
+                        <div class="item root">
+                            <a>@Localizer["hướng dẫn"] <i class="fa fa-caret-down"></i></a>
+                            <div class="sub">
+                                <a href="/About/5">@Localizer["Hướng dẫn Đăng ký/Đăng nhập"]</a>
+                                <a href="/About/7">@Localizer["Hướng dẫn đăng ký dịch vụ"]</a>
+                                <a href="/About/5#tracuu">@Localizer["Hướng dẫn tra cứu thông tin"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <nav id="nav-pc" class="d-md-none d-none d-lg-block">
+                    <div class="item"><a href="/">@Localizer["Trang chủ"]</a> </div>
+                    <div class="item">
+                        <a>@Localizer["Thanh toán Online"]<i class="fa fa-caret-down"></i></a>
+                        <div class="sub">
+                            <a href="/About/11">@Localizer["Các hình thức thanh toán hóa đơn nước"]</a>
+                            <a href="/About/2">@Localizer["Hướng dẫn Thanh toán Online"]</a>
+                            <a href="/Invoice">@Localizer["Thanh toán qua OnePay"]</a>
+                            <a href="/Invoice/Payoo">@Localizer["Thanh toán qua Payoo"]</a>
+                            <a href="/Invoice/InvoiceHist">@Localizer["Lịch sử hóa đơn"]</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <a href="/Service">@Localizer["Đăng ký dịch vụ"]<i class="fa fa-caret-down"></i></a>
+                        @await Component.InvokeAsync("Partial", new { _PartialName = "_ListServicesMenu" })
+                    </div>
+                    <div class="item"><a href="/FAQ">@Localizer["Câu hỏi thường gặp"]</a> </div>
+                    <div class="item"><a href="/News">@Localizer["Tin tức"]</a> </div>
+                    <div class="item"><a href="/About/6">@Localizer["Tuyển dụng"]</a> </div>
+                    <div class="item"><a href="/Contact">@Localizer["liên hệ"]</a> </div>
+                    <div class="item">
+                        <a>@Localizer["hướng dẫn"] <i class="fa fa-caret-down"></i></a>
+                        <div class="sub">
+                            <a href="/About/5">@Localizer["Hướng dẫn Đăng ký/Đăng nhập"]</a>
+                            <a href="/About/7">@Localizer["Hướng dẫn đăng ký dịch vụ"]</a>
+                            <a href="/About/5#tracuu">@Localizer["Hướng dẫn tra cứu thông tin"]</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="clearfix"></div>
+            </div><!--container-->
+        </section>
+
+        @RenderBody()
+
+        @await Component.InvokeAsync("Partial", new { _PartialName = "_FooterBottom" })
+
+
+        <script src="/js/jquery/jquery.min.js"></script>
+        @*<script src="/js/Nuoc/hurastore.js?v=4"></script>*@
+        <script src="/js/Nuoc/common.js"></script>
+        <script src="/js/Nuoc/owl.carousel.min.js"></script>
+
+        <script>
+            function PageNews_OnClick(_Page, _Type, _Cate) {
+                switch (_Type) {
+                    //case "ByKeyword":
+                    //    //document.forms["frmSearchByKeyword"].elements["Page"].value = _Page;
+                    //    document.forms["frmSearchByKeyword"].action = "/News/Search/" + _Page;
+                    //    document.forms["frmSearchByKeyword"].submit();
+                    //    break;
+                    //case "ByKeywordMobile":
+                    //    //document.forms["frmSearchByKeywordMobile"].elements["Page"].value = _Page;
+                    //    document.forms["frmSearchByKeywordMobile"].action = "/News/Search/" + _Page;
+                    //    document.forms["frmSearchByKeywordMobile"].submit();
+                    //    break;
+                    case "FAQSearch":
+                        //document.forms["frmSearchByKeyword"].elements["Page"].value = _Page;
+                        document.forms["frmSearchByKeyword"].action = "/FAQ/" + _Page;
+                        document.forms["frmSearchByKeyword"].submit();
+                        break;
+                    case "FAQ":
+                        window.location.href = "/FAQ/" + _Page;
+                        break;
+                    default:
+                        window.location.href = "/News/" + _Cate + "/" + _Page;
+                        break;
+                }
+            }
+            function resizeBoxMaxHeight(item) {
+                var maxHeight = 0;
+                $(item).each(function () {
+                    if ($(this).height() > maxHeight) maxHeight = $(this).height();
+                });
+                $(item).height(maxHeight);
+            }
+
+            $(function () {
+                $("#header .icon-menu-mobile").click(function () {
+                    $("#nav-mobile").slideToggle("fast");
+                });
+                $("#header #nav-mobile .item.root i").click(function (event) {
+                    $(this).parents(".item").find(".sub").slideToggle("fast");
+                    return false;
+                });
+
+
+                $("#service-home .item").hover(function () {
+                    $(this).find(".info").stop().fadeIn();
+                }, function () {
+                    $(this).find(".info").stop().hide();
+                });
+                $("#service-home .item .info .close").click(function () {
+                    $(this).parents(".info").hide();
+                });
+
+                //$(".p-regist").each(function () {
+                //    var name = locdau($(this).attr("data-name"));
+                //    var href = $(this).attr("href") + "?name=" + name;
+                //    $(this).attr("href", href);
+                //});
+            });
+        </script>
+
+        <script src='/js/Nuoc/jquery.themepunch.tools.min.js'></script>
+        <script src='/js/Nuoc/jquery.themepunch.revolution.min.js?v=2.1'></script>
+        <script src="/js/Nuoc/slider_home.js?v=2.1"></script>
+
+        <script>
+            $(function () {
+                $("#image-home-carousel .owl-carousel").owlCarousel({
+                    items: 4,
+                    loop: true,
+                    nav: true,
+                    dots: false,
+                    margin: 20,
+                    navText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 2,
+                            nav: false
+                        },
+                        600: {
+                            items: 3,
+                            nav: false
+                        },
+                        1000: {
+                            items: 4,
+                            nav: true,
+                            loop: false
+                        }
+                    }
+                });
+            })
+
+            if ($(window).width() > 992) {
+                resizeBoxMaxHeight("#home-article .content-box");
+            }
+        </script>
+
+        <div id="fb-root"></div>
+
+        <script>
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.9";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <div class="zalo-chat-widget" data-oaid="2257185043193129369" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="300" data-height="300"></div>
+
+        <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+        <!--Begin Chatngay--->
+        @*<script type='text/javascript'>
+            !function (t) { if (!t.chatngay) { t.chatngay = { client_id: "4nsLzftSTF" }; var a = document.createElement("script"); a.async = !0, a.type = "text/javascript", a.src = "https://chatngay-static.glee.vn/files/loader.js"; var e = document.getElementsByTagName("script")[0]; e.parentNode.insertBefore(a, e) } }(window);
+        </script>*@
+        <!--//End Chatngay--->
+        <!-- Hiệu ứng tuyết rơi <script type="text/javascript" src="/js/Nuoc/nnt_happynewyear.js"></script>-->
+        <!--------------------------------------------------------------------------->
+        <!-- Messenger Plugin chat Code -->
+
+        <style>
+            div#fb-root iframe {
+                top: 75%;
+                left:0px;
+            }
+        </style>
+
+        <div id="fb-root"></div>
+
+        <!-- Your Plugin chat code -->
+        <div id="fb-customer-chat" class="fb-customerchat">
+        </div>
+
+        <script>
+            var chatbox = document.getElementById('fb-customer-chat');
+            chatbox.setAttribute("page_id", "409966062798874");
+            chatbox.setAttribute("attribution", "biz_inbox");
+
+            window.fbAsyncInit = function () {
+                FB.init({
+                    xfbml: true,
+                    version: 'v12.0'
+                });
+            };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+    </body>
+    </html>

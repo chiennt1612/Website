@@ -191,8 +191,9 @@ namespace SSO.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<long>("OldId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("OldId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");

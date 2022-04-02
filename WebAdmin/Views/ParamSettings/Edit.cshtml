@@ -1,10 +1,16 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
 @inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
 
 @model EntityFramework.Web.Entities.ParamSetting
 
 @{
     ViewData["Title"] = Localizer["Sửa"];
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
 }
 
 <h1>@Localizer["Sửa"]</h1>
@@ -12,80 +18,95 @@
 <h4>@Localizer["Tham số"]</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
+                <label asp-for="ParamKey" class="control-label"></label>
+                <input asp-for="ParamKey" class="form-control" />
+                <span asp-validation-for="ParamKey" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Since" class="control-label"></label>
-                <input asp-for="Since" class="form-control" />
-                <span asp-validation-for="Since" class="text-danger"></span>
+                <label asp-for="Language" class="control-label"></label>
+                <select asp-for="Language" class="form-control" asp-items="cultureItems"><option value="all">All</option></select>
+                <span asp-validation-for="Language" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="ParamValue" class="control-label"></label>
+                <input asp-for="ParamValue" class="form-control" />
+                <span asp-validation-for="ParamValue" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hotline" class="control-label"></label>
-                <input asp-for="Hotline" class="form-control" />
-                <span asp-validation-for="Hotline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+            <label asp-for="Logo" class="control-label"></label>
+            <input asp-for="Logo" class="form-control" />
+            <span asp-validation-for="Logo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Since" class="control-label"></label>
+            <input asp-for="Since" class="form-control" />
+            <span asp-validation-for="Since" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address" class="control-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Hotline" class="control-label"></label>
+            <input asp-for="Hotline" class="form-control" />
+            <span asp-validation-for="Hotline" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Phone" class="control-label"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>*@
             <input type="hidden" asp-for="Id" />
             @*<div class="form-group">
-                <label asp-for="UserCreator" class="control-label"></label>
-                <input asp-for="UserCreator" class="form-control" />
-                <span asp-validation-for="UserCreator" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateCreator" class="control-label"></label>
-                <input asp-for="DateCreator" class="form-control" />
-                <span asp-validation-for="DateCreator" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserModify" class="control-label"></label>
-                <input asp-for="UserModify" class="form-control" />
-                <span asp-validation-for="UserModify" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateModify" class="control-label"></label>
-                <input asp-for="DateModify" class="form-control" />
-                <span asp-validation-for="DateModify" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserDeleted" class="control-label"></label>
-                <input asp-for="UserDeleted" class="form-control" />
-                <span asp-validation-for="UserDeleted" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateDeleted" class="control-label"></label>
-                <input asp-for="DateDeleted" class="form-control" />
-                <span asp-validation-for="DateDeleted" class="text-danger"></span>
-            </div>*@
+            <label asp-for="UserCreator" class="control-label"></label>
+            <input asp-for="UserCreator" class="form-control" />
+            <span asp-validation-for="UserCreator" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateCreator" class="control-label"></label>
+            <input asp-for="DateCreator" class="form-control" />
+            <span asp-validation-for="DateCreator" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserModify" class="control-label"></label>
+            <input asp-for="UserModify" class="form-control" />
+            <span asp-validation-for="UserModify" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateModify" class="control-label"></label>
+            <input asp-for="DateModify" class="form-control" />
+            <span asp-validation-for="DateModify" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+            </label>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserDeleted" class="control-label"></label>
+            <input asp-for="UserDeleted" class="form-control" />
+            <span asp-validation-for="UserDeleted" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateDeleted" class="control-label"></label>
+            <input asp-for="DateDeleted" class="form-control" />
+            <span asp-validation-for="DateDeleted" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <input type="submit" value="@Localizer["Lưu"]" class="btn btn-primary" />
             </div>

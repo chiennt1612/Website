@@ -4,7 +4,6 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using SSO.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +34,7 @@ namespace SSO.Services
             var claims = principal.Claims.ToList();
 
             //Add more claims like this
-            claims.Add(new System.Security.Claims.Claim("oldid", user.OldId.ToString()));
+            //claims.Add(new System.Security.Claims.Claim("oldid", user.OldId.ToString()));
             //claims.Add(new System.Security.Claims.Claim("fullname", user.Fullname ?? user.UserName));
 
             context.IssuedClaims = claims;

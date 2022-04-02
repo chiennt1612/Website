@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<EntityFramework.Web.Entities.Ordering.Address>
+@*@model IEnumerable<EntityFramework.Web.Entities.Ordering.Address>*@
+
+@{
+    ViewData["Title"] = Localizer["Danh sách"];
+}
+
+<h1>@Localizer["Danh sách"]</h1>
+
+@using (Html.BeginForm())
+{
+    <div class="pagination">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Street)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].City)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].ZipCode)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Street)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ZipCode)
+                    </td>
+                    <td>
+                        
+                        <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pagination">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Index", new { page = page }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+    </div>}

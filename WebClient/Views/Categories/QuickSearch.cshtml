@@ -1,0 +1,33 @@
+﻿@using Paygate.OnePay
+@using WebClient.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Product>
+@{
+    Layout = null;
+    var i = 0;
+}
+@foreach (var item in Model)
+{
+    i = i + 1;
+
+    <div class="autocomplete-suggestion" data-index="@(i-1)">
+        <table>
+            <tbody>
+                <tr>
+                    <td style="vertical-align:top">
+                        <a asp-controller="Categories" asp-action="Details" asp-route-ProductName="@item.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Code">
+                            <img width="100" src="@item.Img">
+                        </a>
+                    </td>
+                    <td style="vertical-align:top; color:red; line-height:18px;">
+                        <a class="suggest_link" asp-controller="Categories" asp-action="Details" asp-route-ProductName="@item.Name.RemoveSign4VietnameseString()" asp-route-ProductCode="@item.Code">
+                            @item.Name @item.Code
+                        </a>
+                        <br>@Localizer["Giá"]: @((item.Price - item.Discount).ToString().FormatNumber())đ
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}

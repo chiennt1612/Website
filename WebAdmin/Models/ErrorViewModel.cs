@@ -1,5 +1,3 @@
-using System;
-
 namespace WebAdmin.Models
 {
     public class ErrorViewModel

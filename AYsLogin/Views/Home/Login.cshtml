@@ -1,0 +1,52 @@
+﻿
+@{
+    Layout = null;
+
+}
+@model string
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login AYs</title>
+</head>
+<body>
+    <div>
+        @if (!String.IsNullOrEmpty(Model))
+        {
+        <div>
+            Login AYs with State '@Model'<br />
+            <input type="button" value="Click to login SSO" name="login" onclick="window.location.href = '@EntityFramework.Web.DBContext.Constants.Authority/AYs';" />
+        </div>
+            <script>
+                document.onreadystatechange = function() {
+                if (document.readyState === 'complete')
+                {
+                window.location.href = "@EntityFramework.Web.DBContext.Constants.Authority/AYs";
+                }
+                }
+            </script>
+        }
+        else
+        {
+    <div>
+        Reuqest Login AYs no State<br />
+        <input type="button" value="Click to login SSO" name="login" onclick="history.back();" />
+    </div>
+            <script>
+                document.onreadystatechange = function() {
+                if (document.readyState === 'complete')
+                {
+                    history.back();
+                }
+                }
+            </script>
+        }
+
+    </div>
+
+
+</body>
+</html>

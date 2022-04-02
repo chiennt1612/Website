@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using WebAdmin.Helpers;
 using WebAdmin.Services.Interfaces;
 
 namespace WebAdmin.Controllers
 {
+    [SecurityHeaders]
     [Authorize(Roles = "Admin")]
     public class ParamSettingsController : Controller
     {
@@ -30,14 +30,28 @@ namespace WebAdmin.Controllers
         }
 
         // GET: ParamSettings
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(string Keyword, int? page)
         {
             int pageSize = Constants.PageSize;
             int pageIndex = 1;
             pageIndex = page.HasValue ? page.Value : 1;
 
-            Expression<Func<ParamSetting, bool>> sqlWhere = item => (item.IsDeleted == false);
-            Func<ParamSetting, string> sqlOrder = s => "DateCreator";
+            Expression<Func<ParamSetting, bool>> sqlWhere;
+            if (!String.IsNullOrEmpty(Keyword))
+            {
+                ViewData["Keyword"] = Keyword;
+                sqlWhere = item => (
+                item.IsDeleted == false &&
+                (item.ParamKey == Keyword || item.ParamValue.Contains(Keyword))
+                );
+            }
+            else
+            {
+                ViewData["Keyword"] = "";
+                sqlWhere = item => (item.IsDeleted == false);
+            }
+
+            Func<ParamSetting, object> sqlOrder = s => s.Id;
 
             return View(await _service.GetListAsync(sqlWhere, sqlOrder, true, pageIndex, pageSize));
         }
@@ -63,7 +77,8 @@ namespace WebAdmin.Controllers
         // GET: ParamSettings/Create
         public IActionResult Create()
         {
-            return View();
+            ParamSetting paramSetting = new ParamSetting() { Language = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name };
+            return View(paramSetting);
         }
 
         // POST: ParamSettings/Create
@@ -71,7 +86,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Logo,Since,Name,Address,Hotline,Phone,Email,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] ParamSetting paramSetting)
+        public async Task<IActionResult> Create(ParamSetting paramSetting)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +119,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Logo,Since,Name,Address,Hotline,Phone,Email,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] ParamSetting paramSetting)
+        public async Task<IActionResult> Edit(long id, ParamSetting paramSetting)
         {
             if (id != paramSetting.Id)
             {
@@ -144,8 +159,8 @@ namespace WebAdmin.Controllers
             }
 
             var paramSetting = await _service.GetByIdAsync(id.Value);
-                //await _context.ParamSettings
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //await _context.ParamSettings
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (paramSetting == null)
             {
                 return NotFound();

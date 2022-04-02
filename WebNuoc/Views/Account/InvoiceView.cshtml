@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<section class="head-page">
+    <div class="container">
+        <div class="form">
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["MST bên bán"]</label>
+                <div class="col-md-7 col-sm-6">
+                    <input type="text" class="form-control" disabled value="@((String.IsNullOrEmpty(Context.Request.Query["supplierTaxCode"]) ? "" : Context.Request.Query["supplierTaxCode"]))" />
+                </div><!--col-->
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Mã số bí mật"]</label>
+                <div class="col-md-7 col-sm-6">
+                    <input type="text" class="form-control" disabled value="@((String.IsNullOrEmpty(Context.Request.Query["reservationCode"]) ? "" : Context.Request.Query["reservationCode"]))" />
+                </div><!--col-->
+            </div>
+        </div>
+</section>
+<iframe width="100%" height="750" src="https://sinvoice.viettel.vn/tracuuhoadon?supplierTaxCode=@ViewData["supplierTaxCode"]&reservationCode=@ViewData["reservationCode"]"></iframe>

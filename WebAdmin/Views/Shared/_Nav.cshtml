@@ -1,13 +1,10 @@
-﻿@using System.Globalization
-@using Microsoft.AspNetCore.Http.Features
-@using Microsoft.AspNetCore.Localization
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer Localizer
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Bạc Ngọc Tuấn"]</a>
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">@Localizer["Bạc Ngọc Tuấn"]</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -15,37 +12,83 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Trang chủ"]</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">@Localizer["Hàng hóa"]</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="Index">@Localizer["Tin tức"]</a>
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">@Localizer["Trang chủ"]</a>
                     </li>
                     <li class="nav-item">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Danh mục"] <b class="caret"></b></a>
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Dịch vụ"] <b class="caret"></b></a>
 
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-area="" asp-controller="ParamSettings" asp-action="Index">@Localizer["Tham số"]</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="MenuMainFooters" asp-action="Index">@Localizer["Menu chính c.trang"]</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="MenuSubFooters" asp-action="Index">@Localizer["Menu phụ c.trang"]</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">@Localizer["Nhóm hàng hóa"]</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="NewsCategories" asp-action="Index">@Localizer["Nhóm tin tức"]</a>
+                                    @*<a class="dropdown-item" asp-controller="Categories" asp-action="Index">@Localizer["Nhóm hàng hóa"]</a>
+                                        <a class="dropdown-item" asp-controller="Products" asp-action="Index">@Localizer["Hàng hóa"]</a>
+                                        <a class="dropdown-item" asp-controller="Orders" asp-action="Index">@Localizer["Đơn hàng"]</a>*@
+
+                                    <a class="dropdown-item" asp-controller="Services" asp-action="Index">@Localizer["Dịch vụ"]</a>
+                                    <a class="dropdown-item" asp-controller="Services" asp-action="Register">@Localizer["Đăng ký dịch vụ"]</a>
                                 </div>
                             </li>
                         </ul>
                     </li>
+
+                    <li class="nav-item">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Tin tức - Hỏi đáp"] <b class="caret"></b></a>
+
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="NewsCategories" asp-action="Index">@Localizer["Nhóm tin tức"]</a>
+                                    <a class="dropdown-item" asp-controller="Articles" asp-action="Index">@Localizer["Tin tức"]</a>
+                                    <a class="dropdown-item" asp-controller="FAQs" asp-action="Index">@Localizer["Hỏi đáp"]</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Abouts" asp-action="Index">@Localizer["Giới thiệu"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Contacts" asp-action="Index">@Localizer["Liên hệ"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Banner"] <b class="caret"></b></a>
+
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Advs" asp-action="Index">@Localizer["Banner"]</a>
+                                    <a class="dropdown-item" asp-controller="Medias" asp-action="Index">@Localizer["Media"]</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="ParamSettings" asp-action="Index">@Localizer["Tham số"]</a>
+                    </li>
+                    @*<li class="nav-item">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Danh mục"] <b class="caret"></b></a>
+
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-controller="ParamSettings" asp-action="Index">@Localizer["Tham số"]</a>
+                                        <a class="dropdown-item" asp-controller="MenuMainFooters" asp-action="Index">@Localizer["Menu chính c.trang"]</a>
+                            <a class="dropdown-item" asp-controller="MenuSubFooters" asp-action="Index">@Localizer["Menu phụ c.trang"]</a>
+                                        <a class="dropdown-item" asp-controller="Addresses" asp-action="Index">@Localizer["Danh sách địa chỉ"]</a>
+                                        <a class="dropdown-item" asp-controller="OrderStatus" asp-action="Index">@Localizer["Trạng thái đơn hàng"]</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>*@
                     <li class="nav-item">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@User.Identity.Name <b class="caret"></b></a>
 
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="AccessDenied">@Localizer["Không có quyền"]</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Thoát"]</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="AccessDenied">@Localizer["Không có quyền"]</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">@Localizer["Thoát"]</a>
                                 </div>
                             </li>
                         </ul>

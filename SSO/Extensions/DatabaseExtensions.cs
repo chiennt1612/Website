@@ -4,11 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SSO.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace SSO.Extensions
 {
@@ -18,8 +14,8 @@ namespace SSO.Extensions
                    (this IServiceCollection services, IConfiguration configuration, IDecryptorProvider decryptor)
                where TIdentityDbContext : DbContext
                where TDataProtectionDbContext : DbContext
-               //where TLogDbContext : DbContext, ILogDbContext
-               //where TAuditLoggingDbContext : DbContext, IAuditLoggingDbContext<AuditLog>
+            //where TLogDbContext : DbContext, ILogDbContext
+            //where TAuditLoggingDbContext : DbContext, IAuditLoggingDbContext<AuditLog>
         {
             string connectionString = decryptor.Decrypt(configuration.GetConnectionString("DefaultConnection"));
             //string connectionString = DecryptorProvider.Decrypt(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
@@ -46,7 +42,7 @@ namespace SSO.Extensions
             (this IServiceCollection services,
             string identityConnectionString, string configurationConnectionString,
             string persistedGrantConnectionString, string dataProtectionConnectionString//,
-            //string errorLoggingConnectionString, string auditLoggingConnectionString
+                                                                                        //string errorLoggingConnectionString, string auditLoggingConnectionString
             )
             where TIdentityDbContext : DbContext
             where TDataProtectionDbContext : DbContext

@@ -1,0 +1,660 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Order.ViewCart
+@*
+    <div class="checkout-page-title page-title">
+        <div class="page-title-inner flex-row medium-flex-wrap container">
+            <div class="flex-col flex-grow medium-text-center">
+                <nav class="breadcrumbs flex-row flex-row-center heading-font checkout-breadcrumbs text-center strong h2 uppercase">
+                    <a href="/Order/Cart" class="current">
+                        @Localizer["Giỏ hàng"]
+                    </a>
+                    <span class="divider hide-for-small"><i class="icon-angle-right"></i></span>
+                    <a href="/Order/Checkout" class="hide-for-small">
+                        @Localizer["Thanh toán"]
+                    </a>
+                    <span class="divider hide-for-small"><i class="icon-angle-right"></i></span>
+                    <a href="#" class="no-click hide-for-small">
+                        @Localizer["Hoàn thành"]
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.order == null)
+    {
+        <div class="cart-container container page-wrapper page-checkout">
+            <div class="woocommerce">
+                <div class="text-center pt pb">
+                    <div class="woocommerce-notices-wrapper"></div>
+                    <p class="cart-empty woocommerce-info">@Localizer["Chưa có sản phẩm nào trong giỏ hàng."]</p>
+                    <p class="return-to-shop">
+                        <a class="button primary wc-backward" href="/Categories">
+                            @Localizer["Quay trở lại cửa hàng"]
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="cart-container container page-wrapper page-checkout">
+            @if(Model.product != null)
+            {
+                <div class="woocommerce-message message-wrapper" role="alert">
+                    <div class="message-container container success-color medium-text-center">
+                        <i class="icon-checkmark"></i>
+                        <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model.product.CategoryId"  tabindex="1" class="button wc-forward">@Model.product.CategoryName</a>
+                        &ldquo; @Model.product.Name @Model.product.Code &rdquo; @Localizer["đã được thêm vào giỏ hàng"].
+                    </div>
+                </div>
+            }
+
+            <div class="woocommerce">
+                <div class="woocommerce-notices-wrapper"></div>
+                <div class="woocommerce row row-large row-divided">
+                    <div class="col large-7 pb-0 ">
+                        <form id="AddCart" asp-controller="Order" asp-action="Update">
+                            <div class="cart-wrapper sm-touch-scroll">
+                                <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-name" colspan="3">@Localizer["Sản phẩm"]</th>
+                                            <th class="product-price">@Localizer["Giá"]</th>
+                                            <th class="product-quantity">@Localizer["Số lượng"]</th>
+                                            <th class="product-subtotal">@Localizer["Tạm tính"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.order.OrderItems.Count(); i++)
+                                        {
+                                            <tr class="woocommerce-cart-form__cart-item cart_item">
+
+                                                <td class="product-remove">
+                                                    <a asp-action="Remove" asp-controller="Order" asp-route-Id="@Model.order.OrderItems[i].ProductId"
+                                                        class="remove" aria-label="@Localizer["Xóa sản phẩm này"]">&times;</a>
+                                                </td>
+
+                                                <td class="product-thumbnail">
+                                                    <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@Model.order.OrderItems[i].ProductName.RemoveSign4VietnameseString()" asp-route-ProductCode="@Model.order.OrderItems[i].ProductCode">
+                                                        @*asp-route-Id="@Model.order.OrderItems[i].ProductId">"
+                                                        <img width="300" height="300"
+                                                             src="@Model.order.OrderItems[i].ProductImg"
+                                                             data-src="@Model.order.OrderItems[i].ProductImg?resize=300%2C300&amp;ssl=1"
+                                                             class="lazy-load attachment-woocommerce_thumbnail size-woocommerce_thumbnail jetpack-lazy-image"
+                                                             alt="" loading="lazy" data-lazy-srcset=""
+                                                             data-srcset="@Model.order.OrderItems[i].ProductImg?w=2160&amp;ssl=1 2160w, @Model.order.OrderItems[i].ProductImg?resize=400%2C400&amp;ssl=1 400w, @Model.order.OrderItems[i].ProductImg?resize=800%2C800&amp;ssl=1 800w, @Model.order.OrderItems[i].ProductImg?resize=280%2C280&amp;ssl=1 280w, @Model.order.OrderItems[i].ProductImg?resize=768%2C768&amp;ssl=1 768w, @Model.order.OrderItems[i].ProductImg?resize=1536%2C1536&amp;ssl=1 1536w, @Model.order.OrderItems[i].ProductImg?resize=2048%2C2048&amp;ssl=1 2048w, @Model.order.OrderItems[i].ProductImg?resize=300%2C300&amp;ssl=1 300w, @Model.order.OrderItems[i].ProductImg?resize=700%2C700&amp;ssl=1 700w, @Model.order.OrderItems[i].ProductImg?resize=100%2C100&amp;ssl=1 100w"
+                                                             data-lazy-sizes="(max-width: 300px) 100vw, 300px"
+                                                             data-lazy-src="@Model.order.OrderItems[i].ProductImg?resize=300%2C300&amp;ssl=1&amp;is-pending-load=1"
+                                                             srcset="@Model.order.OrderItems[i].ProductImg" />
+                                                    </a>
+                                                </td>
+
+                                                <td class="product-name" data-title="@Localizer["Sản phẩm"]">
+                                                    <a asp-action="Details" asp-controller="Categories" asp-route-ProductName="@Model.order.OrderItems[i].ProductName.RemoveSign4VietnameseString()" asp-route-ProductCode="@Model.order.OrderItems[i].ProductCode">
+                                                        @*asp-route-Id="@Model.order.OrderItems[i].ProductId">"@Model.order.OrderItems[i].ProductName @Model.order.OrderItems[i].ProductCode
+                                                    </a>
+                                                    <input type="hidden" id="ProductId@(i)" name="ProductId@(i)" value="@Model.order.OrderItems[i].ProductId" />
+                                                    <div class="show-for-small mobile-product-price">
+                                                        <span class="mobile-product-price__qty">@Model.order.OrderItems[i].Units x </span>
+                                                        <span class="woocommerce-Price-amount amount"><bdi>@((Model.order.OrderItems[i].Price- Model.order.OrderItems[i].Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                                                    </div>
+                                                </td>
+
+                                                <td class="product-price" data-title="@Localizer["Giá"]">
+                                                    <span class="woocommerce-Price-amount amount"><bdi>@((Model.order.OrderItems[i].Price- Model.order.OrderItems[i].Discount).ToString().FormatNumber())<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                                                    <input type="hidden" id="Price@(i)" name="Price@(i)" value="@(Model.order.OrderItems[i].Price- Model.order.OrderItems[i].Discount)" />
+                                                </td>
+
+                                                <td class="product-quantity" data-title="@Localizer["Số lượng"]">
+                                                    <div class="quantity buttons_added form-flat">
+                                                        <input type="button" value="-" class="minus button is-form">
+                                                        <label class="screen-reader-text" for="quantity_60afca02b06b8">@Model.order.OrderItems[i].ProductName @Model.order.OrderItems[i].ProductCode @Localizer["Số lượng"]</label>
+                                                        <input type="number"
+                                                               id="qty@(i)"
+                                                               class="input-text qty text"
+                                                               step="1"
+                                                               min="0"
+                                                               max=""
+                                                               name="qty@(i)"
+                                                               value="@Model.order.OrderItems[i].Units"
+                                                               title="SL"
+                                                               size="4"
+                                                               placeholder=""
+                                                               inputmode="numeric" onchange="ChangeQty(this.name)" />
+                                                        <input type="button" value="+" class="plus button is-form">
+                                                    </div>
+                                                </td>
+                                                <td class="product-subtotal" data-title="@Localizer["Tạm tính"]">
+                                                    <span class="woocommerce-Price-amount amount"><bdi><span id="Total@(i)">@Model.order.OrderItems[i].Total.ToString().FormatNumber()</span><span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                            <td colspan="6" class="actions clear">
+                                                <div class="continue-shopping pull-left text-left">
+                                                    <a class="button-continue-shopping button primary is-outline" href="/Categories">
+                                                        &#8592;&nbsp;@Localizer["Tiếp tục xem sản phẩm"]
+                                                    </a>
+                                                </div>
+                                                <button onclick="document.forms['AddCart'].submit();" type="button" class="button primary mt-0 pull-left small" value="@Localizer["Cập nhật giỏ hàng"]">@Localizer["Cập nhật giỏ hàng"]</button>
+                                                <input type="hidden" id="Cnt" name="Cnt" value="@Model.order.OrderItems.Count()" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="cart-collaterals large-5 col pb-0">
+
+                        <div class="cart-sidebar col-inner ">
+                            <div class="cart_totals ">
+                                <table cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-name" colspan="2" style="border-width:3px;">@Localizer["Cộng giỏ hàng"]</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <h2>@Localizer["Cộng giỏ hàng"]</h2>
+                                <table cellspacing="0" class="shop_table shop_table_responsive">
+
+                                    <tr class="cart-subtotal">
+                                        <th>@Localizer["Tạm tính"]</th>
+                                        <td data-title="@Localizer["Tạm tính"]"><span class="woocommerce-Price-amount amount"><bdi>@Model.order.Total.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span></td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <th>@Localizer["Tổng"]</th>
+                                        <td data-title="@Localizer["Tổng"]"><strong><span class="woocommerce-Price-amount amount"><bdi>@Model.order.Total.ToString().FormatNumber()<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi></span></strong> </td>
+                                    </tr>
+                                </table>
+                                <div class="wc-proceed-to-checkout">
+                                    <a href="/Order/Checkout" class="checkout-button button alt wc-forward">
+                                        @Localizer["Tiến hành thanh toán"]
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cart-sidebar-content relative"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-footer-content after-cart-content relative"></div>
+            </div>
+        </div>
+    }
+
+*@
+
+<div class="container link-lk-web">
+    <ul class="clearfix">
+        <li>
+            <a href="/">
+                @Localizer["Trang chủ"]
+            </a>
+        </li>
+        <li>
+            <a href="/Order/Cart">
+                @Localizer["Giỏ hàng"]
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="bst-content container">
+    @{
+        var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+        var FreeShip = double.Parse(Model.paramSetting.Where(u => u.ParamKey == "SHIPFREE" && u.Language == "all").FirstOrDefault().ParamValue);//ViewData.GetSettingByKey("all", "SHIPFREE")
+        double FeeShip = 0;
+        double total = 0;
+        int Cnt = 0;
+        if (Model.order != null)
+        {
+            Cnt = Model.order.OrderItems.Count();
+            total = Model.order.Total;
+            FeeShip = (FreeShip <= total ? 0 : double.Parse(Model.paramSetting.Where(u => u.ParamKey == "SHIPFEE" && u.Language == "all").FirstOrDefault().ParamValue));
+        }
+        var noties = @ViewData.GetNotification();
+    }
+
+    @if (!string.IsNullOrEmpty(noties))
+    {
+        <div class="title" style="float:left; float:left; border-bottom: 1px solid blue; margin-bottom: 20px; text-transform: uppercase;">
+            <h1 class="title">@noties</h1>
+        </div>
+    }
+
+    <form id="AddCart" asp-controller="Order" asp-action="Update">
+        <div class="gt-left col-md-9" style="padding-left:0">
+            <p class="title"><b>@Localizer["Danh sách hàng đã đặt"]</b></p>
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="font-weight: 700;">
+                            <th style="vertical-align: middle; text-align:center; background: hsla(0, 100%, 90%, 0.3);" colspan='2'>@Localizer["Sản phẩm"]</th>
+                            <th style="text-align:center; background: hsla(0, 100%, 90%, 0.3);" class="hidden-xs">@Localizer["Giá bán"]</th>
+                            <th style="text-align:center; background: hsla(0, 100%, 90%, 0.3);">@Localizer["Số lượng"]</th>
+                            <th style="text-align:center; background: hsla(0, 100%, 90%, 0.3);">@Localizer["Thành tiền"]</th>
+                        </tr>
+                    </thead>
+                    @if (Model.order != null)
+                    {
+                        <tbody>
+                            @for (var i = 0; i < Model.order.OrderItems.Count(); i++)
+                            {
+                                <tr id="row1">
+                                    <td class="align-top" style="vertical-align:middle; text-align: center;">
+                                        <div class="image hidden-xs">
+                                            <img src="@Model.order.OrderItems[i].ProductImg" alt="@Model.order.OrderItems[i].ProductName @Model.order.OrderItems[i].ProductCode" />
+                                            <input type="hidden" id="ProductId@(i)" name="ProductId@(i)" value="@Model.order.OrderItems[i].ProductId" />
+                                            <input type="hidden" id="Price@(i)" name="Price@(i)" value="@(Model.order.OrderItems[i].Price- Model.order.OrderItems[i].Discount)" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/@Model.order.OrderItems[i].ProductName.RemoveSign4VietnameseString()-@Model.order.OrderItems[i].ProductCode">
+                                            <b class="name">@Model.order.OrderItems[i].ProductName @Model.order.OrderItems[i].ProductCode</b>
+                                        </a>
+                                    </td>
+                                    <td class="text-center hidden-xs" style="vertical-align:middle">
+                                        <span>@((Model.order.OrderItems[i].Price- Model.order.OrderItems[i].Discount).ToString().FormatNumber())</span> đ
+                                    </td>
+                                    <td class="text-center" style="vertical-align:middle">
+                                        <input type="text" name='qty@(i)' id='qty@(i)' value='@Model.order.OrderItems[i].Units' onchange="ChangeQty(this.name)" style="width:30px; text-align: center; color:#333" />
+                                        <!-- XOA-->
+                                        <span class="text-center">
+                                            <a class="del-row" asp-action="Remove" asp-controller="Order" asp-route-Id="@Model.order.OrderItems[i].ProductId" style="color:#ff0000;">@Localizer["Xóa"]</a>
+                                        </span>
+                                        <!-- END -->
+                                    </td>
+                                    <td class="text-center" style="text-align:right; padding-top:40px">
+                                        <span id="Total@(i)">@Model.order.OrderItems[i].Total.ToString().FormatNumber()</span>đ
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    }
+                    <tfoot>
+                        <tr>
+                            <td colspan='5' style="text-align:right">@Localizer["Tổng cộng"]: <span id='total_value'>@total.ToString().FormatNumber()</span>đ</td>
+                        </tr>
+                        <tr>
+                            <td colspan='5' style="text-align:right;" id="other-discount">@Localizer["Khuyến mại khi sử dụng Voucher"]: <span data-discount="0" id='price-discount'>0</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan='5' style="text-align:right;" id="other-discount">@Localizer["Phí ship"]: <span id='feeship'>@FeeShip.ToString().FormatNumber()</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan='5' style="text-align:right;color:red; font-size:15px">
+                                <b>
+                                    @Localizer["Thanh toán"]:
+                                    <span id='total_shopping_price'>@((total + FeeShip).ToString().FormatNumber())</span>đ
+                                </b>
+                                <br />
+                                <span style="color:blue; font-size:13px">
+                                    (@Localizer["Đơn hàng trên"] @((Model.paramSetting.Where(u => u.ParamKey == "SHIPFREE" && u.Language == "all")).FirstOrDefault().ParamValue.FormatNumber()) vnđ @Localizer["được miễn phí vận chuyển toàn quốc"]!
+                                    <br />@Localizer["Không áp dụng với hàng đang trong chương trình giảm giá"])
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='5' style="text-align:right;">
+                                <a href="/Categories">
+                                    &#8592;&nbsp;@Localizer["Tiếp tục xem sản phẩm"]
+                                </a> | <button onclick="updateOrder(this.form)" type="button" class="button primary mt-0 small" value="@Localizer["Cập nhật giỏ hàng"]">@Localizer["Cập nhật giỏ hàng"]</button>
+                                <input type="hidden" id="Cnt" name="Cnt" value="@Cnt" />
+                                <input type="hidden" id="payment_method" name="payment_method" value="3" />
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div><!-- table responsive -->
+        </div>
+
+        <div class="gt-right col-md-3 ">
+            <p class="title"><span>@Localizer["Thông tin người mua hàng"]</span></p>
+            <div class="row">
+                <div class="form-group">
+                    <i>
+                        <span asp-validation-for="Fullname" class="text-danger"></span>
+                        <input asp-for="Fullname" class="form-control" placeholder="@Localizer["Họ Tên"] (*)" autocomplete="given-name" />
+                    </i>
+                </div>
+                <div class="form-group">
+                    <i>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input asp-for="Email" class="form-control" placeholder="Email (*)" autocomplete="email username" />
+                    </i>
+                </div>
+                <div class="form-group">
+                    <i>
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                        <input asp-for="Mobile" class="form-control input-text" placeholder="Mobile (*)" autocomplete="tel" />
+                    </i>
+                </div>
+                <div class="form-group">
+                    <i>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                        <input asp-for="Address" class="form-control input-text" placeholder="@Localizer["Địa chỉ"] (*)" autocomplete="address-line1" />
+                    </i>
+                </div>
+                <div class="form-group">
+                    <i>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "5", @cols = "5", @autocomplete = "off", @placeholder = "Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn." })
+                    </i>
+                </div>
+                <div class="form-group">
+                    <i>
+                        <input asp-for="IsAgree" class="input-radio" type="checkbox" />
+                        <label asp-for="IsAgree">
+                            @Localizer["Tôi đã đọc và Đồng ý với <u><a href=\"/About/2\">Điều khoản</a></u> thanh toán!"]
+                        </label>
+
+                        <span asp-validation-for="IsAgree" class="text-danger"></span>
+                    </i>
+                </div>
+            </div>
+        </div>
+
+        <div class="gt-left col-md-9" style="padding-left:0">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="title"><a href="/About/2" target="_blank"><b>@Localizer["Điều Khoản & Quy Định Mua Hàng"] <i style="color:blue; font-size:10px"> (more) </i></b></a></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <p class="title"><b>@Localizer["Hình thức thanh toán"]</b></p>
+                </div>
+            </div>
+            <div class="row" id="form-agree">
+                <!--========================================-->
+                <div class="col-md-12 col-xs-12">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs hinhthucthanhtoan" role="tablist">
+                        <li role="presentation" class="active">
+                            <a onclick="changePaymentMethod(1)" data-name="@Localizer["Trả tiền mặt khi nhận hàng"]" href="#payment3" aria-controls="home" role="tab" data-toggle="tab" class="onl-tab" style="padding:4px 1px; font-size:10px;background:#DFDFE6">@Localizer["TẠI NHÀ"]</a>
+                        </li>
+                        @*<li role="presentation" class="active">
+                            <a onclick="changePaymentMethod(3)" href="#payment1" aria-controls="home" role="tab" data-toggle="tab" class="onl-tab" data-name="@Localizer["Thanh toán online"]" style="padding:4px 1px; font-size:10px;background:#DFDFE6">ONLINE</a>
+                        </li>*@
+                        <li role="presentation">
+                            <a onclick="changePaymentMethod(2)" data-name="@Localizer["Chuyển khoản ngân hàng"]" href="#payment4" aria-controls="home" role="tab" data-toggle="tab" class="onl-tab" style="padding:4px 1px; font-size:10px;background:#DFDFE6">@Localizer["CHUYỂN KHOẢN"]</a>
+                        </li>
+                        <li role="presentation">
+                            <a onclick="changePaymentMethod(4)" data-name="@Localizer["Thanh toán tại cửa hàng"]" href="#payment2" aria-controls="home" role="tab" data-toggle="tab" class="onl-tab" style="padding:4px 1px; font-size:10px;background:#DFDFE6">@Localizer["TẠI CỬA HÀNG"]</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--<div role="tabpanel" class="tab-pane active" id="payment1" style="padding: 20px 5px; border: 1px solid #ddd;">
+                            <h4 style="font-size:12px">@Localizer["Dịch vụ thanh toán trực tuyến an toàn được cung cấp bới OnePay"]</h4>
+                            <p style="font-weight: bold">
+                                @Localizer["Nội địa"] (Vietcombank, TechcomBank, DongA, VietinBank...)
+                            </p>
+
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/1_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/19_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/24_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/4_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/2_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/14_logo_full.svg" /></div>
+                            </div>
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/16_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/3_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/8_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/6_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/5_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/11_logo_full.svg" /></div>
+                            </div>
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/12_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/10_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/7_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/20_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/15_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/22_logo_full.svg" /></div>
+                            </div>
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/17_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/23_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/18_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/27_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/25_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/30_logo_full.svg" /></div>
+                            </div>
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/9_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/33_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/46_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/35_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/36_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/38_logo_full.svg" /></div>
+                            </div>
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/42_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/44_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/41_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/37_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/43_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/45_logo_full.svg" /></div>
+                            </div>
+                            <div class="row" style="margin: 5px 0;">
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/39_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/34_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/40_logo_full.svg" /></div>
+                                <div class="col-md-2 col-xs-2"><img class="img-responsive" src="/Image/31_logo_full.svg" /></div>
+                            </div>
+
+                            <p style="font-weight: bold">
+                                @Localizer["Quốc tế"] (VISA, MasterCard...)
+                                <div class="row" style="margin: 5px 0;">
+                                    <div class="col-md-2 col-xs-2">
+                                        <img src="/Image/VS.svg" height="36" class="img-responsive" />
+                                    </div>
+                                    <div class="col-md-2 col-xs-2">
+                                        <img src="/Image/MC.svg" height="36" class="img-responsive" />
+                                    </div>
+                                    <div class="col-md-2 col-xs-2">
+                                        <img src="/Image/JC.svg" height="36" class="img-responsive" />
+                                    </div>
+                                </div>
+                            </p>
+                            <div style="clear:both"></div>
+                            <div style="text-align: center;">
+                                <input type="button" value="@Localizer["TIẾP TỤC THANH TOÁN"]" class="btn btn-default"
+                                       style="font-size:12px; background: #000098; border: 1px solid #000098; color: white; text-shadow:none; border-radius:0px;"
+                                       onclick="processPay(this.form)" />--> <!--target="_blank" -->
+                            <!--</div>
+                            <div style="clear:both"></div>
+                        </div>-->
+
+                        <div role="tabpanel" class="tab-pane" id="payment2" style="padding: 20px 5px; border: 1px solid #ddd;">
+                            <div class="payment_type">
+                                <script>
+                                    var area_hn = [
+                                        @Html.Raw(Model.paramSetting.Where(u => u.ParamKey == "AREA_HN" && u.Language == "all").FirstOrDefault().ParamValue)
+                                    ];
+
+                                    var area_shop = [
+                                        @Html.Raw(Model.paramSetting.Where(u => u.ParamKey == "AREA_SHOP" && u.Language == "all").FirstOrDefault().ParamValue)
+                                    ];
+
+                                    function loadArea() {
+                                        var out = "";
+                                        var i;
+
+                                        for (i = 0; i < area_hn.length; i++) {
+                                            out += '<option value="' + area_hn[i].id + '">' + area_hn[i].name + '</option>';
+                                        }
+                                        $("#opt_hn").append(out);
+                                    }
+
+                                    function change_area(id) {
+                                        var out = "";
+                                        var i;
+                                        out += '<option value="0">--- Chọn cửa hàng ---</option>';
+                                        if (id != 0) {
+
+                                            for (i = 0; i < area_shop.length; i++) {
+                                                if (area_shop[i].parentid == id) {
+                                                    out += '<option value="' + area_shop[i].id + '">' + area_shop[i].name + '</option>';
+                                                }
+                                            }
+                                            $("#selshow").removeAttr("disabled");
+                                            $("#selshow").html(out);
+                                        }
+                                        else {
+                                            $("#selshow").attr("disabled");
+                                        }
+                                    }
+
+                                    function change_shop(id) {
+                                        if ($("#note_hidden").val() != '') {
+                                            $("#Description").val("Thanh toán tại cửa hàng: " + $('#selshow').find('option:selected').text());
+                                        } else {
+                                            $("#Description").val("Thanh toán tại cửa hàng: " + $('#selshow').find('option:selected').text());
+                                        }
+                                    }
+                                </script>
+                                <div class="maps-list row">
+                                    <div class="col-md-3 col-xs-12">
+                                        <select class="city form-control cochu12" onchange="change_area(this.value)" name="city">
+                                            <option id="0">Danh sách thành phố</option>
+                                            <optgroup label="Hà Nội" style="font-size:13px;font-weight:bold;" id="opt_hn">
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-xs-12">
+                                        <select class="store form-control cochu12" name="selshow" id="selshow" onchange="change_shop(this.value)" disabled>
+                                            <option>Danh sách cửa hàng</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div style="clear: both"></div>
+                                <div style="text-align: center;">
+                                    <input type="button" onclick="processPay(this.form)" value="@Localizer["GỬI ĐƠN HÀNG"]" class="btn btn-default" style="font-size:12px; background: #000098; border: 1px solid #000098; color: white; text-shadow:none;border-radius:0px;" />
+                                </div>
+                                <div style="clear: both"></div>
+                            </div>
+
+                        </div><!-- payment 2 -->
+
+                        <div role="tabpanel" class="tab-pane logo-brand active" id="payment3" style="padding: 20px 5px; border: 1px solid #ddd;">
+                            <div class="payment_type">
+                                <div class="payment_type_detail">
+                                    <p>Thanh toán khi giao hàng</p>
+                                    <p>Chúng tôi sẽ liên hệ với Quý Khách để xác nhận thông tin. Trong trường hợp Quý Khách đi vắng, vui lòng ủy thác cho người khác nhận hàng</p>
+                                    <p class="clickHere">
+                                        Quý khách vui lòng tham khảo
+                                        <a href="/Vi-210-150-bang-phi-dich-vu-van-chuyen.html" target="_blank">Phí Dịch Vụ Chuyển Hàng</a>
+                                    </p>
+
+                                    <div class="payment3-content">
+                                        <p><input type="radio" name="tructiep" value="Người đặt hàng" checked="checked" /> Theo địa chỉ người đặt hàng</p>
+                                        <p><input type="radio" name="tructiep" value="Người nhận hàng" /> Theo địa chỉ người nhận hàng</p>
+                                    </div>
+                                </div>
+                                <div style="clear: both"></div>
+                                <div style="text-align: center;">
+                                    <input type="button" onclick="processPay(this.form)" value="@Localizer["GỬI ĐƠN HÀNG"]" class="btn btn-default" style="font-size:12px; background: #000098; border: 1px solid #000098; color: white; text-shadow:none;border-radius:0px;" />
+                                </div>
+                                <div style="clear: both"></div>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    $(':radio[name="tructiep"]').change(function () {
+                                        if ($("#note_hidden").val() != '') {
+                                            $("input[name='user_info[note]']").val("Thanh toán trực tiếp theo địa chỉ: " + $(this).filter(':checked').val());
+                                        } else {
+                                            $("input[name='user_info[note]']").val("Thanh toán trực tiếp theo địa chỉ: " + $(this).filter(':checked').val());
+                                        }
+
+
+                                    });
+                                });
+                            </script>
+                        </div><!-- payment 3 -->
+
+                        <div role="tabpanel" class="tab-pane" id="payment4" style="padding: 20px 5px; border: 1px solid #ddd;">
+                            <div class="payment_type">
+                                <div class="payment_type_detail">
+                                    <p class="clickHere">Quý khách vui lòng tham khảo <a href="/phi-dich-vu-chuyen-hang" target="_blank"><b>Phí dịch vụ chuyển hàng</b></a> và thanh toán chuyển khoản qua ngân hàng sau</p>
+                                    <p>
+                                        <b> Click để chọn Tài khoản ngân hàng: </b>
+                                        <select class="textcontrol cochu12" name="sel_banking" id="sel_banking" style="border: 1px solid grey; font-weight: bold; color: #666666">
+                                            @Html.Raw(Model.paramSetting.Where(u => u.ParamKey == "COMBOXBANK" && u.Language == "all").FirstOrDefault().ParamValue)
+                                        </select>
+                                    </p>
+                                    <p style="padding-left: 5px; font-size:12px">
+                                        @Html.Raw(Model.paramSetting.Where(u => u.ParamKey == "LISTBANK" && u.Language == "all").FirstOrDefault().ParamValue)
+                                    </p>
+                                </div>
+                                <div style="clear: both"></div>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('#sel_banking').on('change', function () {
+                                            if ($("#note_hidden").val() != '') {
+                                                $("input[name='user_info[note]']").val("Thanh toán chuyển khoản qua ngân hàng: " + $(this).val());
+                                            } else {
+                                                $("input[name='user_info[note]']").val("Thanh toán chuyển khoản qua ngân hàng: " + $(this).val());
+                                            }
+
+
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div style="clear: both"></div>
+                            <div style="text-align: center;">
+
+                                <input type="button" onclick="processPay(this.form)" value="@Localizer["GỬI ĐƠN HÀNG"]" class="btn btn-default" style="font-size:12px; background: #000098; border: 1px solid #000098; color: white; text-shadow:none;border-radius:0px;" />
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </div><!-- tabpanel -->
+                </div>
+            </div>
+        </div>
+        <script>
+            $(window).load(function () {
+                $("#overview").load("/page/dieu-khoan-mua-hang?cmd=ajax");
+            });
+
+            $(document).ready(function () {
+                $(".onl-tab").click(function () {
+                    $("input[name='pay_method']").removeAttr("checked");
+                    var _name = $(this).attr("data-name");
+                    $("input[name='user_info[note]']").val(_name);
+                });
+
+                $("#btn-agree").click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        $("#form-agree").slideDown();
+                    } else {
+                        $("#form-agree").slideUp();
+                    }
+                });
+
+                $("#btn-ship-to").click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        $("#ship_to_info").slideDown();
+                    } else {
+                        $("#ship_to_info").slideUp();
+                    }
+                });
+            });
+        </script>
+    </form>
+</div>

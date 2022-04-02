@@ -1,7 +1,8 @@
+using HealthChecks.UI.Client;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,11 +12,7 @@ using SSO.Extensions;
 using SSO.Helpers;
 using SSO.Services;
 using SSO.Services.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace SSO
 {
@@ -93,8 +90,6 @@ namespace SSO
             // Add authorization policies for MVC
             //services.AddAuthorizationPolicies();
 
-            //services.AddIdSHealthChecks<ConfigurationDbContext, PersistedGrantDbContext, ApplicationDbContext, DataProtectionDbContext>(Configuration);
-
             services.AddAdminApiCors(adminUseCors);
         }
 
@@ -128,6 +123,10 @@ namespace SSO
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
 
@@ -140,6 +139,7 @@ namespace SSO
             // This will succeed.
             var decryptor = sp.GetService<IDecryptorProvider>();
             services.RegisterDbContexts<AppDbContext, DataProtectionDbContext>(Configuration, decryptor);
+            services.AddIdSHealthChecks<ConfigurationDbContext, PersistedGrantDbContext, AppDbContext, DataProtectionDbContext>(Configuration, decryptor);
         }
 
         public virtual void RegisterAuthentication(IServiceCollection services)

@@ -1,6 +1,8 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model SSO.Models.AccountViewModels.SendCodeViewModel
 @{
-    ViewData["Title"] = "Gửi mã OTP";
+    ViewData["Title"] = Localizer["Gửi mã OTP"];
 }
 
 <h2>@ViewData["Title"].</h2>
@@ -9,9 +11,9 @@
     <input asp-for="RememberMe" type="hidden" />
     <div class="row">
         <div class="col-md-8">
-            Chọn phương OTP:
+            @Localizer["Chọn phương OTP"]:
             <select asp-for="SelectedProvider" asp-items="Model.Providers"></select>
-            <button type="submit" class="btn btn-default">Xác nhận</button>
+            <button type="submit" class="btn btn-primary">@Localizer["Xác nhận"]</button>
         </div>
     </div>
 </form>

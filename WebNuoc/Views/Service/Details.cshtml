@@ -1,0 +1,96 @@
+﻿@using WebNuoc.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.ServiceDetail
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="/Service/Register/@Model._Detail.Id" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["ĐĂNG KÝ DỊCH VỤ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="" itemprop="url">
+                            <span itemprop="title">@Model._Detail.Title</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section>
+
+<section id="service-detail">
+    <div class="container">
+        <div class="title">
+            <a class="back-to-list blue text-20" href="/Service"><i class="fa fa-th"></i> </a>
+            <h1>@Model._Detail.Title</h1>
+        </div>
+        <div class="head-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <!--<p><b>Thông tin dịch vụ</b></p>-->
+                </div>
+                <div class="col-md-6 text-right">
+                    <p class="grey">
+                        <i class="fa fa-heart"></i> 2696 &nbsp;|&nbsp;
+                        <i class="fa fa-calendar-alt"></i> @Model._Detail.DateCreator.ToString("dd/MM/yyyy HH:mm:ss") &nbsp;|&nbsp;
+                        <i class="fa fa-tags"></i> @Localizer["ĐĂNG KÝ DỊCH VỤ"]
+                    </p>
+                </div>
+            </div>
+        </div><!--head-content-->
+        <div class="content" style="text-align: justify;">
+            @Html.Raw(Model._Detail.Description)
+        </div>
+        <p class="text-center button-fixed-mobile" style="margin-top:15px;">
+            <a asp-action="Register" asp-controller="Service" asp-route-ServiceId="@Model._Detail.Id" class="btn btn-primary p-regist"
+               data-name="@Model._Detail.Title" style="padding:10px 40px;"><b>@Localizer["ĐĂNG KÝ DỊCH VỤ"]</b></a>
+        </p>
+        <div class="addthis_toolbox addthis_default_style addthis_32x32_style" style="padding-top:15px; border:none;">
+            <a class="addthis_button_facebook addthis_button_preferred_1 at300b" title="Facebook" href="#"><span class="at-icon-wrapper" style="background-color: rgb(59, 89, 152); line-height: 32px; height: 32px; width: 32px;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" version="1.1" role="img" aria-labelledby="at-svg-facebook-11" title="Facebook" alt="Facebook" class="at-icon at-icon-facebook" style="width: 32px; height: 32px;"><title id="at-svg-facebook-11">Facebook</title><g><path d="M22 5.16c-.406-.054-1.806-.16-3.43-.16-3.4 0-5.733 1.825-5.733 5.17v2.882H9v3.913h3.837V27h4.604V16.965h3.823l.587-3.913h-4.41v-2.5c0-1.123.347-1.903 2.198-1.903H22V5.16z" fill-rule="evenodd"></path></g></svg></span></a>
+            <a class="addthis_button_twitter addthis_button_preferred_2 at300b" title="Twitter" href="#"><span class="at-icon-wrapper" style="background-color: rgb(29, 161, 242); line-height: 32px; height: 32px; width: 32px;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" version="1.1" role="img" aria-labelledby="at-svg-twitter-12" title="Twitter" alt="Twitter" class="at-icon at-icon-twitter" style="width: 32px; height: 32px;"><title id="at-svg-twitter-12">Twitter</title><g><path d="M27.996 10.116c-.81.36-1.68.602-2.592.71a4.526 4.526 0 0 0 1.984-2.496 9.037 9.037 0 0 1-2.866 1.095 4.513 4.513 0 0 0-7.69 4.116 12.81 12.81 0 0 1-9.3-4.715 4.49 4.49 0 0 0-.612 2.27 4.51 4.51 0 0 0 2.008 3.755 4.495 4.495 0 0 1-2.044-.564v.057a4.515 4.515 0 0 0 3.62 4.425 4.52 4.52 0 0 1-2.04.077 4.517 4.517 0 0 0 4.217 3.134 9.055 9.055 0 0 1-5.604 1.93A9.18 9.18 0 0 1 6 23.85a12.773 12.773 0 0 0 6.918 2.027c8.3 0 12.84-6.876 12.84-12.84 0-.195-.005-.39-.014-.583a9.172 9.172 0 0 0 2.252-2.336" fill-rule="evenodd"></path></g></svg></span></a>
+            <a class="addthis_button_linkedin addthis_button_preferred_7 at300b" target="_blank" title="LinkedIn" href="#"><span class="at-icon-wrapper" style="background-color: rgb(0, 119, 181); line-height: 32px; height: 32px; width: 32px;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" version="1.1" role="img" aria-labelledby="at-svg-linkedin-13" title="LinkedIn" alt="LinkedIn" class="at-icon at-icon-linkedin" style="width: 32px; height: 32px;"><title id="at-svg-linkedin-13">LinkedIn</title><g><path d="M26 25.963h-4.185v-6.55c0-1.56-.027-3.57-2.175-3.57-2.18 0-2.51 1.7-2.51 3.46v6.66h-4.182V12.495h4.012v1.84h.058c.558-1.058 1.924-2.174 3.96-2.174 4.24 0 5.022 2.79 5.022 6.417v7.386zM8.23 10.655a2.426 2.426 0 0 1 0-4.855 2.427 2.427 0 0 1 0 4.855zm-2.098 1.84h4.19v13.468h-4.19V12.495z" fill-rule="evenodd"></path></g></svg></span></a>
+            @*<a class="addthis_button_mailto addthis_button_preferred_8 at300b" href="https://v1.addthis.com/live/redirect/?url=mailto:?body=@((Context.ServiceUrl(Model._Detail.Id) + "#.YJ05oL6C3Is").UrlEncode()).mailto&subject=@Model._Detail.Title.UrlEncode(),&amp;uid=605353c6cb3d2815&amp;pub=ra-52bbcd2c131891a2&amp;rev=v8.28.8-wp&amp;per=undefined&amp;pco=tbx32-300" title="Email App"><span class="at-icon-wrapper" style="background-color: rgb(88, 88, 88); line-height: 32px; height: 32px; width: 32px;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" version="1.1" role="img" aria-labelledby="at-svg-mailto-14" title="Email App" alt="Email App" class="at-icon at-icon-mailto" style="width: 32px; height: 32px;"><title id="at-svg-mailto-14">Email App</title><g><g fill-rule="evenodd"></g><path d="M26.684 23.264H4.948v-12.88l.2-.1c.303-.202 7.046-4.73 8.152-5.435 1.41-.907 3.22-.806 4.63.1 1.308.804 8.453 5.333 8.453 5.333l.2.1.1 12.88zm-20.63-1.006H25.68v-11.27c-1.207-.806-7.044-4.53-8.252-5.133-1.107-.704-2.515-.704-3.622-.1-1.007.603-6.743 4.528-7.95 5.232.2.1.2 11.27.2 11.27z"></path><path d="M21.753 16.622H10.08a1.59 1.59 0 0 1-1.61-1.61v-3.02c0-.905.704-1.61 1.61-1.61h11.673c.906 0 1.61.705 1.61 1.61v3.02a1.59 1.59 0 0 1-1.61 1.61zM9.98 11.49c-.404 0-.605.302-.605.604v3.02c0 .4.302.603.604.603H21.65c.403 0 .604-.302.604-.604v-3.02c0-.402-.302-.603-.604-.603H9.98z"></path><path d="M25.778 21.956v-10.97l-5.837 4.53 5.838 6.44zM5.954 21.956v-10.97l5.837 4.53-5.836 6.44z"></path><path d="M25.778 22.76l-6.138-6.74h-7.548l-6.137 6.74-.806-.603 6.54-7.145h8.353l6.54 7.145-.805.604z"></path><path d="M25.945 10.334l.61.8-6.32 4.823-.61-.8zM5.902 10.386l6.326 4.814-.61.802-6.326-4.815zM15.816 17.83l.302 8.252 2.013-2.516 2.013 4.226 1.107-.503-2.113-4.227 3.22-.2-6.54-5.033z"></path></g></svg></span></a>*@
+            <div class="atclear"></div>
+        </div>
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bbcd2c131891a2"></script>
+    </div><!--container-->
+</section>
+
+@*<div id="_atssh" style="visibility: hidden; height: 1px; width: 1px; position: absolute; top: -9999px; z-index: 100000;">
+    <iframe id="_atssh865" title="AddThis utility frame" style="height: 1px; width: 1px; position: absolute; top: 0px; z-index: 100000; border: 0px; left: 0px;" src="https://s7.addthis.com/static/sh.f48a1a04fe8dbf021b4cda1d.html#rand=0.4398003748845798&amp;iit=1620916640239&amp;tmr=load%3D1620916640079%26core%3D1620916640156%26main%3D1620916640234%26ifr%3D1620916640241&amp;cb=0&amp;cdn=0&amp;md=0&amp;kw=&amp;ab=-&amp;dh=nuocngoctuan.com&amp;dr=https%3A%2F%2Fnuocngoctuan.com%2F&amp;du=https%3A%2F%2Fnuocngoctuan.com%2Fthoa-thuan-lap-dat-cum-dong-ho-nuoc.html&amp;href=https%3A%2F%2Fnuocngoctuan.com%2Fthoa-thuan-lap-dat-cum-dong-ho-nuoc.html&amp;dt=1.%20Th%E1%BB%8Fa%20thu%E1%BA%ADn%20l%E1%BA%AFp%20%C4%91%E1%BA%B7t%20c%E1%BB%A5m%20%C4%91%E1%BB%93ng%20h%E1%BB%93&amp;dbg=0&amp;cap=tc%3D0%26ab%3D0&amp;inst=1&amp;jsl=1&amp;prod=undefined&amp;lng=vi&amp;ogt=description%2Ctitle&amp;pc=men&amp;pub=ra-52bbcd2c131891a2&amp;ssl=1&amp;sid=609d39a02da44bfa&amp;srf=0.01&amp;ver=300&amp;xck=0&amp;xtr=0&amp;og=title%3D1.%2520Th%25E1%25BB%258Fa%2520thu%25E1%25BA%25ADn%2520l%25E1%25BA%25AFp%2520%25C4%2591%25E1%25BA%25B7t%2520c%25E1%25BB%25A5m%2520%25C4%2591%25E1%25BB%2593ng%2520h%25E1%25BB%2593%26description%3DH%25E1%25BB%2599%2520gia%2520%25C4%2591%25C3%25ACnh%252C%2520c%25C6%25A1%2520quan%2520t%25E1%25BB%2595%2520ch%25E1%25BB%25A9c%252C%2520doanh%2520nghi%25E1%25BB%2587p%2520%25C4%2591%25C6%25A1n%2520v%25E1%25BB%258B%2520s%25E1%25BA%25A3n%2520xu%25E1%25BA%25A5t%2520c%25C3%25B3%2520nhu%2520c%25E1%25BA%25A7u%2520s%25E1%25BB%25AD%2520d%25E1%25BB%25A5ng%2520n%25C6%25B0%25E1%25BB%259Bc%2520s%25E1%25BA%25A1ch%2520do%2520C%25C3%25B4ng%2520ty%2520TNHH%2520N%25C6%25B0%25E1%25BB%259Bc%2520S%25E1%25BA%25A1ch%2520Ng%25E1%25BB%258Dc%2520Tu%25E1%25BA%25A5n%2520-%2520Nagaoka%2520cung%2520c%25E1%25BA%25A5p%2520s%25E1%25BA%25BD%2520%25C4%2591%25C4%2583ng%2520k%25C3%25BD%2520Th%25E1%25BB%258Fa%2520thu%25E1%25BA%25ADn%2520l%25E1%25BA%25AFp%2520%25C4%2591%25E1%25BA%25B7t%2520c%25E1%25BB%25A5m%2520%25C4%2591%25E1%25BB%2593ng%2520h%25E1%25BB%2593%2520n%25C6%25B0%25E1%25BB%259Bc&amp;csi=undefined&amp;rev=v8.28.8-wp&amp;ct=1&amp;xld=1&amp;xd=1"></iframe>
+</div>*@
+
+<section id="services-grid">
+    <div class="container">
+        <div class="title-other-service">
+            <h2>@Localizer["Các dịch vụ khác"]</h2>
+        </div><!--other-service-->
+        <div class="row">
+            @foreach (var item in Model._Related)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <a asp-action="Details" asp-controller="Service" asp-route-Id="@item.Id" class="item">
+                        <img src="@item.Img" alt="@item.Title">
+                        <div class="bg">
+                            <b class="name">@item.Title</b>
+                            <span class="button">@Localizer["Dịch vụ công"]</span>
+                        </div>
+                    </a><!--item-->
+                </div>
+            }
+        </div>
+    </div>
+</section>

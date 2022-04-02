@@ -37,7 +37,7 @@ namespace SSO.Services
             try
             {
                 var from = String.IsNullOrEmpty(_configuration.From) ? _decryptor.Decrypt(_configuration.Login) : _decryptor.Decrypt(_configuration.From);
-                var mail = new MailMessage(from, email);
+                var mail = new MailMessage(new MailAddress(from, "NGOC TUAN GROUP ID - id.bacngoctuan.com"), new MailAddress(email));
                 mail.IsBodyHtml = true;
                 mail.Subject = subject;
                 mail.Body = htmlMessage;

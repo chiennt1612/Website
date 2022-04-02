@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace SSO.Entities
 {
     public class AppUser : IdentityUser<long>
     {
-        public long OldId { get; set; }
+        [StringLength(39)]
+        public string OldId { get; set; }
+        public bool IsUserAdmin { get; set; }
     }
 }

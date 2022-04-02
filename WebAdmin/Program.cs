@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAdmin
 {
@@ -27,7 +22,7 @@ namespace WebAdmin
                       // uncomment to write to Azure diagnostics stream
                       .WriteTo.File(
                           Directory.GetCurrentDirectory() + @"\Log\WebAdmin.txt",
-                          fileSizeLimitBytes: 10_000,
+                          fileSizeLimitBytes: 10000000,
                           rollOnFileSizeLimit: true,
                           rollingInterval: RollingInterval.Hour,
                           shared: true,
@@ -35,7 +30,7 @@ namespace WebAdmin
                           outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine})")
                       .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
                       .CreateLogger();
-            var host = CreateHostBuilder(args).Build(); 
+            var host = CreateHostBuilder(args).Build();
             Log.Information("Starting host...");
             host.Run();
             return 0;

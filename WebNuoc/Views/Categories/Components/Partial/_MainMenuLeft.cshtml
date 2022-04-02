@@ -1,0 +1,60 @@
+﻿@using WebNuoc.Services
+@using EntityFramework.Web.Entities
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<Categories>
+@{
+    var a = Model;
+    var a1 = a.Where(u => u.Status);
+}
+
+<aside id="woocommerce_product_categories-13" class="widget woocommerce widget_product_categories">
+    <span class="widget-title shop-sidebar">@Localizer["Danh mục sản phẩm"]</span>
+    <div class="is-divider small"></div>
+    <ul class="product-categories">
+        @foreach (var item1 in a1)
+        {
+            var a2 = a.Where(u => u.ParentId == item1.Id);
+
+            <li class="cat-item cat-item-@item1.Id @if (a2.Count() > 0) { Html.Raw("cat-parent"); } ">
+                <a href="/Categories/@item1.Id">@item1.Name</a>
+                @if (a2.Count() > 0)
+                {
+                    <ul class='children'>
+                        @foreach (var item2 in a2)
+                        {
+                            var a3 = a.Where(u => u.ParentId == item2.Id);
+
+                            <li class="cat-item cat-item-@item2.Id @if (a3.Count() > 0) { Html.Raw("cat-parent"); } ">
+                                <a href="/Categories/@item2.Id">@item2.Name</a>
+                                @if (a3.Count() > 0)
+                                {
+                                    <ul class='children'>
+                                        @foreach (var item3 in a3)
+                                        {
+                                            var a4 = a.Where(u => u.ParentId == item3.Id);
+
+                                            <li class="cat-item cat-item-@item3.Id @if (a4.Count() > 0) { Html.Raw("cat-parent"); } ">
+                                                <a href="/Categories/@item3.Id">@item3.Name</a>
+                                                @if (a4.Count() > 0)
+                                                {
+                                                    <ul class='children'>
+                                                        @foreach (var item4 in a4)
+                                                        {
+                                                            <li class="cat-item cat-item-@item4.Id"><a href="/Categories/@item4.Id">@item4.Name</a></li>
+                                                        }
+
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+</aside>

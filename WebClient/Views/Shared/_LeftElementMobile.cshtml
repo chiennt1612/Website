@@ -1,0 +1,72 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+@model WebClient.Models.Home.SearchInput
+@{
+//List<SelectListItem> s = new List<SelectListItem>();
+//var abc = ViewData.GetCategory();
+//if (abc != null)
+//    s = abc
+//        .Where(u => u.DisplayOnMenuMain)
+//        .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+//        .ToList();
+}
+
+
+<form id="frmSearchByKeywordMobile" asp-action="Search" asp-controller="Categories">
+    <input type="text" asp-for="Keyword" class="search-field mb-0" placeholder="@Localizer["Ví dụ: nhẫn bạc nữ có đá"]" autocomplete="off" />
+    <button id="bntSearchByKeyword" onclick="SearchSubmit_OnClick('ByKeywordMobile')" type="button" value="@Localizer["Tìm kiếm"]" class="button btn-mini-search">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
+    <input type="hidden" asp-for="CategoryId" />
+    <input type="hidden" asp-for="min_price" />
+    <input type="hidden" asp-for="max_price" />
+    <input type="hidden" asp-for="OrderValue" />
+</form>
+@*<div class="flex-col show-for-medium flex-left">
+    <ul class="mobile-nav nav nav-left ">
+        <li class="nav-icon has-icon">
+            <div class="header-button">
+                <a href="#" data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" class="icon primary button circle is-small" aria-label="Menu" aria-controls="main-menu">
+                    <i class="icon-menu"></i>
+                    <span class="menu-title uppercase hide-for-small">@Localizer["Menu"]</span>
+                </a>
+            </div>
+        </li>
+        <li class="header-search header-search-dropdown has-icon has-dropdown menu-item-has-children">
+            <div class="header-button">
+                <a href="#" aria-label="Tìm kiếm" class="icon primary button circle is-small"><i class="icon-search"></i></a>
+            </div>	<ul class="nav-dropdown nav-dropdown-default">
+                <li class="header-search-form search-form html relative has-icon">
+                    <div class="header-search-form-wrapper">
+                        <div class="searchform-wrapper ux-search-box relative form-flat is-normal">
+
+                            <form id="frmSearchByKeywordMobile" asp-action="Search" asp-controller="Categories" class="searchform">
+                                <div class="flex-row relative">
+                                    <div class="flex-col search-form-categories">
+                                        <select asp-for="CategoryId" asp-items="s">
+                                            <option value="" selected='selected'>All</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex-col flex-grow">
+                                        <label class="screen-reader-text" for="woocommerce-product-search-field-0">@Localizer["Tìm kiếm"]:</label>
+                                        <input type="text" asp-for="Keyword" class="search-field mb-0" placeholder="@Localizer["Ví dụ: nhẫn bạc nữ có đá"]" />
+                                        <input type="hidden" asp-for="SearchType" value="ByKeywordMobile" />
+                                    </div>
+                                    <div class="flex-col">
+                                        <button id="bntSearchByKeyword" onclick="SearchSubmit_OnClick('ByKeywordMobile')" type="button" value="@Localizer["Tìm kiếm"]" class="ux-search-submit submit-button secondary button icon mb-0">
+                                            <i class="icon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="live-search-results text-left z-top"></div>
+                            </form>
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>*@

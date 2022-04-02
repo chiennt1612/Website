@@ -1,5 +1,4 @@
 ﻿using IdentityServer4;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +17,7 @@ namespace SSO.Helpers
     public static class StartupHelpers
     {
         #region Localization
-        private static string[] LanguageSupport = new[] { "vi", "en-US" };
+        private static string[] LanguageSupport = new[] { "vi" };//, "en-US"
         public static void AddServiceLanguage(this IServiceCollection services)
         {
             services.AddLocalization(options => options.ResourcesPath = "Resources");

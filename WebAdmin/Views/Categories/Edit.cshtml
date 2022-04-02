@@ -11,7 +11,7 @@
 <h4>@Localizer["Nhóm hàng hóa"]</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -25,6 +25,18 @@
                     <option value="">@Localizer["Chọn"]</option>
                 </select>
                 <span asp-validation-for="ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Img" class="control-label"></label>
+                <input asp-for="Img" class="form-control" readonly="readonly" />
+                <input id="picImg" class="Img" type="file" value="@Localizer["Tải ảnh lên"]" name="picImg" accept="image/*">
+                <img id="ShowImg" height="100" src="@Model.Img" />
+                <span asp-validation-for="Img" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DisplayOnHome" class="control-label"></label>
+                <input asp-for="DisplayOnHome" class="form-control" />
+                <span asp-validation-for="DisplayOnHome" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

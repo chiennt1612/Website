@@ -15,6 +15,6 @@ namespace SSO.Controllers
         public static bool ShowLogoutPrompt = true;
         public static bool AutomaticRedirectAfterSignOut = false;
 
-        public static string InvalidCredentialsErrorMessage = "Invalid username or password";
+        public static string InvalidCredentialsErrorMessage = LanguageAll.Language.InvalidCredentialsErrorMessage;//"Tài khoản/ email hoặc mật khẩu không đúng.";//"Invalid username or password";
     }
 }

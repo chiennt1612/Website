@@ -1,16 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using WebAdmin.Repository.Interfaces;
 using WebAdmin.Services.Interfaces;
 using X.PagedList;
-using EntityFramework.Web.DBContext;
 
 namespace WebAdmin.Services
 {
@@ -75,7 +73,7 @@ namespace WebAdmin.Services
             }
         }
 
-        //public async Task<BaseEntityList<NewsCategories>> GetListAsync(Expression<Func<NewsCategories, bool>> expression, Func<NewsCategories, string> sort, bool desc = false, int page = 1, int pageSize = 10)
+        //public async Task<BaseEntityList<NewsCategories>> GetListAsync(Expression<Func<NewsCategories, bool>> expression, Func<NewsCategories, object> sort, bool desc = false, int page = 1, int pageSize = 10)
         //{
         //    try
         //    {
@@ -107,7 +105,7 @@ namespace WebAdmin.Services
         }
 
         public async Task<IPagedList<NewsCategories>> GetListAsync(
-            Expression<Func<NewsCategories, bool>> expression, Func<NewsCategories, string> sort, bool desc = false,
+            Expression<Func<NewsCategories, bool>> expression, Func<NewsCategories, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             try

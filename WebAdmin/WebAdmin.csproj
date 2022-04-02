@@ -7,46 +7,118 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DBContext\**" />
-    <Compile Remove="Entities\**" />
-    <Content Remove="DBContext\**" />
-    <Content Remove="Entities\**" />
-    <EmbeddedResource Remove="DBContext\**" />
-    <EmbeddedResource Remove="Entities\**" />
-    <None Remove="DBContext\**" />
-    <None Remove="Entities\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Helpers\Constants.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Contacts\Index - Copy.cshtml" />
+    <Content Remove="Views\Shared\_Nav - Copy %282%29.cshtml" />
+    <Content Remove="Views\Shared\_Nav - Copy.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Abouts\Create.cshtml" />
+    <None Include="Views\Abouts\Delete.cshtml" />
+    <None Include="Views\Abouts\Details.cshtml" />
+    <None Include="Views\Abouts\Edit.cshtml" />
+    <None Include="Views\Abouts\Index.cshtml" />
+    <None Include="Views\Addresses\Create.cshtml" />
+    <None Include="Views\Addresses\Delete.cshtml" />
+    <None Include="Views\Addresses\Details.cshtml" />
+    <None Include="Views\Addresses\Edit.cshtml" />
+    <None Include="Views\Addresses\Index.cshtml" />
+    <None Include="Views\Advs\Create.cshtml" />
+    <None Include="Views\Advs\Delete.cshtml" />
+    <None Include="Views\Advs\Details.cshtml" />
+    <None Include="Views\Advs\Edit.cshtml" />
+    <None Include="Views\Advs\Index.cshtml" />
+    <None Include="Views\Contacts\Create.cshtml" />
+    <None Include="Views\Contacts\Delete.cshtml" />
+    <None Include="Views\Contacts\Details.cshtml" />
+    <None Include="Views\Contacts\Edit.cshtml" />
+    <None Include="Views\Services\Register.cshtml" />
+    <None Include="Views\Contacts\Index.cshtml" />
+    <None Include="Views\FAQs\Create.cshtml" />
+    <None Include="Views\FAQs\Delete.cshtml" />
+    <None Include="Views\FAQs\Details.cshtml" />
+    <None Include="Views\FAQs\Edit.cshtml" />
+    <None Include="Views\FAQs\Index.cshtml" />
+    <None Include="Views\OrderStatus\Create.cshtml" />
+    <None Include="Views\OrderStatus\Delete.cshtml" />
+    <None Include="Views\OrderStatus\Details.cshtml" />
+    <None Include="Views\OrderStatus\Edit.cshtml" />
+    <None Include="Views\OrderStatus\Index.cshtml" />
+    <None Include="Views\Orders\Create.cshtml" />
+    <None Include="Views\Orders\Delete.cshtml" />
+    <None Include="Views\Orders\Details.cshtml" />
+    <None Include="Views\Orders\Edit.cshtml" />
+    <None Include="Views\Orders\Index.cshtml" />
+    <None Include="Views\ParamSettings\Create.cshtml" />
+    <None Include="Views\ParamSettings\Delete.cshtml" />
+    <None Include="Views\ParamSettings\Details.cshtml" />
+    <None Include="Views\ParamSettings\Edit.cshtml" />
+    <None Include="Views\ParamSettings\Index.cshtml" />
+    <None Include="Views\Services\Create.cshtml" />
+    <None Include="Views\Services\Delete.cshtml" />
+    <None Include="Views\Services\Details.cshtml" />
+    <None Include="Views\Services\Edit.cshtml" />
+    <None Include="Views\Services\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
     <PackageReference Include="IdentityModel.AspNetCore.AccessTokenValidation" Version="1.0.0-preview.3" />
     <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EntityFramework.Web\EntityFramework.Web.csproj" />
+    <ProjectReference Include="..\Paygate\Paygate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\EntityValidation.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityValidation.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\EntityValidation.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\EntityValidation.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EntityValidation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\plugins\code\" />
+    <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
 </Project>

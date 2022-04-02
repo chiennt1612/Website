@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Thêm mới"];
+}
+
+<h1>@Localizer["Thêm mới"]</h1>
+
+<h4>@Localizer["Danh sách Media"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Media files</label>
+                <input ID="Img" name="Img" class="form-control" readonly="readonly" />
+                <input id="picImg" class="Img" type="file" value="@Localizer[" Tải ảnh lên"]" name="picImg">
+                <img id="ShowImg" style="display:none" />
+                <div id="ShowFilesImg" style="display:none" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["Quay lại danh sách"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

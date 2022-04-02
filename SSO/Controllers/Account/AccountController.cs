@@ -9,16 +9,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
+using SSO.Entities;
+using SSO.Extensions;
+using SSO.Helpers;
+using SSO.Models.AccountViewModels;
+using SSO.Services.Interface;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SSO.Helpers;
-using SSO.Entities;
-using SSO.Services.Interface;
-using SSO.Models.AccountViewModels;
-using SSO.Extensions;
 
 namespace SSO.Controllers.Account
 {
@@ -35,6 +36,7 @@ namespace SSO.Controllers.Account
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
         public AccountController(
             UserManager<AppUser> userManager,
@@ -45,7 +47,8 @@ namespace SSO.Controllers.Account
             IEventService events,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IStringLocalizer<AccountController> _localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -56,6 +59,7 @@ namespace SSO.Controllers.Account
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = logger;
+            this._localizer = _localizer;
         }
 
         /// <summary>
@@ -125,51 +129,74 @@ namespace SSO.Controllers.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: true);
-                if (result.Succeeded)
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user == null)
                 {
-                    var user = await _userManager.FindByNameAsync(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id.ToString(), user.UserName, clientId: context?.Client.ClientId));
-
-                    if (context != null)
+                    user = await _userManager.FindByEmailAsync(model.Username);
+                    if (user == null)
                     {
-                        if (context.IsNativeClient())
+                        user = _userManager.Users.FirstOrDefault(u => u.PhoneNumber == model.Username);
+                    }
+                }
+
+                if (user == null)
+                {
+                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                    ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+                }
+                else if (!user.EmailConfirmed)
+                {
+                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid confirm email", clientId: context?.Client.ClientId));
+                    ModelState.AddModelError(string.Empty, "Tài khoản chưa xác thực Email.");//AccountOptions.InvalidCredentialsErrorMessage
+                }
+                else
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberLogin, lockoutOnFailure: true);
+                    if (result.Succeeded)
+                    {
+
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id.ToString(), user.UserName, clientId: context?.Client.ClientId));
+
+                        if (context != null)
                         {
-                            // The client is native, so this change in how to
-                            // return the response is for better UX for the end user.
-                            return this.LoadingPage("Redirect", model.ReturnUrl);
+                            if (context.IsNativeClient())
+                            {
+                                // The client is native, so this change in how to
+                                // return the response is for better UX for the end user.
+                                return this.LoadingPage("Redirect", model.ReturnUrl);
+                            }
+
+                            // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                            return Redirect(model.ReturnUrl);
                         }
 
-                        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                        return Redirect(model.ReturnUrl);
+                        // request for a local page
+                        if (Url.IsLocalUrl(model.ReturnUrl))
+                        {
+                            return Redirect(model.ReturnUrl);
+                        }
+                        else if (string.IsNullOrEmpty(model.ReturnUrl))
+                        {
+                            return Redirect("~/");
+                        }
+                        else
+                        {
+                            // user might have clicked on a malicious link - should be logged
+                            throw new Exception("invalid return URL");
+                        }
                     }
-
-                    // request for a local page
-                    if (Url.IsLocalUrl(model.ReturnUrl))
+                    if (result.RequiresTwoFactor)
                     {
-                        return Redirect(model.ReturnUrl);
+                        return RedirectToAction(nameof(SendCode), new { model.ReturnUrl, model.RememberMe });
                     }
-                    else if (string.IsNullOrEmpty(model.ReturnUrl))
+                    if (result.IsLockedOut)
                     {
-                        return Redirect("~/");
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToAction(nameof(Lockout));
                     }
-                    else
-                    {
-                        // user might have clicked on a malicious link - should be logged
-                        throw new Exception("invalid return URL");
-                    }
+                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                    ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(SendCode), new { model.ReturnUrl, model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                }
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
-                ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
 
             // something went wrong, show form with error
@@ -343,8 +370,15 @@ namespace SSO.Controllers.Account
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
-
-            return View("LoggedOut", vm);
+            if (!String.IsNullOrEmpty(vm.LogoutId))
+            {
+                return Redirect(vm.PostLogoutRedirectUri);
+            }
+            else
+            {
+                return Redirect("/Home/Index");
+            }
+            //return View("LoggedOut", vm);
         }
 
         [HttpGet]
@@ -361,23 +395,43 @@ namespace SSO.Controllers.Account
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            var UserName = model.UserName;
+            if (String.IsNullOrEmpty(UserName)) UserName = model.Email.Substring(0, model.Email.ToString().IndexOf("@")).Replace(".", "");
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = "Re_" + model.Email.Substring(0, model.Email.ToString().IndexOf("@")).Replace(".", ""), Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (model.IsAgree)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    var user = new AppUser
+                    {
+                        OldId = "0", // Mã khách AYs/ Username
+                        IsUserAdmin = false, // Khách hàng
+                        UserName = UserName, // Username
+                        Email = model.Email,
+                        TwoFactorEnabled = true // Đăng ký OTP qua Mail
+                    };
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
+                        await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
+                        //_logger.LogInformation("User created a new account with password.");
+                        //return RedirectToLocal(returnUrl);
+                        if (!String.IsNullOrEmpty(returnUrl))
+                            return Redirect(returnUrl); // quay về trang đăng ký
+                        else
+                            return RedirectToAction(nameof(HomeController.Index), "Home");
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                else
+                {
+                    ModelState.AddModelError("IsAgree", "Bạn phải đồng ý với điều khoản dịch vụ");
+                }
             }
 
             // If execution got this far, something failed, redisplay the form.
@@ -404,23 +458,27 @@ namespace SSO.Controllers.Account
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model, string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                    //return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                    ModelState.AddModelError("Email", _localizer.GetString("Email không tồn tại. Vui lòng đăng ký tài khoản."));
+                    return View(model);
                 }
 
                 // For more information on how to enable account confirmation and password reset please
@@ -428,8 +486,8 @@ namespace SSO.Controllers.Account
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id.ToString(), code, Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                   $"Please reset your password by clicking here: <a href='{callbackUrl}&email={user.Email}'>link</a>");
+                return RedirectToAction(nameof(ForgotPasswordConfirmation), new { ReturnUrl = returnUrl });
             }
 
             // If execution got this far, something failed, redisplay the form.
@@ -438,20 +496,21 @@ namespace SSO.Controllers.Account
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPasswordConfirmation()
+        public IActionResult ForgotPasswordConfirmation(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code = null, string email = null)
         {
             if (code == null)
             {
                 throw new ApplicationException("A code must be supplied for password reset.");
             }
-            var model = new ResetPasswordViewModel { Code = code };
+            var model = new ResetPasswordViewModel { Code = code, Email = email };
             return View(model);
         }
 
@@ -650,12 +709,19 @@ namespace SSO.Controllers.Account
                 }).ToList();
 
             var allowLocal = true;
+            var ClientLogo = "";
+            var ClientUri = "";
+            var ClientName = "";
             if (context?.Client.ClientId != null)
             {
                 var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;
+
+                    if (!String.IsNullOrEmpty(client.LogoUri)) ClientLogo = client.LogoUri;
+                    if (!String.IsNullOrEmpty(client.ClientUri)) ClientUri = client.ClientUri;
+                    if (!String.IsNullOrEmpty(client.ClientName)) ClientName = client.ClientName;
 
                     if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
                     {
@@ -670,7 +736,10 @@ namespace SSO.Controllers.Account
                 EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint,
-                ExternalProviders = providers.ToArray()
+                ExternalProviders = providers.ToArray(),
+                ClientUri = ClientUri,
+                ClientLogo = ClientLogo,
+                ClientName = ClientName
             };
         }
 
@@ -750,7 +819,7 @@ namespace SSO.Controllers.Account
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError("OnError"/*string.Empty*/, error.Description);
             }
         }
 

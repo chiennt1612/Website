@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.ParamSetting>
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+    var Email = Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "EMAIL").FirstOrDefault().ParamValue;
+    var HOTLINE = Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "HOTLINE").FirstOrDefault().ParamValue;
+    var BIZREGNO = Model.Where(u => (u.Language == requestCulture || u.Language == "all") && u.ParamKey == "BIZREGNO").FirstOrDefault().ParamValue;
+   
+}
+
+<div class="col-lg-5 col-md-6">
+    <p> </p>
+    <p><span style="font-size: 12pt;color: #3366ff;"><strong><span style="text-transform: uppercase;">@Localizer["Công ty TNHH Nước Sạch Ngọc Tuấn - NAGAOKA"]</span><br />@Localizer["Nhà Máy Nước Sạch Ngọc Tuấn"]</strong></span></p>
+    <p>@Localizer["Tạ Thượng, Chính Nghĩa, Kim Động, Hưng Yên"]<br />@HOTLINE<br />Email: <a href="mailto:@Email">@Email<br /></a>@Localizer["Mã số DN"]: 0900996305</p>
+</div><!--left-->

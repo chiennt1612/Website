@@ -1,5 +1,8 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @model SSO.Models.ManageViewModels.IndexViewModel
-@{ ViewData["Title"] = "Trang thông tin cá nhân";
+@{ ViewData["Title"] = Localizer["Trang thông tin cá nhân"];
                 ViewData.AddActivePage(ManageNavPages.Index); }
 
 <h4>@ViewData["Title"]</h4>
@@ -7,52 +10,52 @@
 <div class="row">
     <div class="col-md-6">
         <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
             <div class="form-group">
                 <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
+                <input asp-for="Username" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
                 @if (Model.IsEmailConfirmed)
                 {
-                    <div class="input-group">
-                        <input asp-for="Email" class="form-control" />
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                    </div>
+                <div class="input-group">
+                    <input asp-for="Email" class="form-control" readonly />
+                    <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                </div>
                 }
                 else
                 {
-                    <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>}
+                <input asp-for="Email" class="form-control" readonly />
+                <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Gửi xác thực Email"]</button>}
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber"></label>
                 @if (Model.IsPhoneNumberConfirmed)
                 {
-                    <input asp-for="PhoneNumber" class="form-control" /><span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span> }
+                <input asp-for="PhoneNumber" class="form-control" /><span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span> }
                 else
                 {
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <a href="/Manage/VerifyPhoneNumber?phoneNumber=@Model.PhoneNumber" class="btn btn-link">Send verification PhoneNumber</a>}
+                <input asp-for="PhoneNumber" class="form-control" />
+                <a href="/Manage/VerifyPhoneNumber?phoneNumber=@Model.PhoneNumber" class="btn btn-link">@Localizer["Gửi xác thực Mobile"]</a>}
 
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Save</button>
+            <button type="submit" class="btn btn-primary">@Localizer["Lưu"]</button>
         </form>
         <div style="display:inline-block">
             @(Model.PhoneNumber ?? "None")
             @if (Model.PhoneNumber != null)
             {
 
-                <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Thay đổi Mobile</a>
-                <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post">
-                    [<button type="submit" class="btn-link">Xóa Mobile</button>]
-                </form> }
+            <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">@Localizer["Thay đổi Mobile"]</a>
+            <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post">
+                [<button type="submit" class="btn-link">@Localizer["Xóa Mobile"]</button>]
+            </form> }
             else
             {
-                <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Thêm Mobile</a>}
+        <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">@Localizer["Thêm Mobile"]</a>}
         </div>
     </div>
 </div>

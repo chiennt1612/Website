@@ -1,0 +1,9 @@
+﻿@model WebClient.Models.Order.CreateOrder
+@if (Model != null)
+{
+    <span class="glyphicon glyphicon-shopping-cart"><span id="id_cart_mobile1">@Model.OrderItems.Count()</span></span>
+}
+else
+{
+    <span class="glyphicon glyphicon-shopping-cart"><span id="id_cart_mobile1">0</span></span>
+}

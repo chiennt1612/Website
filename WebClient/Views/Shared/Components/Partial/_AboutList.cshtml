@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.About>
+<div id="custom_html-4" class="widget_text col pb-0 widget widget_custom_html">
+    <div class="textwidget custom-html-widget">
+        <div style="font-size:14px">
+            @foreach (var item in Model)
+            {
+                <a href="/About/@item.Id">@item.Title.ToUpper()</a><br />
+            }
+            <a href="/Contact">@Localizer["LIÊN HỆ"]</a><br />
+        </div>
+    </div>
+</div>

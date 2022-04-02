@@ -26,13 +26,13 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Categories)
+            @Html.DisplayNameFor(model => model.MainCategories)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Categories.Name)
+            @Html.DisplayFor(model => model.MainCategories.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryReference)
+            @Html.DisplayNameFor(model => model.ReferCategories.Name)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CategoryReference)
@@ -41,37 +41,43 @@
             @Html.DisplayNameFor(model => model.Img)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Img)
+            @*@Html.DisplayFor(model => model.Img)*@
+            <img id="ShowImg" height="100" src="@Model.Img" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImgSlide1)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImgSlide1)
+            @*@Html.DisplayFor(model => model.ImgSlide1)*@
+            <img id="ShowImg" height="100" src="@Model.ImgSlide1" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImgSlide2)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImgSlide2)
+            @*@Html.DisplayFor(model => model.ImgSlide2)*@
+            <img id="ShowImg" height="100" src="@Model.ImgSlide2" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImgSlide3)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImgSlide3)
+            @*@Html.DisplayFor(model => model.ImgSlide3)*@
+            <img id="ShowImg" height="100" src="@Model.ImgSlide3" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImgSlide4)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImgSlide4)
+            @*@Html.DisplayFor(model => model.ImgSlide4)*@
+            <img id="ShowImg" height="100" src="@Model.ImgSlide4" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImgSlide5)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImgSlide5)
+            @*@Html.DisplayFor(model => model.ImgSlide5)*@
+            <img id="ShowImg" height="100" src="@Model.ImgSlide5" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Summary)

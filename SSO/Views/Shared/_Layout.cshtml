@@ -12,6 +12,11 @@
     <title>@Localizer["SSO - Ngọc Tuấn Group"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        .text-nowrap {
+            white-space: nowrap !important;
+        }
+    </style>
 </head>
 <body>
     <partial name="_Nav" />
@@ -24,9 +29,9 @@
                 <div class="col-md-6">
                     <p>&copy; @System.DateTime.Now.Year - @Localizer["Ngọc Tuấn Group"]</p>
                 </div>
-                <div class="col-md-6 text-right">
+                @*<div class="col-md-6 text-right">
                     @await Html.PartialAsync("_SelectLanguagePartial")
-                </div>
+                </div>*@
             </div>
         </div>
     </footer>

@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
-using WebAdmin.Helpers;
 using X.PagedList;
-using EntityFramework.Web.DBContext;
 
 namespace WebAdmin.Services.Interfaces
 {
@@ -20,7 +17,7 @@ namespace WebAdmin.Services.Interfaces
         Task<IEnumerable<Article>> GetAllAsync();
         Task<Article> GetByIdAsync(long Id);
         Task<IPagedList<Article>> GetListAsync(
-            Expression<Func<Article, bool>> expression, Func<Article, string> sort, bool desc = false,
+            Expression<Func<Article, bool>> expression, Func<Article, object> sort, bool desc = false,
             int pageIndex = 1, int pageSize = Constants.PageSize);
     }
 }

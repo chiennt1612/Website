@@ -39,9 +39,12 @@ namespace SSO.Controllers
             //if (_environment.IsDevelopment())
             //{
             //    // only show in development
-                return View();
-            //}
-
+            //    return View();
+            //} Manage/Index
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Manage");
+            else
+                return RedirectToAction("Login", "Account");
             //_logger.LogInformation("Homepage is disabled in production. Returning 404.");
             //return NotFound();
         }

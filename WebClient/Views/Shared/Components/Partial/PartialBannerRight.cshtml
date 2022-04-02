@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Adv>
+
+@foreach (var item in Model)
+{
+<div class="embed-responsive embed-responsive-4by3">
+    @if (!String.IsNullOrEmpty(item.AdvScript))
+    {
+        <div class="videoWrapper">
+            @Html.Raw(item.AdvScript)
+        </div>
+    }
+    else
+    {
+        <div class="videoWrapper">
+            <img src="@item.Img" alt="@item.CustomerName" />
+        </div>
+    }
+</div>
+    
+<div class="text-center">@item.CustomerName</div>
+<hr />
+}

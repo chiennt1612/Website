@@ -1,0 +1,669 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IList<EntityFramework.Web.Entities.Categories>
+
+
+<ul>
+    @if (Model.Count() > 0)
+    {
+        var item = Model[0];
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="2" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!-- <div class="esg-bottom ">
+                     <div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li>
+    }
+
+    @if (Model.Count() > 1)
+    {
+        var item = Model[1];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.4"></div>
+
+                    <!--  <div class="esg-bottom" onclick="window.location='/Categories/@item.Id/1'">
+                        <!--<div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 2)
+    {
+        var item = Model[2];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!-- <div class="esg-bottom " onclick="window.location='/Categories/@item.Id/1'">
+                        <!--<div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 3)
+    {
+        var item = Model[3];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!--<div class="esg-bottom " onclick="window.location='/Categories/@item.Id/1'">
+                       <!-- <div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 4)
+    {
+        var item = Model[4];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="2" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!-- <div class="esg-bottom " onclick="window.location=/Categories/@item.Id/1">
+                        <!--<div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 5)
+    {
+        var item = Model[5];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="2" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!-- <div class="esg-bottom " onclick="window.location=/Categories/@item.Id/1">
+                    <!--  <div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 6)
+    {
+        var item = Model[6];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!-- <div class="esg-bottom " onclick="window.location=/Categories/@item.Id/1">
+                      <!--  <div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 7)
+    {
+        var item = Model[7];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!-- <div class="esg-bottom " onclick="window.location=/Categories/@item.Id/1">
+                     <!-- <div class="jaw-eg-title"><h2 style="font-size: 14px; font-family:arial;">@item.Name</h2></div>
+                        <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                    </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+
+    @if (Model.Count() > 8)
+    {
+        var item = Model[8];
+        <!-- PORTFOLIO ITEM 45 -->
+        <li class="filterall eg-jaw-01-wrapper" data-cobblesw="1" data-cobblesh="1" onclick="/Categories/@item.Id/1">
+            <!-- THE container FOR THE MEDIA AND THE COVER EFFECTS -->
+            <div class="esg-media-cover-wrapper">
+                <!-- THE MEDIA OF THE ENTRY -->
+                <div class="esg-entry-media"><img src="@item.Img" alt="@item.Name" /></div>
+
+                <!-- THE CONTENT OF THE ENTRY -->
+                <div class="esg-entry-cover" data-clickable="on">
+                    <!-- THE COLORED OVERLAY -->
+                    <a class="eg-invisiblebutton" href="/Categories/@item.Id/1"></a>
+                    <div class="esg-overlay esg-fade " data-delay="0.2"></div>
+
+                    <!--  <div class="esg-bottom " onclick="window.location=/Categories/@item.Id/1">
+                    <!--   <div class="jaw-eg-title"><h2 style="font-size: 14px;">@item.Name</h2></div>
+                         <div class="jaw-eg-content">@Localizer["XEM CHI TIẾT"]</div>
+                     </div>-->
+                </div><!-- END OF THE CONTENT IN THE ENTRY -->
+            </div><!-- END OF THE container FOR THE MEDIA AND COVER/HOVER EFFECTS -->
+        </li><!-- END OF PORTFOLIO ITEM -->
+    }
+</ul>
+
+@*<div class="container section-title-container hide-for-medium">
+    <h3 class="section-title section-title-center">
+        <b></b>
+        <span class="section-title-main" style="font-size:88%;">@Localizer["DANH MỤC SẢN PHẨM"]</span>
+        <b></b>
+    </h3>
+</div>
+
+<div class="banner-grid-wrapper">
+    <div id="banner-grid-1932761111" class="banner-grid row row-grid hide-for-medium row-small" data-packery-options="" style="position: relative; height: 1609.25px;">
+
+        @if (Model.Count > 0)
+        {
+            <div class="col grid-col small-12 large-8 grid-col-1 hide-for-medium" data-animate="none" style="position: absolute; left: 0px; top: 0px;" data-animated="true">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[0].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill bg-loaded"></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[0].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text dark">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[0].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[0].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[0].Id + 2000000) {
+                                            width: 100%;
+                                        }
+
+                                            #text-box-@(Model[0].Id + 2000000) .text {
+                                                font-size: 98%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[0].Id + 2000000) {
+                                padding-top: 600px;
+                            }
+
+                                #banner-@(Model[0].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[0].Img);
+                                }
+                        </style>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 1)
+        {
+            <div class="col grid-col small-12 large-4 grid-col-3-4" data-animate="none" style="position: absolute; left: 710px; top: 0px;" data-animated="true">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[1].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill bg-loaded"></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[1].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text ">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[1].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[1].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[1].Id + 2000000) {
+                                            width: 100%;
+                                        }
+
+                                            #text-box-@(Model[1].Id + 2000000) .text {
+                                                font-size: 123%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[1].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                               #banner-@(Model[1].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[1].Img?fit=500%2C500&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 2)
+        {
+            <div class="col grid-col small-12 large-4 grid-col-1" data-animate="none" style="position: absolute; left: 710px; top: 353px;" data-animated="true">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[2].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill bg-loaded"></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[2].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text dark">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[2].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[2].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[2].Id + 2000000) {
+                                            width: 100%;
+                                        }
+                                            #text-box-@(Model[2].Id + 2000000) .text {
+                                                font-size: 123%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[2].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                                #banner-@(Model[2].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[2].Img?fit=500%2C500&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 3)
+        {
+            <div class="col grid-col small-12 large-4 grid-col-3-4" data-animate="none" style="position: absolute; left: 0px; top: 471px;">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[3].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill "></div>
+                           </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[3].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text dark">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[3].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[3].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[3].Id + 2000000) {
+                                            width: 100%;
+                                        }
+                                            #text-box-@(Model[3].Id + 2000000) .text {
+                                                font-size: 123%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[3].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                                #banner-@(Model[3].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[3].Img?fit=500%2C500&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 4)
+        {
+            <div class="col grid-col small-12 large-4 grid-col-3-4" data-animate="none" style="position: absolute; left: 354px; top: 471px;">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[4].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill "></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[4].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text ">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[4].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[4].Id" asp-route-Page="1" target="_self" class="button white is-outline">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[4].Id + 2000000) {
+                                            width: 100%;
+                                        }
+                                            #text-box-@(Model[4].Id + 2000000) .text {
+                                                font-size: 123%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[4].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                                #banner-@(Model[4].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[4].Img?fit=500%2C500&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 5)
+        {
+            <div class="col grid-col small-12 large-4 grid-col-2-3" data-animate="none" style="position: absolute; left: 0px; top: 824px;">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[5].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill "></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[5].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text dark">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[5].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[5].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[5].Id + 2000000) {
+                                            width: 100%;
+                                        }
+                                            #text-box-@(Model[5].Id + 2000000) .text {
+                                                font-size: 123%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[5].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                                #banner-@(Model[5].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[5].Img?fit=700%2C700&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 6)
+        {
+            <div class="col grid-col small-12 large-8 grid-col-2-3" data-animate="none" style="position: absolute; left: 354px; top: 824px;">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[6].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill "></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[6].Id + 2000000)" class="text-box banner-layer x55 md-x55 lg-x55 y95 md-y95 lg-y95 res-text">
+                                    <div class="text dark">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[6].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[6].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[6].Id + 2000000) {
+                                            width: 60%;
+                                        }
+                                           #text-box-@(Model[6].Id + 2000000) .text {
+                                                font-size: 100%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[6].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                                #banner-@(Model[6].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[6].Img?fit=500%2C500&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 7)
+        {
+            <div class="col grid-col small-12 large-6 grid-col-1" data-animate="none" style="position: absolute; left: 0px; top: 1138px;">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[7].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill "></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[7].Id + 2000000)" class="text-box banner-layer x70 md-x70 lg-x70 y95 md-y95 lg-y95 res-text">
+                                    <div class="text ">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[7].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[7].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[7].Id + 2000000) {
+                                            width: 100%;
+                                        }
+
+                                            #text-box-@(Model[7].Id + 2000000) .text {
+                                                font-size: 100%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[7].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                               #banner-@(Model[7].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[7].Img?fit=700%2C700&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Count > 8)
+        {
+            <div class="col grid-col small-12 large-6 grid-col-1" data-animate="none" style="position: absolute; left: 532px; top: 1138px;">
+                <div class="col-inner">
+                    <div class="banner has-hover" id="banner-@(Model[8].Id + 2000000)">
+                        <div class="banner-inner fill">
+                            <div class="banner-bg fill">
+                                <div class="bg fill bg-fill "></div>
+                            </div>
+                            <div class="banner-layers container">
+                                <div class="fill banner-link"></div>
+                                <div id="text-box-@(Model[8].Id + 2000000)" class="text-box banner-layer x50 md-x50 lg-x50 y95 md-y95 lg-y95 res-text">
+                                    <div class="text ">
+                                        <div class="text-inner text-center">
+                                            <h3 class="uppercase">@Model[8].Name</h3>
+                                            <a asp-action="Index" asp-controller="Categories" asp-route-Id="@Model[8].Id" asp-route-Page="1" target="_self" class="button white is-outline is-large">
+                                                <span>@Localizer["Xem thêm"]</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #text-box-@(Model[8].Id + 2000000) {
+                                            width: 100%;
+                                        }
+                                            #text-box-@(Model[8].Id + 2000000) .text {
+                                                font-size: 100%;
+                                            }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            #banner-@(Model[8].Id + 2000000) {
+                                padding-top: 500px;
+                            }
+                                #banner-@(Model[8].Id + 2000000) .bg.bg-loaded {
+                                    background-image: url(@Model[8].Img?fit=700%2C700&ssl=1);
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <style>
+        #banner-grid-1932761111 .grid-col-1 {
+            height: 471px
+        }
+
+        #banner-grid-1932761111 .grid-col-1-2 {
+            height: 235.5px
+        }
+
+        #banner-grid-1932761111 .grid-col-1-3 {
+            height: 157px
+        }
+
+        #banner-grid-1932761111 .grid-col-2-3 {
+            height: 314px
+        }
+
+        #banner-grid-1932761111 .grid-col-1-4 {
+            height: 117.75px
+        }
+
+        #banner-grid-1932761111 .grid-col-3-4 {
+            height: 353.25px
+        }
+    </style>
+</div>*@

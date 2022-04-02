@@ -1,0 +1,133 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<EntityFramework.Web.Entities.Contact>
+@*@model IEnumerable<EntityFramework.Web.Entities.Contact>*@
+
+@{
+    ViewData["Title"] = Localizer["Danh sách"];
+}
+
+<h1>@Localizer["Danh sách"]</h1>
+
+
+<form method="get">
+    <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+    <input type="submit" value="Search" />
+</form>
+
+@using (Html.BeginForm())
+{@*@if (Model.Count > 0)
+        {*@
+<div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Register", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ContactDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Mobile)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model[0].Email)
+            </th>*@
+            @*<th>
+                @Html.DisplayNameFor(model => model[0].Address)
+            </th>*@
+            @*<th>
+                @Html.DisplayNameFor(model => model[0].IsCompany)
+            </th>
+            <th>
+                CMND/ CCCD/ Mã số thuế Cty
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model[0].Services)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].OrderStatus)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model[0].Description)
+            </th>*@
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @item.ContactDate.Value.ToString("dd/MM/yyyy HH:mm")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fullname)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Mobile)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>*@
+            @*<td>
+                @Html.DisplayFor(modelItem => item.IsCompany)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Services.Title)
+            </td>
+            <td>
+                @Model[0].Price.ToString().FormatNumber()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus.Name)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>*@
+            @*<td>
+                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a>
+            </td>*@
+        </tr>
+        }
+    </tbody>
+</table><div class="pagination">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount   @Html.PagedListPager(Model, page =>
+Url.Action("Register", new { page = page, Keyword = ViewData["Keyword"] }),
+new PagedListRenderOptions
+{
+LiElementClasses = new string[] { "page-item" },
+PageClasses = new string[] { "page-link" }
+})
+</div>}

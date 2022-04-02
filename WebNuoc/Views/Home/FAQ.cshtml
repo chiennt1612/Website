@@ -1,0 +1,67 @@
+﻿@using WebNuoc.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.Home.ListFAQs
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="" itemprop="url">
+                            <span itemprop="title">@Localizer["Câu hỏi thường gặp"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section id="list-faq">
+    <div class="container">
+        <div class="head">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="title">
+                        <h1><i class="fa fa-question-circle"></i>@Localizer["Câu hỏi thường gặp"]</h1>
+                    </div>
+                </div><!--left-->
+                <div class="col-md-6">
+                    @await Html.PartialAsync("_PartialSearchForm", new WebNuoc.Models.Home.SearchInput() { Keyword = Model.Keyword })
+                </div>
+            </div>
+        </div><!--head-->
+        <div class="list">
+
+            @foreach (var item in Model.listFAQ.list)
+            {
+                <div class="item">
+                    <div class="image"><i class="fa fa-user"></i> </div>
+                    <div class="right-side">
+                        <a asp-action="FAQDetails" asp-controller="Home" asp-route-Id="@item.Id" class="title">
+                            @item.Title
+                        </a>
+                        <span class="time">@Localizer["Người gửi: "] @item.Publisher - @item.DateCreator.ToString("dd/MM/yyyy HH:mm")</span>
+                        <p class="summary">
+                            @Html.Raw(item.Summary)
+                        </p>
+                        <div class="text-right">
+                            <a asp-action="FAQDetails" asp-controller="Home" asp-route-Id="@item.Id" class="more blue">@Localizer["Chi tiết..."]</a>
+                        </div>
+                    </div>
+                </div><!--item-->
+            }
+
+        </div>
+
+        @await Html.PartialAsync("_PartialSendQuestion", new EntityFramework.Web.Entities.Contact() { })
+    </div><!--container-->
+</section>

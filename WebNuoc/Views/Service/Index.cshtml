@@ -1,0 +1,53 @@
+﻿@using WebNuoc.Services
+@using WebNuoc.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Service>
+
+
+<section class="head-page">
+    <div class="container">   
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+                <h1 class="title">@Localizer["ĐĂNG KÝ DỊCH VỤ"]</h1>
+                <div class="summary"><p>@Localizer["Tìm hiểu về các dịch vụ công của chúng tôi"]</p></div>
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="/Service/Register" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["ĐĂNG KÝ DỊCH VỤ"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section>
+
+<section id="services-list">
+    <div class="container">
+        <h2>@Localizer["ĐĂNG KÝ DỊCH VỤ"]</h2>
+        <p>@Localizer["Danh sách các dịch vụ tại Nước Sạch Ngọc Tuấn - Nagaoka. Đăng ký online nhanh chóng, đơn giản, thuận tiện"]</p>
+        <div class="list">
+            @foreach (var item in Model)
+            {
+                <div class="item">
+                    <div class="icon-item-service"><img src="/Image/icon_item_service.png" alt="@item.Title"> <span class="no">@(item.Id - 10)</span> </div>
+                    <div class="right-side">
+                        <a href="/Service/Details/@item.Id" class="name">@item.Title</a>
+                        <p class="summary">@Html.Raw(item.Summary)</p>
+                        <a href="/Service/Details/@item.Id" class="viewmore">@Localizer["Xem thêm"]</a>
+                    </div>
+                </div><!--item-->
+            }
+
+        </div><!--list-->
+    </div><!--container-->
+</section><!--list-services-full-->

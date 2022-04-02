@@ -1,0 +1,113 @@
+﻿@using WebClient.Services
+@using Paygate.OnePay
+@using WebClient.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model EntityFramework.Web.Entities.BaseEntityList<EntityFramework.Web.Entities.Article>
+@*<div id="content" role="main" class="container section-title-container">
+        <div class="main pb50 clearfix">
+            @await Component.InvokeAsync("Partial", new { _PartialName = "NewHomeLastest", Id = Model.CategoryId })
+
+            @if (Model.CategoryId == 0)
+            {
+                await Component.InvokeAsync("Partial", new { _PartialName = "NewByCate", Id = Model.CategoryId });
+            }
+            else
+            {
+                await Component.InvokeAsync("Partial", new { _PartialName = "NewListByPage", Id = Model.CategoryId, page = Model.Page, pageSize = Model.PageSize });
+            }
+
+        </div>
+    </div>*@
+@{ 
+    var a = Model.list.ToList();
+}
+
+@if (a.Count() > 0)
+{
+    <div class="container link-lk-web">
+        <ul class="clearfix">
+            <li><a href="/">@Localizer["Trang chủ"]</a></li>
+            <li><a asp-controller="News" asp-action="Index" asp-route-Id="@a[0].CategoryMain">@a[0].MainCategories.Name</a></li>
+        </ul>
+    </div>
+
+    <div class="gt container">
+        <div class="gt-left col-md-9">
+            <p class="gt-title title">@a[0].MainCategories.Name</p>
+            <hr />
+            @for (var i = 0; i < a.Count(); i++)
+            {
+                <div class="gt-content">
+                    <div class="gt-frame row">
+                        <div class="gt-img col-sm-4">
+                            <a asp-controller="News" asp-action="Details" asp-route-Id="@a[i].Id" asp-route-Title="@a[i].Title.RemoveSign4VietnameseString()">
+                                <img src="@a[i].Img" />
+                            </a>
+                        </div>
+                        <div class="gt-letters col-sm-8">
+                            <p class="gt-letters-title">
+                                <a asp-controller="News" asp-action="Details" asp-route-Id="@a[i].Id" asp-route-Title="@a[i].Title.RemoveSign4VietnameseString()" style="color:#000098;">
+                                    <h2 style="margin: 0; font-size: 14px; color:#000098;">@a[i].Title</h2>
+                                </a>
+                            </p>
+                            <div class="date-poster ">
+                                <ul class="clearfix">
+                                    <li class="date">@a[i].DateCreator.ToString("dd/MM/yyyy HH:mm")</li>
+                                    <li class="poster">Admin</li>
+                                </ul>
+                            </div>
+                            <p class="gt-letters-content text-justify">
+                                @Html.Raw(a[i].Summary)
+                            </p>
+                            <a class="gt-letters-link pull-right" asp-controller="News" asp-action="Details" asp-route-Id="@a[i].Id" asp-route-Title="@a[i].Title.RemoveSign4VietnameseString()">
+                                @Localizer["Xem tiếp"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!---T-->
+        <div class="gt-right gt-vieo col-md-3 ">
+            <div class="gt-title title">@Localizer["Danh sách Video"] </div>
+            <hr />
+            @await Component.InvokeAsync("Partial", new { _PartialName = "PartialBannerRight" })
+
+        </div>
+
+        <!--Tend-->
+        <div class="gt-left col-md-12 paging">
+            <div class="page-number text-center">
+                <ul>
+                    @{
+                        var searchInput = new WebClient.Models.Home.SearchInput()
+                        {
+                            CategoryId = Model.CategoryId,
+                            Keyword = "",
+                            max_price = 0,
+                            min_price = 0,
+                            Page = Model.page,
+                            TotalPage = (Model.totalRecords % Model.pageSize > 0 ? (Model.totalRecords / Model.pageSize) + 1 : (Model.totalRecords / Model.pageSize)),
+                            SearchType = "News",
+                            TotalRow = Model.totalRecords
+                        };
+                    }
+                    @await Html.PartialAsync("/Views/News/_PartialPageRender.cshtml", searchInput)
+                </ul>
+            </div>
+        </div>
+        <script>
+            (function () {
+                var cx = '005180372118349934645:eetydilknbc';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+            })();
+        </script>
+        <gcse:search></gcse:search>
+    </div>
+}

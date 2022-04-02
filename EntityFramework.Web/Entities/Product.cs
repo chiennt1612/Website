@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EntityFramework.Web.Entities
 {
@@ -18,43 +14,45 @@ namespace EntityFramework.Web.Entities
         [Display(Name = "ProductName", ResourceType = typeof(Resources.EntityValidation))]
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
         public string Name { get; set; }
-        
-        [ForeignKey("Categories")]
+
+        [ForeignKey("MainCategories")]
         [Display(Name = "CateMain", ResourceType = typeof(Resources.EntityValidation))]
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
-        public long CategoryMain { get; set; }
-        public Categories Categories { get; set; }
+        //[Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        public long? CategoryMain { get; set; }
+        public Categories MainCategories { get; set; }
 
-        [StringLength(1000, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [ForeignKey("ReferCategories")]
+        //[StringLength(1000, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
         [Display(Name = "CateRefer", ResourceType = typeof(Resources.EntityValidation))]
-        public string CategoryReference { get; set; }
+        public long? CategoryReference { get; set; }
+        public Categories ReferCategories { get; set; }
 
-        //[StringLength(200, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(200)]
         [Display(Name = "ProductImage", ResourceType = typeof(Resources.EntityValidation))]
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
         public string Img { get; set; }
 
-        //[StringLength(200, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(200)]
         [Display(Name = "ProductSlide1", ResourceType = typeof(Resources.EntityValidation))]
         public string ImgSlide1 { get; set; }
 
-        //[StringLength(200, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(200)]
         [Display(Name = "ProductSlide2", ResourceType = typeof(Resources.EntityValidation))]
         public string ImgSlide2 { get; set; }
 
-        //[StringLength(200, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(200)]
         [Display(Name = "ProductSlide3", ResourceType = typeof(Resources.EntityValidation))]
         public string ImgSlide3 { get; set; }
 
-        //[StringLength(200, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(200)]
         [Display(Name = "ProductSlide4", ResourceType = typeof(Resources.EntityValidation))]
         public string ImgSlide4 { get; set; }
 
-        //[StringLength(200, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(200)]
         [Display(Name = "ProductSlide5", ResourceType = typeof(Resources.EntityValidation))]
         public string ImgSlide5 { get; set; }
 
-        [StringLength(2000, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        [StringLength(2000)]
         [Display(Name = "Summary", ResourceType = typeof(Resources.EntityValidation))]
         public string Summary { get; set; }
 

@@ -1,8 +1,83 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using WebClient.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- carousel -->
+@await Component.InvokeAsync("Partial", new { _PartialName = "PartialBannerHome" })
+<!-- end carousel -->
+<!-- introduce -->
+<div class="introduce">
+    <div class="container">
+        <!-- BANNER TRON -->
+        <!--new-->
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialProductNew" })
+        <!--/new-->
+        @*
+            <!--Hot-->
+            @await Component.InvokeAsync("Partial", new { _PartialName = "PartialFlashSale" })
+            <!--/Hot-->
+        *@
+        <div class="products">
+            <div class="container">
+                <div class="styletrong" style="margin: 10px 0px; padding:2px;">
+                    <div style="color:blue; font-size:14px">
+                        <a href="/Categories/ProductHot">
+                            <strong style="color:blue;">@Localizer["SẢN PHẨM NỔI BẬT"]</strong>
+                        </a>
+                    </div>
+                </div>
+                <article class="myportfolio-container minimal-dark">
+                    <!-- THE GRID ITSELF WITH FILTERS, PAGINATION, SORTING ETC... -->
+                    <div id="esg-grid-1-1" class="esg-grid" style="background-color: transparent;padding: 0px 0px 0px 0px ; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:none">
+                        <!-- ############################ -->
+                        <!-- THE GRID ITSELF WITH ENTRIES -->
+                        <!-- ############################ -->
+                        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialProductHome" })
+                        <!-- ############################ -->
+                        <!--      END OF THE GRID         -->
+                        <!-- ############################ -->
+                    </div><!-- END OF THE GRID -->
+
+                </article>
+                <!-- END OF THE GRID WRAPPER -->
+                <hr>
+                <div class="row">
+                    @await Component.InvokeAsync("Partial", new { _PartialName = "PartialNewsHome" })
+                </div>
+
+            </div> <!-- #.container-->
+        </div><!-- #.products-->
+    </div>
 </div>
+@*<div id="content" role="main" class="content-area">
+
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialBannerHome" })
+
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialFlashSale" })
+
+
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialProductNew" })
+
+        <div id="gap-1607360821" class="gap-element clearfix hide-for-medium" style="display:block; height:auto;">
+
+            <style>
+                #gap-1607360821 {
+                    padding-top: 50px;
+                }
+            </style>
+        </div>
+
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialProductHome" })
+
+        <div id="gap-391596652" class="gap-element clearfix hide-for-medium" style="display:block; height:auto;">
+
+            <style>
+                #gap-391596652 {
+                    padding-top: 44px;
+                }
+            </style>
+        </div>
+
+        @await Component.InvokeAsync("Partial", new { _PartialName = "PartialNewsHome" })
+
+    </div>*@

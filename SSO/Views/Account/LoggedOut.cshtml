@@ -1,23 +1,25 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model LoggedOutViewModel
 
-@{ 
+@{
     // set this so the layout rendering sees an anonymous user
     ViewData["signed-out"] = true;
 }
 
 <div class="logged-out-page">
     <h1>
-        Logout
-        <small>You are now logged out</small>
-        <a href="/Home">Home</a>
+        @Localizer["Thoát khỏi hệ thống"]
+        <small>@Localizer["Bạn đã thoát khỏi hệ thống"]</small>
+        <a href="/Home">@Localizer["Về trang chủ"]</a>
     </h1>
 
     @if (Model.PostLogoutRedirectUri != null)
     {
-        <div>
-            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
-            <span>@Model.ClientName</span> application.
-        </div>
+<div>
+    @Localizer["Nhấn chuột"] <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">@Localizer["tại đây"]</a> @Localizer["để về trang của bạn"]
+    <span>@Model.ClientName</span>.
+</div>
     }
 
     @if (Model.SignOutIframeUrl != null)

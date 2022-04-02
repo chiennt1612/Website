@@ -54,6 +54,9 @@ namespace SSO.Services
                 }
             }
 
+            claims.Add(new Claim("oldid", user.OldId.ToString()));
+            claims.Add(new Claim("username", user.UserName));
+
             context.IssuedClaims = claims;
         }
 

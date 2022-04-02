@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.Home.SearchInput
+
+<div class="search">
+    <form id="frmSearchByKeyword" name="frmSearchByKeyword" asp-action="FAQ" asp-controller="Home">
+        <button type="submit">@Localizer["Tìm kiếm"]</button> <input class="form-control" type="text" asp-for="Keyword" placeholder="@Localizer["Nhập từ khóa"]" />
+    </form>
+</div>

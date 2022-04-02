@@ -1,25 +1,20 @@
-using IdentityModel;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using EntityFramework.Web.DBContext;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Reflection;
 using WebClient.Helpers;
 
-namespace WebAdmin
+namespace WebClient
 {
     public class Startup
     {
+        //readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,60 +28,28 @@ namespace WebAdmin
             services.AddRazorPages();
             services.AddControllersWithViews();
             services.AddHttpClient();
-            services.AddSingleton<IDiscoveryCache>(r =>
-            {
-                var factory = r.GetRequiredService<IHttpClientFactory>();
-                return new DiscoveryCache(Constants.Authority, () => factory.CreateClient());
-            });
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = "WebClient";
-                })
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = Constants.Authority;
-                    options.ClientId = "WebClient";
-                    options.ClientSecret = "secretWebAdmin";
-                    options.ResponseType = "code";
-                    options.UsePkce = true;
+            services.AddServiceLanguage();
+            services.AddAuthenticationServices();
+            services.AddAuthorizationByPolicy();
 
-                    //options.Scope.Add("api1");
+            services.AddSingleton<IDecryptorProvider, DecryptorProvider>();
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            services.RegisterDbContexts(Configuration, migrationsAssembly);
 
-                    options.SaveTokens = true;
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSenders(Configuration);
+            services.RegisterAppServices();
 
-                    options.RequireHttpsMetadata = false;
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: MyAllowSpecificOrigins,
+            //                      builder =>
+            //                      {
+            //                      builder.WithOrigins("https://chatngay-api.glee.vn");// Configuration.GetSection("Origins").Get<string[]>());
+            //                      });
+            //});
 
-                    //// code flow + PKCE (PKCE is turned on by default)
-                    //options.ResponseType = "code";
-                    options.UsePkce = true;
-
-                    options.Scope.Clear();
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("email");
-                    options.Scope.Add("address");
-                    options.Scope.Add("phone");
-                    //options.Scope.Add("offline_access");
-                    //options.Scope.Add("api2");
-
-                    // not mapped by default
-                    options.ClaimActions.MapJsonKey("website", "website");
-
-                    // keeps id_token smaller
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                    options.SaveTokens = true;
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = JwtClaimTypes.Name,
-                        RoleClaimType = JwtClaimTypes.Role,
-                    };
-                });
+            services.AddResponseCaching();
 
             services.AddDistributedMemoryCache();
         }
@@ -104,10 +67,31 @@ namespace WebAdmin
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //app.Use(async (context, next) =>
+            //{
+            //    await next();
+            //    if (context.Response.StatusCode == 404)
+            //    {
+            //        context.Request.Path = "/Home/Error404";
+            //        await next();
+            //    }
+            //    else if (context.Response.StatusCode >= 400 && context.Response.StatusCode < 599)
+            //    {
+            //        context.Request.Path = "/Home/Error";
+            //        await next();
+            //    }
+            //});
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseConfigLanguage();
 
             app.UseRouting();
+
+            //app.UseCors(MyAllowSpecificOrigins);
+
+            app.UseResponseCaching();
 
             app.UseAuthentication();
 
@@ -118,6 +102,11 @@ namespace WebAdmin
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }

@@ -1,0 +1,115 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Services.Interfaces.InvoiceAllResult
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="" itemprop="url">
+                            <span itemprop="title">@Localizer["Thanh toán hóa đơn nước - OnePay"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section id="list-faq">
+    <div class="container">
+        <div class="form">
+            @{
+                    var _SearchInput = new WebNuoc.Models.Home.SearchInput()
+                    {
+                        Keyword = Model.Keyword
+                    };
+                    if (User.Identity.IsAuthenticated) _SearchInput.Keyword = User.Claims.Where(u => u.Type == Paygate.OnePay.Tools.ClaimCustomerCode).FirstOrDefault().Value;
+            }
+
+            @await Html.PartialAsync("/Views/Invoice/_PartialSearchFrm.cshtml", _SearchInput)
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Mã khách"]</label>
+                <div class="col-md-7 col-sm-6">
+                    <input type="text" class="form-control" disabled value="@((Model.ItemsData != null? Model.ItemsData.CustomerCode : ""))" />
+                </div><!--col-->
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Họ tên"]</label>
+                <div class="col-md-7 col-sm-6">
+                    <input type="text" class="form-control" disabled value="@((Model.ItemsData != null? Model.ItemsData.CustomerName : ""))" />
+                </div><!--col-->
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Địa chỉ"]</label>
+                <div class="col-md-7 col-sm-6">
+                    <input type="text" class="form-control" disabled value="@((Model.ItemsData != null? Model.ItemsData.Address : ""))" />
+                </div><!--col-->
+            </div>
+        </div>
+    </div><!--head-->
+
+    <div class="container">
+        <div class="list">
+
+            @if (Model.ItemsData != null)
+            {
+                foreach (var item in Model.ItemsData.InvList)
+                {
+                    <form asp-action="Pay" asp-controller="Invoice">
+                        <input type="hidden" id="CustomerCode" name="CustomerCode" value="@Model.ItemsData.CustomerCode" />
+                        <input type="hidden" id="InvoiceNo" name="InvoiceNo" value="@item.InvCode" />
+                        <input type="hidden" id="InvoiceAmount" name="InvoiceAmount" value="@item.InvAmount" />
+                        <div class="item">
+                            <div class="image"><i class="fa fa-user"></i> </div>
+                            <div class="right-side">
+                                <a class="title">
+                                    @Localizer["Số hóa đơn"]: @item.InvCode / @Localizer["Số tiền thanh toán"]: @item.InvAmount.ToString().FormatNumber()
+                                </a>
+                                <p class="summary">
+                                    @Html.Raw(item.InvRemarks) <br />
+                                    @Localizer["Serial/Mã số hóa đơn"]: <b> @item.InvSerial/ @item.InvNumber </b> <br />
+                                    @Localizer["Ngày xuất"]: <b> @item.InvDate.ToString("dd/MM/yyyy HH:mm") </b> <br />
+                                    @Localizer["Mã số bí mật"]: <b> @item.MaSoBiMat </b>
+                                    <a asp-action="InvoiceView" asp-controller="Account" asp-route-reservationCode="@item.MaSoBiMat" asp-route-supplierTaxCode="0900996305">@Localizer["Tải hóa đơn"]</a> <br />
+                                    @Localizer["Trạng thái"]: <b> @(Html.Raw((item.PaymentStatus == 0 ? "<font color=red>Chưa thanh toán</font>" : "Đã thanh toán"))) </b> <br />
+                                </p>
+                                @if (item.PaymentStatus == 0)
+                                {
+                                    <p class="summary">
+                                        <input asp-for="IsAgree" />
+                                        <label asp-for="IsAgree" class="col-md-11 col-sm-11 col-form-label">@Localizer["Tôi đã đọc và Đồng ý với <u><a href=\"/About/9\">Điều khoản</a></u> thanh toán!"]</label>
+                                        <br /><span asp-validation-for="IsAgree" class="col-md-12 col-sm-12 text-danger"></span>
+                                    </p>
+
+                                    <div>
+                                        <input type="submit" value="@Localizer["Thanh toán"]" class="btn btn-primary" />
+                                    </div>
+                                }
+                            </div>
+                        </div><!--item-->
+                    </form>
+                }
+            }
+
+            @if (Model.DataStatus != null)
+            {
+                @if (Model.DataStatus != "00")
+                {
+                    @Html.Raw(Model.Message);
+                    <a href="/Account/SetCustomerCode">@Localizer["Gán mã khách"]</a>
+                }
+            }
+
+        </div>
+    </div><!--container-->
+</section>

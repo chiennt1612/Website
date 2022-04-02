@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model EntityFramework.Web.Entities.About
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+                @if (Model.Id == 2)
+                {
+                    <h1 class="title"><a asp-action="Index" asp-controller="Invoice">@Localizer["Tra cứu hóa đơn nước"]</a></h1>
+                }
+                else
+                {
+                    <h1 class="title">@Model.Title</h1>
+                }
+
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;<a href="" itemprop="url">
+                                                                         <span itemprop="title">@Model.Title</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section id="about-detail">
+    <div class="container">
+        @Html.Raw(Model.Description)
+    </div><!--container-->
+</section>

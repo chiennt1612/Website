@@ -1,21 +1,13 @@
-using IdentityModel;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using EntityFramework.Web.DBContext;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Reflection;
 using WebAdmin.Helpers;
 
 namespace WebAdmin
@@ -41,7 +33,8 @@ namespace WebAdmin
             services.AddAuthorizationByPolicy();
 
             services.AddTransient<IDecryptorProvider, DecryptorProvider>();
-            services.RegisterDbContexts(Configuration);
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            services.RegisterDbContexts(Configuration, migrationsAssembly);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.RegisterAppServices();
@@ -62,6 +55,22 @@ namespace WebAdmin
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //app.Use(async (context, next) =>
+            // {
+            //     await next();
+            //     if (context.Response.StatusCode == 404)
+            //     {
+            //         context.Request.Path = "/Home/Error404";
+            //         await next();
+            //     }
+            //     else if (context.Response.StatusCode >= 400 && context.Response.StatusCode < 599)
+            //     {
+            //         context.Request.Path = "/Home/Error";
+            //         await next();
+            //     }
+            // });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -78,6 +87,11 @@ namespace WebAdmin
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }).RequireAuthorization();
             });
         }
     }

@@ -1,0 +1,73 @@
+﻿@using WebClient.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model WebClient.Models.Home.SearchInput
+
+@{
+    var m = ViewData.GetPage();
+}
+
+@if (m.IsProduct > 1)
+{
+<div class="shop-page-title category-page-title page-title ">
+    <div class="page-title-inner flex-row  medium-flex-wrap container">
+        <div class="flex-col flex-grow medium-text-center">
+            <div class="is-large">
+                <nav class="woocommerce-breadcrumb breadcrumbs uppercase">
+                    <a href="/">@Localizer["Trang chủ"]</a>
+                    @foreach (var item in m.PathName)
+                    {
+                        <span class="divider">&#47;</span> @item
+                    }
+                </nav>
+            </div>
+            @if (m.IsProduct == 2)
+            {
+                <div class="category-filtering category-filter-row show-for-medium">
+                    <a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
+                        <i class="icon-equalizer"></i>
+                        <strong>@Localizer["Lọc"]</strong>
+                    </a>
+                    <div class="inline-block">
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="flex-col medium-text-center">
+            @if (m.IsProduct == 2 || m.IsProduct == 4)
+            {
+                if (m.TotalPage > 1)
+                {
+                    <p class="woocommerce-result-count hide-for-medium">
+                        @Localizer["Hiển thị"] @((m.Page-1)*m.PageSize+1) &ndash; @(m.Page*m.PageSize) @Localizer["của"] @m.Total @Localizer["kết quả"]
+                    </p>
+                }
+                else
+                {
+                    <p class="woocommerce-result-count hide-for-medium">
+                        @Localizer["Hiển thị"] @m.Total @Localizer["kết quả"]
+                    </p>
+                }
+                <form class="woocommerce-ordering" method="get">
+                    <select id="_orderby" name="_orderby" aria-label="@Localizer["Đơn hàng của cửa hàng"]" onchange="PageProduct_OnClick(1, '@Model.SearchType', @Model.CategoryId, this.value)">
+                        @foreach (var item in m.pOrders)
+                        {
+                            if (item.OrderValue == Model.OrderValue)
+                            {
+                                <option value="@item.OrderValue" selected>@item.OrderName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.OrderValue">@item.OrderName</option>
+                            }
+
+                        }
+                    </select>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+}

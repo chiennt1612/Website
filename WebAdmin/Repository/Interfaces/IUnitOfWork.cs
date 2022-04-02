@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using EntityFramework.Web.Entities;
 
 namespace WebAdmin.Repository.Interfaces
 {
@@ -11,6 +8,9 @@ namespace WebAdmin.Repository.Interfaces
     /// </summary>
     public interface IUnitOfWork : IDisposable
     {
+        IAboutRepository aboutRepository { get; }
+        IFAQRepository fAQRepository { get; }
+        IServiceRepository serviceRepository { get; }
         IArticleRepository articleRepository { get; }
         ICategoriesRepository categoriesRepository { get; }
         INewsCategoriesRepository newsCategoriesRepository { get; }
@@ -18,6 +18,14 @@ namespace WebAdmin.Repository.Interfaces
         IMenuSubFooterRepository menuSubFooterRepository { get; }
         IParamSettingRepository paramSettingRepository { get; }
         IProductRepository productRepository { get; }
+        IContactRepository contactRepository { get; }
+
+        IAdvRepository advRepository { get; }
+        IAdvPositionRepository advPositionRepository { get; }
+
+        IOrderRepository orderRepository { get; }
+        IAddressRepository addressRepository { get; }
+        IOrderStatusRepository orderStatusRepository { get; }
 
         void Save();
         Task SaveAsync();

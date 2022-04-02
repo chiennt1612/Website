@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EntityFramework.Web.Entities
 {
@@ -19,7 +16,7 @@ namespace EntityFramework.Web.Entities
         public long? UserModify { get; set; }
         [Display(Name = "DateModify", ResourceType = typeof(Resources.EntityValidation))]
         public DateTime? DateModify { get; set; }
-        
+
         public bool IsDeleted { get; set; }
         [Display(Name = "UserDeleted", ResourceType = typeof(Resources.EntityValidation))]
         public long? UserDeleted { get; set; }

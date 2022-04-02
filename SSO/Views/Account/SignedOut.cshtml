@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Signed out";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Signed out"];
 }
 
 <h2>@ViewData["Title"]</h2>
 <p>
-    You have successfully signed out.
+    @Localizer["Bạn đã thoát khỏi hệ thống thành công"]@*You have successfully signed out.*@
 </p>

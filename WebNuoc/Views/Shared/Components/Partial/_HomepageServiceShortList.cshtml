@@ -1,0 +1,52 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Service>
+<!--Thanh - Thêm ảnh dự án -->
+@if (Model.Count() > 0)
+{
+    <section id="service-home">
+        <div class="container">
+            <h2>@Localizer["ĐĂNG KÝ DỊCH VỤ ONLINE"]</h2>
+            <p class="summary">@Localizer["Khách hàng lựa chọn dịch vụ"]</p>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="item col-lg-4 col-md-6 col-sm-6 col-12">
+                        <div class="icon-item-service">
+                            <img src="/Image/icon_item_service.png" alt="icon">
+                            <span class="no">@(item.Id - 10)</span>
+                            <div class="info" style="display: none; opacity: 1;">
+                                <div class="image">
+                                    <img src="@item.Img" alt="@item.Title">
+                                </div>
+                                <div class="right-side">
+                                    <a href="javascript:void(0)" class="close"><i class="fa fa-times-circle"></i></a>
+                                    <a href="/Service/Details/@item.Id" class="name">@item.Title</a>
+                                    <p class="price">@Localizer["Giá:"] <b>@item.Price.ToString().FormatNumber() VNĐ</b></p>
+                                    <p class="summary">@Html.Raw(item.Summary)</p>
+                                    <div class="list">
+                                        <b>@Localizer["Đối tượng thực hiện"]</b>
+                                        <ul class="ul">
+                                            @Html.Raw(item.GroupIdList.GroupServiceList("li"))
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="button">
+                                        <a href="/Service/Details/@item.Id" class="btn-blue">@Localizer["Chi tiết"]</a>&nbsp;
+                                        <a href="/Service/Register/@item.Id" data-name="@item.Title" class="btn-border p-regist">@Localizer["Đăng ký"]</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text">
+                            <a href="/Service/Details/@item.Id"><h3>@item.Title</h3></a>
+                            @Html.Raw(item.Summary)
+                        </div>
+                    </div>
+                }
+            </div><!--row-->
+            <p class="text-center"><a href="/Service" class="viewmore">@Localizer["Xem thêm"]</a> </p>
+        </div><!--container-->
+    </section>
+}

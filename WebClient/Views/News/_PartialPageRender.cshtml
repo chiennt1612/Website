@@ -1,0 +1,173 @@
+﻿@model WebClient.Models.Home.SearchInput
+@*<div class="container">
+    <nav class="woocommerce-pagination">
+        <ul class="page-numbers nav-pagination links text-center">
+            @if (Model.TotalPage > 0) // Ko có kết quả
+            {
+                var currPage = Model.Page;
+                var CategoryId = (Model.CategoryId.HasValue ? Model.CategoryId.Value : 1);
+                // Prev
+                if (currPage > 1)
+                {
+                    <li><a class="prev page-number" href="javascript:PageNews_OnClick((@currPage-1), '@Model.SearchType', @CategoryId);"><i class="icon-angle-left"></i></a></li>
+                }
+                // Page render
+                if (Model.TotalPage < 13) // Ít hơn 13 page => Gender full
+                {
+                    for (var i = 1; i <= Model.TotalPage; i++)
+                    {
+                        if (currPage == i)
+                        {
+                            <li><span aria-current="page" class="page-number current">@i</span></li>
+                        }
+                        else
+                        {
+                            <li><a class="page-number" href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+                        }
+                    }
+                }
+                else // Vượt quá 12 chia nhỏ khoảng
+                {
+                    // Khoảng 1-3
+                    for (var i = 1; i < 4; i++)
+                    {
+                        if (currPage == i)
+                        {
+                            <li><span aria-current="page" class="page-number current">@i</span></li>
+                        }
+                        else
+                        {
+                            <li><a class="page-number" href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+                        }
+                    }
+                    // Khoảng giữa theo Page hiện tại
+                    var min = (currPage - 3 > 3 ? currPage - 3 : 4);
+                    var max = (currPage + 3 < Model.TotalPage - 2 ? currPage + 3 : Model.TotalPage - 3);
+                    // Nếu min lớn hơn page 4 thì chen giữa ...
+                    if (min > 4)
+                    {
+                        <li><span class="page-number dots">&hellip;</span></li>
+                    }
+                    // Gen page with Page hiện tại
+                    for (var i = min; i <= max; i++)
+                    {
+                        if (currPage == i)
+                        {
+                            <li><span aria-current="page" class="page-number current">@i</span></li>
+                        }
+                        else
+                        {
+                            <li><a class="page-number" href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+                        }
+                    }
+                    // Nếu max nhỏ hơn Model.TotalPage-3
+                    if (max < Model.TotalPage - 3)
+                    {
+                        <li><span class="page-number dots">&hellip;</span></li>
+                    }
+                    // Khoảng 3 page cuối
+                    for (var i = Model.TotalPage - 2; i <= Model.TotalPage; i++)
+                    {
+                        if (currPage == i)
+                        {
+                            <li><span aria-current="page" class="page-number current">@i</span></li>
+                        }
+                        else
+                        {
+                            <li><a class="page-number" href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+                        }
+                    }
+                }
+                // Next
+                if (currPage < Model.TotalPage)
+                {
+                    <li><a class="next page-number" href="javascript:PageNews_OnClick((@currPage+1), '@Model.SearchType', @CategoryId);"><i class="icon-angle-right"></i></a></li>
+                }
+            }
+        </ul>
+    </nav>
+</div>*@
+
+@if (Model.TotalPage > 0) // Ko có kết quả
+{
+    var currPage = Model.Page;
+    var CategoryId = (Model.CategoryId.HasValue ? Model.CategoryId.Value : 1);
+    var OrderBy = Model.OrderValue;
+    // Prev
+    if (currPage > 1)
+    {
+        <li><a href="javascript:PageNews_OnClick((@currPage-1), '@Model.SearchType', @CategoryId);">Back</a></li>
+    }
+    // Page render
+    if (Model.TotalPage < 13) // Ít hơn 13 page => Gender full
+    {
+        for (var i = 1; i <= Model.TotalPage; i++)
+        {
+            if (currPage == i)
+            {
+                <li class="active"><a>@i</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+            }
+        }
+    }
+    else // Vượt quá 12 chia nhỏ khoảng
+    {
+        // Khoảng 1-3
+        for (var i = 1; i < 4; i++)
+        {
+            if (currPage == i)
+            {
+                <li class="active"><a>@i</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+            }
+        }
+        // Khoảng giữa theo Page hiện tại
+        var min = (currPage - 3 > 3 ? currPage - 3 : 4);
+        var max = (currPage + 3 < Model.TotalPage - 2 ? currPage + 3 : Model.TotalPage - 3);
+        // Nếu min lớn hơn page 4 thì chen giữa ...
+        if (min > 4)
+        {
+            <li><a>&hellip;</a></li>
+        }
+        // Gen page with Page hiện tại
+        for (var i = min; i <= max; i++)
+        {
+            if (currPage == i)
+            {
+                <li class="active"><a>@i</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+            }
+        }
+        // Nếu max nhỏ hơn Model.TotalPage-3
+        if (max < Model.TotalPage - 3)
+        {
+            <li><a>&hellip;</a></li>
+        }
+        // Khoảng 3 page cuối
+        for (var i = Model.TotalPage - 2; i <= Model.TotalPage; i++)
+        {
+            if (currPage == i)
+            {
+                <li class="active"><a>@i</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:PageNews_OnClick(@i, '@Model.SearchType', @CategoryId);">@i</a></li>
+            }
+        }
+    }
+    // Next
+    if (currPage < Model.TotalPage)
+    {
+        <li><a href="javascript:PageNews_OnClick((@currPage+1), '@Model.SearchType', @CategoryId);">Next</a></li>
+    }
+}

@@ -12,17 +12,21 @@
 
 <p>
     <a asp-action="Create">@Localizer["Thêm mới"]</a>
+    <form method="get">
+        <input type="text" id="Keyword" name="Keyword" value="@ViewData["Keyword"]" placeholder="Từ khóa" />
+        <input type="submit" value="Search" />
+    </form>
 </p>
 @if (Model.Count > 0)
 {
 <div class="pagination">
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
     of @Model.PageCount   @Html.PagedListPager(Model, page =>
-Url.Action("Index", new { page = page }),
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
 new PagedListRenderOptions
 {
-LiElementClasses = new string[] { "page-item" },
-PageClasses = new string[] { "page-link" }
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
 })
 </div>
                 <table class="table">
@@ -33,6 +37,12 @@ PageClasses = new string[] { "page-link" }
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model[0].Parent)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Img)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].DisplayOnHome)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model[0].Status)
@@ -58,46 +68,53 @@ PageClasses = new string[] { "page-link" }
                     <tbody>
                         @foreach (var item in Model)
                         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Parent.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayOnMenuMain)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.UserCreator)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateCreator)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserModify)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateModify)
-                </td>*@
-            <td style="display: inline">
-                <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Sửa"]</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Xóa"]</a>
-            </td>
-        </tr>}
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Parent.Name)
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.Img)*@
+                                <img id="ShowImg" height="100" src="@item.Img" />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayOnHome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayOnMenuMain)
+                            </td>
+                            @*<td>
+            @Html.DisplayFor(modelItem => item.UserCreator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserModify)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateModify)
+        </td>*@
+                            <td style="display: inline">
+                                <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Sửa"]</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Xóa"]</a>
+                            </td>
+                        </tr>}
                     </tbody>
                 </table><div class="pagination">
                     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
                     of @Model.PageCount   @Html.PagedListPager(Model, page =>
-Url.Action("Index", new { page = page }),
+Url.Action("Index", new { page = page, Keyword = ViewData["Keyword"] }),
 new PagedListRenderOptions
 {
-LiElementClasses = new string[] { "page-item" },
-PageClasses = new string[] { "page-link" }
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
 })
                 </div> }
             else

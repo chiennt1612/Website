@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+@{ 
+    var typeList = new List<string>();
+    typeList.Add("username");
+    typeList.Add("name");
+    //typeList.Add("given_name");
+    //typeList.Add("family_name");
+    typeList.Add("email");
+    typeList.Add("phone_number");
+    typeList.Add("website");
+    //typeList.Add("location");
+    typeList.Add("address");
+}
+<div class="container link-lk-web">
+    <ul class="clearfix">
+        <li><a href="/">@Localizer["Trang chủ"]</a></li>
+        <li><a href="#">@Localizer["Hồ sơ"]</a></li>
+    </ul>
+</div>
+<div id="contact container" role="main" class="container section-title-container">
+    <div class="col-md">
+        <form asp-controller="Account" asp-action="Profile">
+            @*<div class="form-group">
+                <label class="control-label">@Localizer["Tên tài khoản"]</label>
+                <input type="text" class="form-control" readonly value="@User.Identity.Name" />
+            </div>*@
+
+            @foreach (var item in User.Claims.Where(u => typeList.Contains(u.Type)))
+            {
+                <div class="form-group">
+                    <label class="control-label" for="@item.Type">@item.Type</label>
+                    <input type="text" id="@item.Type" class="form-control" readonly value="@item.Value" />
+                </div>
+            }
+        </form>
+    </div>
+</div>

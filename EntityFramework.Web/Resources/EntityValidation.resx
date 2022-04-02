@@ -120,8 +120,17 @@
   <data name="Address" xml:space="preserve">
     <value>Địa chỉ</value>
   </data>
+  <data name="AdvImg" xml:space="preserve">
+    <value>Ảnh banner</value>
+  </data>
+  <data name="AdvScript" xml:space="preserve">
+    <value>Quảng cáo JS</value>
+  </data>
   <data name="CateCode" xml:space="preserve">
     <value>Mã nhóm</value>
+  </data>
+  <data name="CategoryImage" xml:space="preserve">
+    <value>Ảnh nhóm</value>
   </data>
   <data name="CateMain" xml:space="preserve">
     <value>Tên nhóm chính</value>
@@ -133,7 +142,10 @@
     <value>Nhóm cha</value>
   </data>
   <data name="CateRefer" xml:space="preserve">
-    <value>Các nhóm liên quan</value>
+    <value>Nhóm liên quan</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Thành phố</value>
   </data>
   <data name="CompanyLogo" xml:space="preserve">
     <value>Logo</value>
@@ -143,6 +155,12 @@
   </data>
   <data name="CompanySince" xml:space="preserve">
     <value>Năm thành lập</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Nước</value>
+  </data>
+  <data name="CustomerName" xml:space="preserve">
+    <value>Tên khách</value>
   </data>
   <data name="DateCreator" xml:space="preserve">
     <value>Ngày tạo</value>
@@ -162,11 +180,26 @@
   <data name="Display" xml:space="preserve">
     <value>Hiển thị</value>
   </data>
+  <data name="DisplayOnHome" xml:space="preserve">
+    <value>Hiển thị trang chủ</value>
+  </data>
+  <data name="DisplayOnMenuLeft" xml:space="preserve">
+    <value>Hiển thị menu trái</value>
+  </data>
   <data name="DisplayOnMenuMain" xml:space="preserve">
-    <value>Hiển thị trên menu chính</value>
+    <value>Menu chân trang</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Ngày hết hạn</value>
+  </data>
+  <data name="Fullname" xml:space="preserve">
+    <value>Tên đầy đủ</value>
+  </data>
+  <data name="GroupIdList" xml:space="preserve">
+    <value>Đối tượng thực hiện</value>
   </data>
   <data name="Hotline" xml:space="preserve">
     <value>Hotline</value>
@@ -186,6 +219,15 @@
   <data name="IsSale" xml:space="preserve">
     <value>Bạn chạy</value>
   </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Từ khóa</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+  </data>
+  <data name="MaxPrice" xml:space="preserve">
+    <value>Giá lớn</value>
+  </data>
   <data name="MetaBox" xml:space="preserve">
     <value>Meta data box</value>
   </data>
@@ -201,11 +243,32 @@
   <data name="MetaTitle" xml:space="preserve">
     <value>Meta data title</value>
   </data>
+  <data name="MinPrice" xml:space="preserve">
+    <value>Giá nhỏ</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Tên</value>
+  </data>
   <data name="NewsCategories" xml:space="preserve">
     <value>Nhóm tin</value>
   </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Ngày đơn</value>
+  </data>
+  <data name="OrderStatus" xml:space="preserve">
+    <value>Trạng thái đơn</value>
+  </data>
+  <data name="ParamKey" xml:space="preserve">
+    <value>Biến tham số</value>
+  </data>
+  <data name="ParamValue" xml:space="preserve">
+    <value>Giá trị tham số</value>
+  </data>
   <data name="Phone" xml:space="preserve">
     <value>Số điện thoại</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Vị trí đặt banner</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Giá bán</value>
@@ -243,8 +306,23 @@
   <data name="Required" xml:space="preserve">
     <value>Trường bắt buộc, không để trống</value>
   </data>
+  <data name="ServiceImage" xml:space="preserve">
+    <value>Ảnh dịch vụ</value>
+  </data>
+  <data name="ServiceName" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Ngày bắt đầu</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Bang/Vùng</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Hiển thị</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Đường phố</value>
   </data>
   <data name="StringLengthTooLong" xml:space="preserve">
     <value>Chuỗi quá dài, độ dài tối đa là {0}</value>
@@ -257,6 +335,9 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>Tiêu đề</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Số lượng</value>
   </data>
   <data name="UrlAddress" xml:space="preserve">
     <value>Đừng dẫn</value>
@@ -272,5 +353,8 @@
   </data>
   <data name="UserModify" xml:space="preserve">
     <value>Tài khoản sửa</value>
+  </data>
+  <data name="ZipCode" xml:space="preserve">
+    <value>Mã vùng</value>
   </data>
 </root>

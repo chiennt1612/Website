@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using EntityFramework.Web.DBContext;
+using EntityFramework.Web.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using EntityFramework.Web.DBContext;
-using EntityFramework.Web.Entities;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using WebAdmin.Helpers;
 using WebAdmin.Services.Interfaces;
 
 namespace WebAdmin.Controllers
 {
+    [SecurityHeaders]
     [Authorize(Roles = "Admin")]
     public class MenuSubFootersController : Controller
     {
@@ -38,7 +37,7 @@ namespace WebAdmin.Controllers
             pageIndex = page.HasValue ? page.Value : 1;
 
             Expression<Func<MenuSubFooter, bool>> sqlWhere = item => (item.IsDeleted == false);
-            Func<MenuSubFooter, string> sqlOrder = s => "DateCreator";
+            Func<MenuSubFooter, object> sqlOrder = s => s.Id;
 
             return View(await _service.GetListAsync(sqlWhere, sqlOrder, true, pageIndex, pageSize));
         }
@@ -73,7 +72,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UrlText,UrlAddress,Status,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] MenuSubFooter menuSubFooter)
+        public async Task<IActionResult> Create(MenuSubFooter menuSubFooter)
         {
             if (ModelState.IsValid)
             {
@@ -106,7 +105,7 @@ namespace WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("UrlText,UrlAddress,Status,Id,UserCreator,DateCreator,UserModify,DateModify,IsDeleted,UserDeleted,DateDeleted")] MenuSubFooter menuSubFooter)
+        public async Task<IActionResult> Edit(long id, MenuSubFooter menuSubFooter)
         {
             if (id != menuSubFooter.Id)
             {
@@ -146,8 +145,8 @@ namespace WebAdmin.Controllers
             }
 
             var menuSubFooter = await _service.GetByIdAsync(id.Value);
-                //await _context.MenuSubFooters
-                //.FirstOrDefaultAsync(m => m.Id == id);
+            //await _context.MenuSubFooters
+            //.FirstOrDefaultAsync(m => m.Id == id);
             if (menuSubFooter == null)
             {
                 return NotFound();

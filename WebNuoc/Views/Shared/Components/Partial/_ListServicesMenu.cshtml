@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.Service>
+
+<div class="sub list-services-menu">
+    @foreach (var item in Model)
+    {
+        <a href="/Service/Details/@item.Id">@item.Title</a>
+    }
+</div>

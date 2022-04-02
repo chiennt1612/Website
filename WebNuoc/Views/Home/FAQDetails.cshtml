@@ -1,0 +1,83 @@
+﻿@using Paygate.OnePay
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebNuoc.Models.Home.FAQDetail
+
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        <a href="/FAQ" itemprop="url">
+                                                                         <span itemprop="title">@Localizer["Câu hỏi thường gặp"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+
+<section id="list-faq">
+    <div class="container">
+        <div class="head">
+            <div class="row">
+                <div class="col-md-6"></div><!--left-->
+                <div class="col-md-6">
+                    @await Html.PartialAsync("_PartialSearchForm", new WebNuoc.Models.Home.SearchInput() { Keyword = "" })
+                </div>
+            </div>
+        </div><!--head-->
+
+        <div class="list">
+            <div class="item">
+                <div class="image"><i class="fa fa-user"></i> </div>
+                <div class="right-side">
+                    <h1 href="#" class="title">@Model.fAQ.Title</h1>
+                    <span class="time">@Localizer["Người gửi: "] @Model.fAQ.Publisher - @Model.fAQ.DateCreator.ToString("dd/MM/yyyy HH:mm")</span>
+                    <div class="content">
+                        <div><i class="fa fa-question-circle"></i> <b>@Localizer["Nội dung:"]</b></div>
+                        <p>
+                            @Html.Raw(Model.fAQ.Summary)
+                        </p>
+                        <div><i class="fa fa-comment-dots"></i> <b>@Localizer["Trả lời:"]</b></div>
+                        <div class="article-content">
+                            @Html.Raw(Model.fAQ.Description)
+                        </div>
+                        <!-- AddThis Button BEGIN -->
+                        <div class="addthis_toolbox addthis_default_style addthis_20x20_style" style="margin-top:10px;">
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            <a class="addthis_button_facebook_share" fb:share:layout="button"></a>
+                            <a class="addthis_button_google_plusone" g:plusone:size="medium" style="width:40px;"></a>
+                        </div>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5148003b01a03b86" defer></script>
+                        <!-- AddThis Button END -->
+                        <p>&nbsp;</p>
+                        <h2 class="text-18">@Localizer["Bài viết liên quan"]</h2>
+                        <ul>
+                            @foreach (var item in Model.fAQs)
+            {
+                            <li>
+                                <a asp-action="FAQDetails" asp-controller="Home" asp-route-Id="@item.Id">
+                                    @item.Title
+                                </a> 
+                                <span class="grey">(@item.DateCreator.ToString("dd/MM/yyyy HH:mm"))</span> 
+                            </li>
+            }
+                        </ul>
+                        <div class="fb-comments" data-href="@Context.FAQUrl(Model.fAQ.Id)" data-width="100%" data-numposts="5"></div>
+                    </div><!--content-->
+                </div>
+            </div><!--item-->
+        </div>
+        <p>&nbsp;</p>
+        <p><a href="javascript:window.history.back();" class="btn btn-primary"><i class="fa fa-chevron-left"></i>@Localizer["Quay lại"]</a> </p>
+    </div><!--container-->
+</section>

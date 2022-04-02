@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SSO.Models.AccountViewModels
 {
@@ -12,15 +8,15 @@ namespace SSO.Models.AccountViewModels
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Nhập mã OTP")]
+        [Display(Name = "OTPCode", ResourceType = typeof(LanguageAll.Language))]
         public string Code { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Ghi nhớ OTP?")]
+        [Display(Name = "RememberOTP", ResourceType = typeof(LanguageAll.Language))]
         public bool RememberBrowser { get; set; }
 
-        [Display(Name = "Ghi nhớ tài khoản?")]
+        [Display(Name = "Remember", ResourceType = typeof(LanguageAll.Language))]
         public bool RememberMe { get; set; }
     }
 }
