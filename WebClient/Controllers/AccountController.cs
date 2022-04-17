@@ -39,7 +39,7 @@ namespace WebClient.Controllers
         }
 
         [Route("/[controller]/[action]")]
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
             return View();
         }

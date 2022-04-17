@@ -529,6 +529,24 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giá bán hộ gia đình.
+        /// </summary>
+        public static string Price1 {
+            get {
+                return ResourceManager.GetString("Price1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giá bán cơ quan, tổ chức.
+        /// </summary>
+        public static string Price2 {
+            get {
+                return ResourceManager.GetString("Price2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mã hàng hóa.
         /// </summary>
         public static string ProductCode {

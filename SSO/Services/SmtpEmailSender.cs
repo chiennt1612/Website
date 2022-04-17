@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Decryptor;
+using Microsoft.Extensions.Logging;
 using SSO.Helpers;
 using SSO.Services.Interface;
 using System;

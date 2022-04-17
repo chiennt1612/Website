@@ -273,6 +273,12 @@
   <data name="Price" xml:space="preserve">
     <value>Giá bán</value>
   </data>
+  <data name="Price1" xml:space="preserve">
+    <value>Giá bán hộ gia đình</value>
+  </data>
+  <data name="Price2" xml:space="preserve">
+    <value>Giá bán cơ quan, tổ chức</value>
+  </data>
   <data name="ProductCode" xml:space="preserve">
     <value>Mã hàng hóa</value>
   </data>

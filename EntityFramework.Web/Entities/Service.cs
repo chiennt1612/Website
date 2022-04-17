@@ -30,8 +30,10 @@ namespace EntityFramework.Web.Entities
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
         public string GroupIdList { get; set; }
 
-        [Display(Name = "Price", ResourceType = typeof(Resources.EntityValidation))]
+        [Display(Name = "Price1", ResourceType = typeof(Resources.EntityValidation))]
         public double Price { get; set; }
+        [Display(Name = "Price2", ResourceType = typeof(Resources.EntityValidation))]
+        public double Price1 { get; set; }
         public ICollection<Contact> Contacts { get; set; }
     }
 }

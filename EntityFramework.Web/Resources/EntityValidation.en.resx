@@ -264,6 +264,12 @@
   <data name="Price" xml:space="preserve">
     <value>Price</value>
   </data>
+  <data name="Price1" xml:space="preserve">
+    <value>Price for person</value>
+  </data>
+  <data name="Price2" xml:space="preserve">
+    <value>Price for company</value>
+  </data>
   <data name="ProductCode" xml:space="preserve">
     <value>Product code</value>
   </data>

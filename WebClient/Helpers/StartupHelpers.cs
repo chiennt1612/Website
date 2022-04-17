@@ -1,4 +1,5 @@
-﻿using EntityFramework.Web.DBContext;
+﻿using Decryptor;
+using EntityFramework.Web.DBContext;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;

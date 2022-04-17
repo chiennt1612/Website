@@ -1,4 +1,5 @@
-﻿using IdentityServer4.EntityFramework.Storage;
+﻿using Decryptor;
+using IdentityServer4.EntityFramework.Storage;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

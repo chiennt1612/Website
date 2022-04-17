@@ -91,7 +91,7 @@ namespace WebAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (article.Summary != null) 
+                if (article.Summary != null)
                     article.Summary = article.Summary
                                             .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
                                             .Replace(@"../Upload/", Util.UrlHostUpload(Request));
@@ -146,7 +146,7 @@ namespace WebAdmin.Controllers
                         article.Summary = article.Summary
                                                 .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
                                                 .Replace(@"../Upload/", Util.UrlHostUpload(Request));
-                    if (article.Description != null) 
+                    if (article.Description != null)
                         article.Description = article.Description
                                                 .Replace(@"../../Upload/", Util.UrlHostUpload(Request))
                                                 .Replace(@"../Upload/", Util.UrlHostUpload(Request));

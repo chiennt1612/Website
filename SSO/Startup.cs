@@ -1,3 +1,4 @@
+using Decryptor;
 using HealthChecks.UI.Client;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;

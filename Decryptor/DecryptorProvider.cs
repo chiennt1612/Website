@@ -4,7 +4,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SSO.Helpers
+
+namespace Decryptor
 {
     public interface IDecryptorProvider : IDisposable
     {

@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using Decryptor;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Mvc;
 using SSO.Entities;
 using SSO.Helpers;

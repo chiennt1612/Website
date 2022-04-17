@@ -158,7 +158,7 @@ namespace WebClient.Controllers
         }
 
         [Route("/[controller]/[action]")]
-        public async Task<IActionResult> Checkout()
+        public IActionResult Checkout()
         {
             ProductView a = null;
 
@@ -219,7 +219,7 @@ namespace WebClient.Controllers
                     var payment_method = int.Parse(HttpContext.GetFormValue("payment_method"));
                     double Total = 0;
                     List<EntityFramework.Web.Entities.Ordering.OrderItem> OrderItems = new List<EntityFramework.Web.Entities.Ordering.OrderItem>();
-                    foreach(var item in b.OrderItems)
+                    foreach (var item in b.OrderItems)
                     {
                         var b1 = await _Service.productServices.GetByIdAsync(item.ProductId);
                         var Total1 = (b1.Price - b1.Discount) * item.Units;
@@ -439,7 +439,7 @@ namespace WebClient.Controllers
                 await _emailSender.SendEmailOrderAsync(_order, configuration, _Service,
                             HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name, _localizer, HttpContext);
             }
-            else 
+            else
             {
                 ViewData.SetNotification(_localizer.GetString("<font color=\"yellow\">Invalid</font>"));
             }
