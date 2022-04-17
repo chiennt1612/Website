@@ -99,7 +99,7 @@ namespace WebNuoc.Controllers
                         Fullname = contact.Fullname,
                         IsCompany = contact.IsCompany,
                         Mobile = contact.Mobile,
-                        Price = _service.Price,
+                        Price = (contact.IsCompany ? _service.Price1 : _service.Price),
                         ServiceId = contact.ServiceId,
                         StatusId = 0,
                         UserId = -1,
