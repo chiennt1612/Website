@@ -140,16 +140,34 @@
                         <div class="col-md-7 col-sm-6">
                             @if (Model.order.IsCompany)
                             {
-                                <span style="color: Red; font-weight:bold">
-                                    @serviceDetail.Price1.ToString().FormatNumber() VNĐ
-                                </span>
+                                if (serviceDetail.Price1 > 0)
+                                {
+                                    <span style="color: Red; font-weight:bold">
+                                        @serviceDetail.Price1.ToString().FormatNumber() VNĐ
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color: Red; font-weight:bold">
+                                        @serviceDetail.PriceText
+                                    </span>
+                                }
                                 <input type="hidden" id="Price" name="Price" value="@serviceDetail.Price1">
                             }
                             else
                             {
-                                <span style="color: Red; font-weight:bold">
-                                    @serviceDetail.Price.ToString().FormatNumber() VNĐ
-                                </span>
+                                if (serviceDetail.Price > 0)
+                                {
+                                    <span style="color: Red; font-weight:bold">
+                                        @serviceDetail.Price.ToString().FormatNumber() VNĐ
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color: Red; font-weight:bold">
+                                        @serviceDetail.PriceText
+                                    </span>
+                                }
                                 <input type="hidden" id="Price" name="Price" value="@serviceDetail.Price">
                             }
                         </div>

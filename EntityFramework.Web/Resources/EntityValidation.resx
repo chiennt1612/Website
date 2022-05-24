@@ -279,6 +279,9 @@
   <data name="Price2" xml:space="preserve">
     <value>Giá bán cơ quan, tổ chức</value>
   </data>
+  <data name="PriceText" xml:space="preserve">
+    <value>Nội dung giá tiền</value>
+  </data>
   <data name="ProductCode" xml:space="preserve">
     <value>Mã hàng hóa</value>
   </data>

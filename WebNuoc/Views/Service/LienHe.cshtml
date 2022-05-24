@@ -174,6 +174,7 @@
                         <span style="color: Red; font-weight:bold">
                             <span id="spanPrice">@serviceDetail.Price.ToString().FormatNumber() VNĐ</span>
                             <span id="spanPrice1" style="display:none">@serviceDetail.Price1.ToString().FormatNumber() VNĐ</span>
+                            <span id="spanPriceText" style="display:none">@serviceDetail.PriceText</span>
                         </span>
                         <input type="hidden" id="Price" name="Price" value="@serviceDetail.Price">
                         <input type="hidden" id="_Price" name="_Price" value="@serviceDetail.Price">
@@ -275,14 +276,26 @@
         if (document.readyState === "complete") {
             document.getElementById('IsCompany').onchange = function () {
                 if (document.getElementById('IsCompany').checked) {
-                    document.getElementById('spanPrice').style.display = "none";
-                    document.getElementById('spanPrice1').style.display = "block";
                     document.getElementById('Price').value = document.getElementById('_Price1').value;
+                    document.getElementById('spanPrice').style.display = "none";
+                    document.getElementById('spanPriceText').style.display = "none";
+                    if (parseInt(document.getElementById('Price').value.replace(/ /g, '')) > 0) {
+                        document.getElementById('spanPrice1').style.display = "block";
+                    } else {
+                        document.getElementById('spanPrice1').style.display = "none";
+                        document.getElementById('spanPriceText').style.display = "block";
+                    }
                 }
                 else {
-                    document.getElementById('spanPrice').style.display = "block";
-                    document.getElementById('spanPrice1').style.display = "none";
                     document.getElementById('Price').value = document.getElementById('_Price').value;
+                    document.getElementById('spanPriceText').style.display = "none";
+                    document.getElementById('spanPrice1').style.display = "none";
+                    if (parseInt(document.getElementById('Price').value.replace(/ /g, '')) > 0) {
+                        document.getElementById('spanPrice').style.display = "block";
+                    } else {
+                        document.getElementById('spanPrice').style.display = "none";
+                        document.getElementById('spanPriceText').style.display = "block";
+                    }
                 }
             }
         }        

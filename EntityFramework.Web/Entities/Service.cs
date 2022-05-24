@@ -34,6 +34,10 @@ namespace EntityFramework.Web.Entities
         public double Price { get; set; }
         [Display(Name = "Price2", ResourceType = typeof(Resources.EntityValidation))]
         public double Price1 { get; set; }
+        [StringLength(2000)]
+        [Display(Name = "PriceText", ResourceType = typeof(Resources.EntityValidation))]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        public string PriceText { get; set; }
         public ICollection<Contact> Contacts { get; set; }
     }
 }
