@@ -123,7 +123,7 @@ namespace WebNuoc.Controllers
                     var r = await _Service.contactServices.AddAsync(_contact);
                     if (r != null)
                     {
-                        _logger.LogInformation($"Send contact is success: {JsonConvert.SerializeObject(contact)}");
+                        _logger.LogInformation($"Send contact is success: {_contact.Id}");
                         ViewData["SaveContact"] = _localizer.GetString("Gửi thành công");
                         string msg = $"<ul><li><b>{_localizer["Tên đầy đủ"]}:</b> {contact.Fullname}</li><li><b>Email:</b> {contact.Email}</li><li><b>Mobile:</b> {contact.Mobile}</li><li><b>Trạng thái:</b> Chưa thanh toán</li><li>{contact.Description}</li></ul>";
 
@@ -154,7 +154,7 @@ namespace WebNuoc.Controllers
                     }
                     else
                     {
-                        _logger.LogInformation($"Send contact is fail: {JsonConvert.SerializeObject(contact)}");
+                        _logger.LogInformation($"Send contact is fail: {_contact.Id}");
                         ViewData["SaveContact"] = _localizer.GetString("Gửi thất bại");
                     }
                 }
@@ -252,7 +252,7 @@ namespace WebNuoc.Controllers
                             };
                             PayResult payResult = await _iInvoiceServices.PayInvoice(inv1);
 
-                            _logger.LogInformation($"hashvalidateResult: {hashvalidateResult}; vpc_OrderInfo: {vpc_OrderInfo}; vpc_TransactionNo: {vpc_TransactionNo}; vpc_Amount: {vpc_Amount}; Result: {JsonConvert.SerializeObject(payResult)}");
+                            _logger.LogInformation($"hashvalidateResult: {hashvalidateResult}; vpc_OrderInfo: {vpc_OrderInfo}; vpc_TransactionNo: {vpc_TransactionNo}; vpc_Amount: {vpc_Amount}; Result: {payResult.PayStatus}");
                         }
                         else
                         {
@@ -399,7 +399,7 @@ namespace WebNuoc.Controllers
                         resultModel.IsInvoice = true;
                         resultModel.invoiceNo = _orderInfo[2];
 
-                        _logger.LogInformation($"hashvalidateResult: {hashvalidateResult}; vpc_OrderInfo: {vpc_OrderInfo}; vpc_TransactionNo: {vpc_TransactionNo}; vpc_Amount: {vpc_Amount}; Result: {JsonConvert.SerializeObject(payResult)}");
+                        _logger.LogInformation($"hashvalidateResult: {hashvalidateResult}; vpc_OrderInfo: {vpc_OrderInfo}; vpc_TransactionNo: {vpc_TransactionNo}; vpc_Amount: {vpc_Amount}; Result: {payResult.PayStatus}");
                     }
                     else
                     {

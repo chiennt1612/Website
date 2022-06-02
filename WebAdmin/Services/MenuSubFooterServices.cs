@@ -28,12 +28,12 @@ namespace WebAdmin.Services
             {
                 await unitOfWork.menuSubFooterRepository.AddAsync(menuSubFooter);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Save object {JsonConvert.SerializeObject(menuSubFooter)} Is OK");
+                ilogger.LogInformation($"Save object {menuSubFooter.UrlText} Is OK");
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Save object {JsonConvert.SerializeObject(menuSubFooter)} Is Fail {ex.Message}");
+                ilogger.LogError($"Save object {menuSubFooter.UrlText} Is Fail {ex.Message}");
                 return false;
             }
         }
@@ -63,7 +63,7 @@ namespace WebAdmin.Services
             try
             {
                 var a = await unitOfWork.menuSubFooterRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.UrlText}");
                 return a;
             }
             catch (Exception ex)
@@ -96,12 +96,12 @@ namespace WebAdmin.Services
             {
                 unitOfWork.menuSubFooterRepository.Update(menuSubFooter);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Update object {JsonConvert.SerializeObject(menuSubFooter)} Is OK");
+                ilogger.LogInformation($"Update object {menuSubFooter.UrlText} Is OK");
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Update object {JsonConvert.SerializeObject(menuSubFooter)} Is Fail {ex.Message}");
+                ilogger.LogError($"Update object {menuSubFooter.UrlText} Is Fail {ex.Message}");
                 return false;
             }
         }

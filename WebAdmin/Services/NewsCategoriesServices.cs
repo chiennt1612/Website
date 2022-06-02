@@ -28,12 +28,12 @@ namespace WebAdmin.Services
             {
                 await unitOfWork.newsCategoriesRepository.AddAsync(newsCategories);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Save object {JsonConvert.SerializeObject(newsCategories)} Is OK");
+                ilogger.LogInformation($"Save object {newsCategories.Name} Is OK");
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Save object {JsonConvert.SerializeObject(newsCategories)} Is Fail {ex.Message}");
+                ilogger.LogError($"Save object {newsCategories.Name} Is Fail {ex.Message}");
                 return false;
             }
         }
@@ -63,7 +63,7 @@ namespace WebAdmin.Services
             try
             {
                 var a = await unitOfWork.newsCategoriesRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.Name}");
                 return a;
             }
             catch (Exception ex)
@@ -94,12 +94,12 @@ namespace WebAdmin.Services
             {
                 unitOfWork.newsCategoriesRepository.Update(newsCategories);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Update object {JsonConvert.SerializeObject(newsCategories)} Is OK");
+                ilogger.LogInformation($"Update object {newsCategories.Name} Is OK");
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Update object {JsonConvert.SerializeObject(newsCategories)} Is Fail {ex.Message}");
+                ilogger.LogError($"Update object {newsCategories.Name} Is Fail {ex.Message}");
                 return false;
             }
         }

@@ -1,4 +1,5 @@
-﻿namespace WebNuoc.Helpers
+﻿using System.Collections.Generic;
+namespace WebNuoc.Helpers
 {
     public class RegisterConfiguration
     {
@@ -42,5 +43,11 @@
         public string SMSAccountIdentification { get; set; }
         public string SMSAccountPassword { get; set; }
         public string SMSAccountFrom { get; set; }
+    }
+
+    public class AboutPage
+    {
+        public long AboutID { get; set; }
+        public List<long> GuideID { get; set; }
     }
 }

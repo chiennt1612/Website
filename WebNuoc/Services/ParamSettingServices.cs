@@ -35,7 +35,7 @@ namespace WebNuoc.Services
             try
             {
                 var a = await unitOfWork.paramSettingRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.ParamValue}");
                 return a;
             }
             catch (Exception ex)

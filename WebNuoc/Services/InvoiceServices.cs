@@ -28,11 +28,11 @@ namespace WebNuoc.Services
             try
             {
                 a = await webRequest<PayResult, CheckPayInput>(invoiceConfig.APIFunctions[2], inv);
-                ilogger.LogInformation($"Check pay status invoice {JsonConvert.SerializeObject(inv)} is result {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"Check pay status invoice {inv.OnePayID} is result {a.PayStatus}");
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Check pay status invoice {JsonConvert.SerializeObject(inv)} is error {ex.Message}");
+                ilogger.LogError($"Check pay status invoice {inv.OnePayID} is error {ex.Message}");
             }
             return a;
         }
@@ -43,11 +43,11 @@ namespace WebNuoc.Services
             try
             {
                 a = await webRequest<InvoiceResult, InvoiceInput>(invoiceConfig.APIFunctions[0], inv);
-                ilogger.LogInformation($"GetInvoice {JsonConvert.SerializeObject(inv)} is result {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"GetInvoice {inv.CustomerCode} is result {a.ItemsData.CustomerName}");
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"GetInvoice {JsonConvert.SerializeObject(inv)} is error {ex.Message}");
+                ilogger.LogError($"GetInvoice {inv.CustomerCode} is error {ex.Message}");
             }
             return a;
         }
@@ -58,11 +58,11 @@ namespace WebNuoc.Services
             try
             {
                 a = await webRequest<InvoiceAllResult, InvoiceAllInput>(invoiceConfig.APIFunctions[4], inv);
-                ilogger.LogInformation($"GetInvoiceHistory {JsonConvert.SerializeObject(inv)} is result {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"GetInvoiceHistory {inv.CustomerCode} is result {a.Message}");
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"GetInvoiceHistory {JsonConvert.SerializeObject(inv)} is error {ex.Message}");
+                ilogger.LogError($"GetInvoiceHistory {inv.CustomerCode} is error {ex.Message}");
             }
             return a;
         }
@@ -73,11 +73,11 @@ namespace WebNuoc.Services
             try
             {
                 a = await webRequest<PayResult, PayInput>(invoiceConfig.APIFunctions[1], inv);
-                ilogger.LogInformation($"PayInvoice {JsonConvert.SerializeObject(inv)} is result {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"PayInvoice {inv.CustomerCode} is result {a.Message}");
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"PayInvoice {JsonConvert.SerializeObject(inv)} is error {ex.Message}");
+                ilogger.LogError($"PayInvoice {inv.CustomerCode} is error {ex.Message}");
             }
             return a;
         }
@@ -88,11 +88,11 @@ namespace WebNuoc.Services
             try
             {
                 a = await webRequest<UndoPayResult, InvoiceInput>(invoiceConfig.APIFunctions[2], inv);
-                ilogger.LogInformation($"UndoPayInvoice {JsonConvert.SerializeObject(inv)} is result {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"UndoPayInvoice {inv.CustomerCode} is result {a.Message}");
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"UndoPayInvoice {JsonConvert.SerializeObject(inv)} is error {ex.Message}");
+                ilogger.LogError($"UndoPayInvoice {inv.CustomerCode} is error {ex.Message}");
             }
             return a;
         }

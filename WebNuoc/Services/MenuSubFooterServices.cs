@@ -29,7 +29,7 @@ namespace WebNuoc.Services
             try
             {
                 var a = await unitOfWork.menuSubFooterRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.UrlText}");
                 return a;
             }
             catch (Exception ex)

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using WebNuoc.Helpers;
 using WebNuoc.Services.Interfaces;
+using Paygate.OnePay;
 
 namespace WebNuoc.ViewComponents
 {
@@ -20,15 +24,34 @@ namespace WebNuoc.ViewComponents
         private readonly IStringLocalizer<PartialViewComponent> _localizer;
         private readonly string requestCulture;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IDistributedCache _cache;
+        private IConfiguration _configuration;
+        private AboutPage _guide;
 
-        public PartialViewComponent(IHttpContextAccessor _httpContextAccessor, ILogger<PartialViewComponent> _logger, IAllService _Service, IStringLocalizer<PartialViewComponent> _localizer)
+        public PartialViewComponent(
+            IHttpContextAccessor _httpContextAccessor, 
+            ILogger<PartialViewComponent> _logger, 
+            IAllService _Service, 
+            IStringLocalizer<PartialViewComponent> _localizer,
+            IConfiguration _configuration,
+            IDistributedCache _cache)
         {
             this._httpContextAccessor = _httpContextAccessor;
             this._logger = _logger;
             this._Service = _Service;
             this._localizer = _localizer;
+            this._configuration = _configuration;
+            this._cache = _cache;
             this._logger.LogInformation($"Start PartialViewComponent at: {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}");
             requestCulture = this._httpContextAccessor.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+
+            var a = _cache.GetAsync<AboutPage>($"_guide_Data").GetAwaiter().GetResult();
+            if (a == null)
+            {
+                a = this._configuration.GetSection(nameof(AboutPage)).Get<AboutPage>(); 
+                _cache.SetAsync<AboutPage>($"_guide_Data", a).GetAwaiter().GetResult();
+            }
+            _guide = a;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string _PartialName, long? Id, int? page, int? pageSize)
@@ -40,46 +63,105 @@ namespace WebNuoc.ViewComponents
             {
                 #region Partial Layout
                 case "_HomepageAbout":
-                    var about = await PartialHomepageAbout();
+                    var about = await _cache.GetAsync<About>($"{_PartialName}_DATA");
+                    if (about == null)
+                    {
+                        about = await PartialHomepageAbout();
+                        await _cache.SetAsync<About>($"{_PartialName}_DATA", about, 5);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {about}");
                     return View(_PartialName, about);
                 case "_HeaderTop":
-                    var a = await PartialHeaderTop();
+                    var a = await _cache.GetAsync<IEnumerable<ParamSetting>>($"{_PartialName}_DATA");
+                    if (a == null)
+                    {
+                        a = await PartialHeaderTop();
+                        await _cache.SetAsync<IEnumerable<ParamSetting>>($"{_PartialName}_DATA", a, 5);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {a}");
                     return View(_PartialName, a);
                 case "_FooterBottom":
-                    var b = await PartialHeaderTop();
+                    var b = await _cache.GetAsync<IEnumerable<ParamSetting>>($"{_PartialName}_DATA");
+                    if (b == null)
+                    {
+                        b = await PartialHeaderTop();
+                        await _cache.SetAsync<IEnumerable<ParamSetting>>($"{_PartialName}_DATA", b, 5);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {b}");
                     return View(_PartialName, b);
                 case "_ListServicesMenu":
-                    var c = await PartialListServicesMenu();
+                    var c = await _cache.GetAsync<IEnumerable<Service>>($"{_PartialName}_DATA");
+                    if (c == null)
+                    {
+                        c = await PartialListServicesMenu();
+                        await _cache.SetAsync<IEnumerable<Service>>($"{_PartialName}_DATA", c, 5);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {c}");
                     return View(_PartialName, c);
+                case "_ListGuidesMenu":
+                    var c2 = await _cache.GetAsync<IEnumerable<About>>($"{_PartialName}_DATA");
+                    if (c2 == null)
+                    {
+                        c2 = await PartialListGuidesMenu();
+                        await _cache.SetAsync<IEnumerable<About>>($"{_PartialName}_DATA", c2, 5);
+                    }
+                    _logger.LogInformation($"Partial {_PartialName} model {c2}");
+                    return View(_PartialName, c2);
                 #endregion
                 // Home page -------------------------------------------------
                 #region Partial Home
                 case "_ContactInfo":
-                    var contact = await PartialHeaderTop();
+                    var contact = await _cache.GetAsync<IEnumerable<ParamSetting>>($"{_PartialName}_DATA");
+                    if (contact == null)
+                    {
+                        contact = await PartialHeaderTop();
+                        await _cache.SetAsync<IEnumerable<ParamSetting>>($"{_PartialName}_DATA", contact, 5);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {contact.Count()}");
                     return View(_PartialName, contact);
                 case "_HomepageBanner":
-                    var h1 = await PartialBannerHomeInfo();
+                    var h1 = await _cache.GetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA");
+                    if (h1 == null)
+                    {
+                        h1 = await PartialBannerHomeInfo();
+                        await _cache.SetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA", h1, 15);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {h1.Count()}");
                     return View(_PartialName, h1);
                 case "_HomepageProject":
-                    var h2 = await PartialHomepageProject();
+                    var h2 = await _cache.GetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA");
+                    if (h2 == null)
+                    {
+                        h2 = await PartialHomepageProject();
+                        await _cache.SetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA", h2, 15);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {h2.Count()}");
                     return View(_PartialName, h2);
                 case "_HomepageCAForWater":
-                    var h5 = await PartialHomepageCAForWater();
+                    var h5 = await _cache.GetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA");
+                    if (h5 == null)
+                    {
+                        h5 = await PartialHomepageCAForWater();
+                        await _cache.SetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA", h5, 15);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {h5.Count()}");
                     return View(_PartialName, h5);
                 case "_HomepageServiceShortList":
-                    var h4 = await PartialHomepageServiceShortList();
+                    var h4 = await _cache.GetAsync<IEnumerable<Service>>($"{_PartialName}_DATA");
+                    if (h4 == null)
+                    {
+                        h4 = await PartialHomepageServiceShortList();
+                        await _cache.SetAsync<IEnumerable<Service>>($"{_PartialName}_DATA", h4, 15);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {h4.Count()}");
                     return View(_PartialName, h4);
                 case "_HomepageVideoYoutube":
-                    var h6 = await PartialHomepageVideoYoutube();
+                    var h6 = await _cache.GetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA");
+                    if (h6 == null)
+                    {
+                        h6 = await PartialHomepageVideoYoutube();
+                        await _cache.SetAsync<IEnumerable<Adv>>($"{_PartialName}_DATA", h6, 15);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {h6.Count()}");
                     return View(_PartialName, h6);
                 case "_PartialNewsHome":
@@ -87,7 +169,12 @@ namespace WebNuoc.ViewComponents
                     _logger.LogInformation($"Partial {_PartialName} model {h3.Count()}");
                     return View(_PartialName, h3);
                 case "_PartialFAQHome":
-                    var h7 = await PartialFAQsHomeInfo();
+                    var h7 = await _cache.GetAsync<IList<FAQ>>($"{_PartialName}_DATA");
+                    if (h7 == null)
+                    {
+                        h7 = await PartialFAQsHomeInfo();
+                        await _cache.SetAsync<IList<FAQ>>($"{_PartialName}_DATA", h7, 15);
+                    }
                     _logger.LogInformation($"Partial {_PartialName} model {h7.Count()}");
                     return View(_PartialName, h7);
                 // End Home page -------------------------------------------------
@@ -96,7 +183,7 @@ namespace WebNuoc.ViewComponents
                 // New page -------------------------------------------------
                 #region Partial News
                 case "NewHomeLastest":
-                    var n1 = await PartialNewHomeInfo();
+                    var n1  = await PartialNewHomeInfo();
                     _logger.LogInformation($"Partial {_PartialName} model {n1.Count()}");
                     return View(_PartialName, n1);
 
@@ -128,6 +215,10 @@ namespace WebNuoc.ViewComponents
         private async Task<IEnumerable<Service>> PartialListServicesMenu()
         {
             return (await _Service.serviceServices.GetAllAsync()).Where(u => u.Id > 10);
+        }
+        private async Task<IEnumerable<About>> PartialListGuidesMenu()
+        {
+            return (await _Service.aboutServices.GetAllAsync()).Where(u => _guide.GuideID.Contains(u.Id)).OrderBy(u => u.Title);
         }
         #endregion
 

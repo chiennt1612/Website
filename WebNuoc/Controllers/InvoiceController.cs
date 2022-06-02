@@ -201,7 +201,7 @@ namespace WebNuoc.Controllers
 
                                 if (r != null)
                                 {
-                                    _logger.LogInformation($"Send payment-invoice is success: {JsonConvert.SerializeObject(_contact)}");
+                                    _logger.LogInformation($"Send payment-invoice is success: {_contact.Id}");
                                     PaymentIn t = new PaymentIn()
                                     {
                                         vpc_Amount = _contact.Price.ToString(),

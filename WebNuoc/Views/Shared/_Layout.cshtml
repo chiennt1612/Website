@@ -63,29 +63,42 @@
                         <div class="item root">
                             <a>@Localizer["Thanh toán Online"]<i class="fa fa-caret-down"></i></a>
                             <div class="sub">
-                                <a href="/About/11">@Localizer["Các hình thức thanh toán hóa đơn nước"]</a>
-                                <a href="/About/2">@Localizer["Hướng dẫn Thanh toán Online"]</a>
-                                <a href="/Invoice">@Localizer["Thanh toán qua OnePay"]</a>
-                                <a href="/Invoice/Payoo">@Localizer["Thanh toán qua Payoo"]</a>
-                                <a href="/Invoice/InvoiceHist">@Localizer["Lịch sử hóa đơn"]</a>
+                                <a href="/About/11">@Localizer["1. Các loại toán hóa đơn"]</a>
+                                <a href="/About/2">@Localizer["2. Thanh toán qua web online"]</a>
+                                <a href="/Invoice">@Localizer["3. Thanh toán qua OnePay"]</a>
+                                <a href="/Invoice/Payoo">@Localizer["4. Thanh toán qua Payoo"]</a>
+                                <a href="/Invoice/InvoiceHist">@Localizer["5. Tra cứu lịch sử hóa đơn"]</a>
                             </div>
                         </div>
                         <div class="item root">
                             <a href="/Service">@Localizer["Đăng ký dịch vụ"]<i class="fa fa-caret-down"></i></a>
                             @await Component.InvokeAsync("Partial", new { _PartialName = "_ListServicesMenu" })
                         </div>
-                        <div class="item"><a href="/FAQ">@Localizer["Câu hỏi thường gặp"]</a> </div>
-                        <div class="item"><a href="/News">@Localizer["Tin tức"]</a> </div>
-                        <div class="item"><a href="/About/6">@Localizer["Tuyển dụng"]</a> </div>
-                        <div class="item"><a href="/Contact">@Localizer["liên hệ"]</a> </div>
+                        @*<div class="item"><a href="/FAQ">@Localizer["Câu hỏi thường gặp"]</a> </div>*@
                         <div class="item root">
                             <a>@Localizer["hướng dẫn"] <i class="fa fa-caret-down"></i></a>
                             <div class="sub">
-                                <a href="/About/5">@Localizer["Hướng dẫn Đăng ký/Đăng nhập"]</a>
-                                <a href="/About/7">@Localizer["Hướng dẫn đăng ký dịch vụ"]</a>
-                                <a href="/About/5#tracuu">@Localizer["Hướng dẫn tra cứu thông tin"]</a>
+                                @await Component.InvokeAsync("Partial", new { _PartialName = "_ListGuidesMenu" })
+                                @*<a href="/About/28">@Localizer["Biểu giá nước sạch"]</a>
+        <a href="/About/29">@Localizer["Biểu giá dịch vụ"]</a>
+        <a href="/About/32">@Localizer["Biểu giá vật tư"]</a>
+        <a href="/About/31">@Localizer["Lịch chốt số và thu tiền"]</a>
+        <a href="/About/33">@Localizer["Danh sách ngân hàng liên kết"]</a>
+        <a href="/About/35">@Localizer["Danh sách NM nước Hưng Yên"]</a>
+        <a href="/About/2">@Localizer["Hướng dẫn thanh toán hóa đơn"]</a>
+        <a href="/About/5">@Localizer["Hướng dẫn xem hóa đơn"]</a>
+        <a href="/About/30">@Localizer["Văn bản pháp quy"]</a>
+        <a href="/About/36">@Localizer["Câu hỏi thường gặp"]</a>
+        <a href="/About/37">@Localizer["Thông tin Công ty"]</a>
+        <a href="/About/34">@Localizer["Thông tin các trạm bơm"]</a>
+        <a href="/About/38">@Localizer["Lịch Làm việc"]</a>
+        <a href="/About/39">@Localizer["Danh sách vùng cấp nước"]</a>
+        <a href="/About/40">@Localizer["Danh sách khu cụm CN, Đô thị"]</a>*@
                             </div>
                         </div>
+                        <div class="item"><a href="/News">@Localizer["Tin tức"]</a> </div>
+                        <div class="item"><a href="/About/6">@Localizer["Tuyển dụng"]</a> </div>
+                        <div class="item"><a href="/Contact">@Localizer["liên hệ"]</a> </div>
                     </div>
                 </nav>
 
@@ -94,29 +107,43 @@
                     <div class="item">
                         <a>@Localizer["Thanh toán Online"]<i class="fa fa-caret-down"></i></a>
                         <div class="sub">
-                            <a href="/About/11">@Localizer["Các hình thức thanh toán hóa đơn nước"]</a>
-                            <a href="/About/2">@Localizer["Hướng dẫn Thanh toán Online"]</a>
-                            <a href="/Invoice">@Localizer["Thanh toán qua OnePay"]</a>
-                            <a href="/Invoice/Payoo">@Localizer["Thanh toán qua Payoo"]</a>
-                            <a href="/Invoice/InvoiceHist">@Localizer["Lịch sử hóa đơn"]</a>
+                            <a href="/About/11">@Localizer["1. Các loại toán hóa đơn"]</a>
+                            <a href="/About/2">@Localizer["2. Thanh toán qua web online"]</a>
+                            <a href="/Invoice">@Localizer["3. Thanh toán qua OnePay"]</a>
+                            <a href="/Invoice/Payoo">@Localizer["4. Thanh toán qua Payoo"]</a>
+                            <a href="/Invoice/InvoiceHist">@Localizer["5. Tra cứu lịch sử hóa đơn"]</a>
                         </div>
                     </div>
                     <div class="item">
                         <a href="/Service">@Localizer["Đăng ký dịch vụ"]<i class="fa fa-caret-down"></i></a>
                         @await Component.InvokeAsync("Partial", new { _PartialName = "_ListServicesMenu" })
                     </div>
-                    <div class="item"><a href="/FAQ">@Localizer["Câu hỏi thường gặp"]</a> </div>
-                    <div class="item"><a href="/News">@Localizer["Tin tức"]</a> </div>
-                    <div class="item"><a href="/About/6">@Localizer["Tuyển dụng"]</a> </div>
-                    <div class="item"><a href="/Contact">@Localizer["liên hệ"]</a> </div>
+                    @*<div class="item"><a href="/FAQ">@Localizer["Câu hỏi thường gặp"]</a> </div>*@
                     <div class="item">
                         <a>@Localizer["hướng dẫn"] <i class="fa fa-caret-down"></i></a>
                         <div class="sub">
-                            <a href="/About/5">@Localizer["Hướng dẫn Đăng ký/Đăng nhập"]</a>
-                            <a href="/About/7">@Localizer["Hướng dẫn đăng ký dịch vụ"]</a>
-                            <a href="/About/5#tracuu">@Localizer["Hướng dẫn tra cứu thông tin"]</a>
+                            @*<a href="/About/28">@Localizer["Biểu giá nước sạch"]</a>
+        <a href="/About/29">@Localizer["Biểu giá dịch vụ"]</a>
+        <a href="/About/32">@Localizer["Biểu giá vật tư"]</a>
+        <a href="/About/31">@Localizer["Lịch chốt số và thu tiền"]</a>
+        <a href="/About/33">@Localizer["Danh sách ngân hàng liên kết"]</a>
+        <a href="/About/35">@Localizer["Danh sách NM nước Hưng Yên"]</a>
+        <a href="/About/2">@Localizer["Hướng dẫn thanh toán hóa đơn"]</a>
+        <a href="/About/5">@Localizer["Hướng dẫn xem hóa đơn"]</a>
+        <a href="/About/30">@Localizer["Văn bản pháp quy"]</a>
+        <a href="/About/36">@Localizer["Câu hỏi thường gặp"]</a>
+        <a href="/About/37">@Localizer["Thông tin Công ty"]</a>
+        <a href="/About/34">@Localizer["Thông tin các trạm bơm"]</a>
+        <a href="/About/38">@Localizer["Lịch Làm việc"]</a>
+        <a href="/About/39">@Localizer["Danh sách vùng cấp nước"]</a>
+        <a href="/About/40">@Localizer["Danh sách khu cụm CN, Đô thị"]</a>*@
+                            @await Component.InvokeAsync("Partial", new { _PartialName = "_ListGuidesMenu" })
                         </div>
                     </div>
+                    <div class="item"><a href="/News">@Localizer["Tin tức"]</a> </div>
+                    <div class="item"><a href="/About/6">@Localizer["Tuyển dụng"]</a> </div>
+                    <div class="item"><a href="/Contact">@Localizer["liên hệ"]</a> </div>
+
                 </nav>
                 <div class="clearfix"></div>
             </div><!--container-->

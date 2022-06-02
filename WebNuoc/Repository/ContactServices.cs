@@ -40,7 +40,7 @@ namespace WebNuoc.Repository
                 var a = await unitOfWork.contactRepository.GetByIdAsync(Id);
                 try
                 {
-                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.Fullname}");
                 }
                 catch (Exception ex)
                 {

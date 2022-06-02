@@ -37,7 +37,7 @@ namespace WebNuoc.Services
                 var a = await unitOfWork.articleRepository.GetByIdAsync(Id);
                 try
                 {
-                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                    ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.Title}");
                 }
                 catch (Exception ex)
                 {

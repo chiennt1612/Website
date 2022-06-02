@@ -28,12 +28,12 @@ namespace WebAdmin.Services
             {
                 await unitOfWork.paramSettingRepository.AddAsync(paramSetting);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Save object {JsonConvert.SerializeObject(paramSetting)} Is OK");
+                ilogger.LogInformation($"Save object {paramSetting.ParamKey} Is OK");
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Save object {JsonConvert.SerializeObject(paramSetting)} Is Fail {ex.Message}");
+                ilogger.LogError($"Save object {paramSetting.ParamKey} Is Fail {ex.Message}");
                 return false;
             }
         }
@@ -63,7 +63,7 @@ namespace WebAdmin.Services
             try
             {
                 var a = await unitOfWork.paramSettingRepository.GetByIdAsync(Id);
-                ilogger.LogInformation($"Get by id {Id.ToString()} Is {JsonConvert.SerializeObject(a)}");
+                ilogger.LogInformation($"Get by id {Id.ToString()} Is {a.ParamKey}");
                 return a;
             }
             catch (Exception ex)
@@ -96,12 +96,12 @@ namespace WebAdmin.Services
             {
                 unitOfWork.paramSettingRepository.Update(paramSetting);
                 await unitOfWork.SaveAsync();
-                ilogger.LogInformation($"Update object {JsonConvert.SerializeObject(paramSetting)} Is OK");
+                ilogger.LogInformation($"Update object {paramSetting.ParamKey} Is OK");
                 return true;
             }
             catch (Exception ex)
             {
-                ilogger.LogError($"Update object {JsonConvert.SerializeObject(paramSetting)} Is Fail {ex.Message}");
+                ilogger.LogError($"Update object {paramSetting.ParamKey} Is Fail {ex.Message}");
                 return false;
             }
         }

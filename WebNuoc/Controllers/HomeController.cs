@@ -49,7 +49,13 @@ namespace WebNuoc.Controllers
         public async Task<IActionResult> About(long? Id)
         {
             long _Id = (Id.HasValue ? Id.Value : 0);
-            var a = await _Service.aboutServices.GetByIdAsync(_Id);
+            var a = await _cache.GetAsync<About>($"About{_Id}_DATA");
+            if (a == null)
+            {
+                a = await _Service.aboutServices.GetByIdAsync(_Id);
+                await _cache.SetAsync<About>($"About{_Id}_DATA", a, 5);
+            }
+            //var a = await _Service.aboutServices.GetByIdAsync(_Id);
             PathOfPage path = new PathOfPage() { IsProduct = 3, Total = 0, TotalPage = 0, Page = 1, PathName = { a.Title } };
             //await ViewDataParam.SetViewData(this._logger, ViewData, this._Service, path);
 
@@ -137,7 +143,7 @@ namespace WebNuoc.Controllers
                 if (r != null)
                 {
                     ViewData.SetNotification(_localizer.GetString("Gửi thành công"));
-                    _logger.LogInformation($"Send contact is success: {JsonConvert.SerializeObject(contact)}");
+                    _logger.LogInformation($"Send contact is success: {contact.Id}");
                     ViewData["Re-Contact"] = false;
                     string msg = $"<ul><li><b>{_localizer["Tên đầy đủ"]}:</b> {contact.Fullname}</li><li><b>Email:</b> {contact.Email}</li><li><b>Mobile:</b> {contact.Mobile}</li><li>{contact.Description}</li></ul>";
                     await _emailSender.SendEmailAsync(contact.Email, _localizer.GetString("v.v Liên hệ Ngọc Tuấn"), msg);
@@ -145,7 +151,7 @@ namespace WebNuoc.Controllers
                 else
                 {
                     //await ViewDataParam.SetViewData(this._logger, ViewData, this._Service, path, _localizer.GetString("Gửi thất bại"));
-                    _logger.LogInformation($"Send contact is fail: {JsonConvert.SerializeObject(contact)}");
+                    _logger.LogInformation($"Send contact is fail: {contact.Id}");
                 }
 
             }
