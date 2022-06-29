@@ -113,7 +113,11 @@
                                 @Localizer["Serial/Mã số hóa đơn"]: <b> @item.InvSerial/ @item.InvNumber </b> <br />
                                 @Localizer["Ngày xuất"]: <b> @item.InvDate.ToString("dd/MM/yyyy HH:mm") </b> <br />
                                 @Localizer["Mã số bí mật"]: <b> @item.MaSoBiMat </b>
-                                <a asp-action="InvoiceView" asp-controller="Account" asp-route-reservationCode="@item.MaSoBiMat" asp-route-supplierTaxCode="0900996305">@Localizer["Tải hóa đơn"]</a> <br />
+                                <a asp-action="InvoiceView" asp-controller="Account" 
+                                   asp-route-reservationCode="@item.MaSoBiMat" 
+                                   asp-route-supplierTaxCode="0900996305" 
+                                   asp-route-invoiceNo="@(item.InvSerial+item.InvNumber)" 
+                                   asp-route-invoiceType="@(item.InvDate > DateTime.Parse("06/01/2022") ? "vinvoice" : "sinvoice")">@Localizer["Tải hóa đơn"]</a> <br />
                                 @Localizer["Trạng thái"]: <b> @(Html.Raw((item.PaymentStatus == 0 ? "<font color=red>Chưa thanh toán</font>" : "Đã thanh toán"))) </b> <br />
                             </p>                            
                             @if (item.PaymentStatus == 0)

@@ -53,8 +53,10 @@ namespace WebNuoc.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult InvoiceView(string reservationCode, string supplierTaxCode)
+        public IActionResult InvoiceView(string reservationCode, string supplierTaxCode, string invoiceNo, string invoiceType)
         {
+            ViewData["invoiceType"] = invoiceType;
+            ViewData["invoiceNo"] = invoiceNo;
             ViewData["supplierTaxCode"] = supplierTaxCode;
             ViewData["reservationCode"] = reservationCode;
             return View();

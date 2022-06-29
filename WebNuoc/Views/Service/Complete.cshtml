@@ -123,7 +123,7 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-sm-4 col-form-label text-right">@Localizer["Lựa chọn dịch vụ"]</label>
                         <div class="col-md-7 col-sm-6">
-                            <input type="text" class="form-control" disabled value="@Model.order.Services.Title" />
+                            <input type="text" class="form-control" disabled value="@(Model.order != null? (Model.order.Services != null ? Model.order.Services.Title : "") : "")" />
                         </div><!--col-->
                     </div>
                     <div class="form-group row">
