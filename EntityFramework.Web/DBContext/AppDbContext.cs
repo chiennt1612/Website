@@ -11,7 +11,7 @@ namespace EntityFramework.Web.DBContext
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> Status { get; set; }
-
+        public DbSet<InvoiceSave> InvoiceSaves { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Service> Services { get; set; }
@@ -51,7 +51,11 @@ namespace EntityFramework.Web.DBContext
                 log.ToTable(TableConsts.AdvPosition);
                 log.HasKey(x => x.Id);
             });
-
+            builder.Entity<InvoiceSave>(log =>
+            {
+                log.ToTable(TableConsts.InvoiceSave);
+                log.HasKey(x => x.Id);
+            });
             builder.Entity<Contact>(log =>
             {
                 log.ToTable(TableConsts.Contact);

@@ -41,7 +41,7 @@ namespace WebNuoc.Controllers
 
             var listArticle = await _Service.articleServices.GetListAsync(sqlWhere, sqlOrder, true, _Page, PageSize);
             listArticle.pageSize = PageSize;
-
+            listArticle.page = _Page;
             var a = new ListNews()
             {
                 listArticle = listArticle,

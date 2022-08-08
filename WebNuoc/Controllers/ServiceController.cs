@@ -4,7 +4,6 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Paygate.OnePay;
 using System;
 using System.Linq;
@@ -351,7 +350,7 @@ namespace WebNuoc.Controllers
                 invoiceNo = vpc_MerchTxnRef,
                 invoiceAmount = _vpc_Amount,
                 order = _order,
-                IsInvoice = false
+                IsInvoice = (_orderInfo[0] == "2")
             };
 
             if (hashvalidateResult == "CORRECTED" && vpc_TxnResponseCode.Trim() == "0" && vpc_Merchant == paygateInfo._MerchantID)
@@ -370,10 +369,16 @@ namespace WebNuoc.Controllers
                 {
                     //vpc_OrderInfo = $"2_{inv.CustomerCode}_{inv.InvoiceNo}_{inv.InvoiceAmount}",
                     var InvoiceAmount = int.Parse(_orderInfo[3]);
-                    if (_orderInfo.Length == 4 && _vpc_Amount == InvoiceAmount && _order.Mobile == _orderInfo[2])
+                    if (_orderInfo.Length == 4 && _vpc_Amount == InvoiceAmount && _order.Description == vpc_OrderInfo)
                     {
                         if (_order.StatusId != 4 && _order.StatusId != 6)
                         {
+                            var orderSave = await _unitOfWork.invoiceSaveRepository.GetByIdAsync(_order.Id);
+                            if (orderSave != null)
+                            {
+                                orderSave.PaymentStatus = 1;
+                                _unitOfWork.invoiceSaveRepository.Update(orderSave);
+                            }
                             _order.StatusId = 4;
                             _order.CookieID = vpc_TransactionNo;
                             _order.OrderStatus = await _unitOfWork.orderStatusRepository.GetByIdAsync(4);
@@ -425,6 +430,7 @@ namespace WebNuoc.Controllers
                 }
                 else if (_orderInfo[0] == "2") // Hóa đơn nước
                 {
+                    await _unitOfWork.invoiceSaveRepository.DeleteAsync(_order.Id);
                     var InvoiceAmount = int.Parse(_orderInfo[3]);
                     _order.StatusId = 6;
                     _order.OrderStatus = await _unitOfWork.orderStatusRepository.GetByIdAsync(6);

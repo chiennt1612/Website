@@ -22,7 +22,7 @@ namespace EntityFramework.Web.DBContext.Interfaces
         public DbSet<MenuMainFooter> MenuMainFooters { get; set; }
         public DbSet<MenuSubFooter> MenuSubFooters { get; set; }
         public DbSet<ParamSetting> ParamSettings { get; set; }
-
+        public DbSet<InvoiceSave> InvoiceSaves { get; set; }
         public DbSet<Adv> Advs { get; set; }
         public DbSet<AdvPosition> AdvPositions { get; set; }
     }

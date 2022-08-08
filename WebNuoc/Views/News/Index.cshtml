@@ -60,7 +60,7 @@
                     }
 
                 </div>
-                @await Html.PartialAsync("/Views/News/_PartialPageRender.cshtml", new WebNuoc.Models.Home.SearchInput() { Page = Model.listArticle.page, TotalPage = (Model.listArticle.totalRecords / Model.listArticle.pageSize), CategoryId = Model.CategoryId, TotalRow = Model.listArticle.totalRecords, SearchType = "News" });
+                @await Html.PartialAsync("/Views/News/_PartialPageRender.cshtml", new WebNuoc.Models.Home.SearchInput() { Page = Model.listArticle.page, TotalPage = (Model.listArticle.totalRecords / Model.listArticle.pageSize), CategoryId = Model.CategoryId, TotalRow = Model.listArticle.totalRecords, SearchType = "News" })
             </div><!--left-->
             <div class="col-lg-4 col-md-5">
 

@@ -18,7 +18,7 @@
         public const string MenuMainFooter = "MenuMainFooter";
         public const string MenuSubFooter = "MenuSubFooter";
         public const string ParamSetting = "ParamSetting";
-
+        public const string InvoiceSave = "InvoiceSave";
         public const string Adv = "Adv";
         public const string AdvPosition = "AdvPosition";
     }

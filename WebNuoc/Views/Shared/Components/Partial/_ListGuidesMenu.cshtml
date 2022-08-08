@@ -1,0 +1,8 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<EntityFramework.Web.Entities.About>
+
+    @foreach (var item in Model)
+    {
+        <a href="/About/@item.Id">@item.Title</a>
+    }

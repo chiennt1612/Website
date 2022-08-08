@@ -59,6 +59,13 @@ namespace WebNuoc
             services.AddResponseCaching();
 
             services.AddDistributedMemoryCache();
+            //services.AddDistributedSqlServerCache(options =>
+            //{
+            //    options.ConnectionString = Configuration.GetConnectionString(
+            //        "DistCache_ConnectionString");
+            //    options.SchemaName = "dbo";
+            //    options.TableName = "WebCache";
+            //}); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -61,7 +61,7 @@ namespace EntityFramework.Web.Entities
 
         [StringLength(50, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
         public string CookieID { get; set; }
-
+        public bool? IsSave { get; set; }
         public bool? IsAgree { get; set; }
     }
 }

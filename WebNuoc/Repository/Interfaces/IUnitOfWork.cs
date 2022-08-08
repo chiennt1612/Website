@@ -21,7 +21,7 @@ namespace WebNuoc.Repository.Interfaces
         IAdvRepository advRepository { get; }
         IContactRepository contactRepository { get; }
         IOrderStatusRepository orderStatusRepository { get; }
-
+        IInvoiceSaveRepository invoiceSaveRepository { get; }
         void Save();
         Task SaveAsync();
     }

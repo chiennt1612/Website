@@ -31,6 +31,7 @@ namespace WebNuoc.Repository
         private IProductRepository _ProductRepository;
         private IAdvRepository _AdvRepository;
 
+        private InvoiceSaveRepository _InvoiceSaveRepository;
         private IContactRepository _ContactRepository;
         private IOrderStatusRepository _OrderStatusRepository;
         #endregion
@@ -95,6 +96,14 @@ namespace WebNuoc.Repository
             get
             {
                 return _ContactRepository = _ContactRepository ?? new ContactRepository(_appDbContext, _httpContext);
+            }
+        }
+
+        public IInvoiceSaveRepository invoiceSaveRepository
+        {
+            get
+            {
+                return _InvoiceSaveRepository = _InvoiceSaveRepository ?? new InvoiceSaveRepository(_appDbContext, _httpContext);
             }
         }
 

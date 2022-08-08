@@ -626,3 +626,37 @@ body{font-family:'Roboto';font-size:14px;}
 @media(max-width:575px){
   #account-page .col-form-label.text-right{text-align:left !important;}
 }
+
+
+ul.page-numbers li {
+    display: inline-block;
+    list-style: none;
+}
+
+    ul.page-numbers li a {
+        border: 1px solid #525252;
+        padding: 0 6px;
+    }
+
+    ul.page-numbers li span.current {
+        border: 1px solid #e04f77;
+        padding: 0 6px;
+    }
+
+/*li > a > i.icon-angle-left{
+    background: url(/Image/left.png);
+    min-width:22px;
+    min-height:21px;
+}
+li > a > i.icon-angle-right{
+    background: url(/Image/right.png);
+    min-width:22px;
+    min-height:21px;
+}*/
+.icon-angle-right::before {
+    content: "\2192 ";
+}
+
+.icon-angle-left::before {
+    content: "\2190 ";
+}
