@@ -63,5 +63,13 @@ namespace EntityFramework.Web.Entities
         public string CookieID { get; set; }
         public bool? IsSave { get; set; }
         public bool? IsAgree { get; set; }
+        [StringLength(2000, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        public string Noted { get; set; }
+        [StringLength(300, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        public string Img { get; set; }
+        [StringLength(2000, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        public string Noted2 { get; set; }
+        [StringLength(300, ErrorMessageResourceName = "StringLengthTooLong", ErrorMessageResourceType = typeof(Resources.EntityValidation))]
+        public string Img2 { get; set; }
     }
 }

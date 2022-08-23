@@ -79,8 +79,11 @@ PageClasses = new string[] { "page-link" }
         @foreach (var item in Model)
         {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                <a asp-action="RegisterDetail" asp-route-id="@item.Id">@item.Id -> @Localizer["Xem chi tiết"]</a>
             </td>
             <td>
                 @item.ContactDate.Value.ToString("dd/MM/yyyy HH:mm")
@@ -116,7 +119,7 @@ PageClasses = new string[] { "page-link" }
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             @*<td>
-                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a>
+                <a asp-action="RegisterDetail" asp-route-id="@item.Id">@Localizer["Xem chi tiết"]</a>
             </td>*@
         </tr>
         }

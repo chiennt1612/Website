@@ -70,6 +70,11 @@ namespace WebApplication4.Controllers
             return View(await _unitOfWork.contactRepository.GetListByPage(sqlWhere, sqlOrder, true, pageIndex, pageSize));
         }
 
+        public async Task<IActionResult> RegisterDetail(long Id)
+        {
+            return View("/Views/Services/RegisterDetail.cshtml", await _unitOfWork.contactRepository.GetByIdAsync(Id));
+        }
+
         // GET: Services/Details/5
         public async Task<IActionResult> Details(long? id)
         {
