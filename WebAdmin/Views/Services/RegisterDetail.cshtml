@@ -90,7 +90,10 @@
             @Html.DisplayNameFor(model => model.Img)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Img)
+            @if (!String.IsNullOrEmpty(Model.Img))
+            {
+                <img src="@Model.Img" width="200">
+            } 
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Noted2)
@@ -102,7 +105,10 @@
             @Html.DisplayNameFor(model => model.Img2)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Img2)
+            @if (!String.IsNullOrEmpty(Model.Img2))
+            {
+                <img src="@Model.Img2" width="200">
+            }
         </dd>
     </dl>
 </div>
