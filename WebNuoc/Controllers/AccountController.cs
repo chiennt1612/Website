@@ -14,7 +14,6 @@ using WebNuoc.Services.Interfaces;
 
 namespace WebNuoc.Controllers
 {
-    [SecurityHeaders]
     [Authorize]
     public class AccountController : Controller
     {
@@ -44,6 +43,7 @@ namespace WebNuoc.Controllers
             return View();
         }
 
+        [SecurityHeaders]
         public async Task<IActionResult> Profile(int? Page)
         {
             var _Page = (Page.HasValue ? Page.Value : 1);
@@ -62,18 +62,21 @@ namespace WebNuoc.Controllers
             return View();
         }
 
+        [SecurityHeaders]
         public IActionResult Logout()
         {
             //SignOut(CookieAuthenticationDefaults.AuthenticationScheme);
             return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc");
         }
 
+        [SecurityHeaders]
         public async Task<IActionResult> SetCustomerCode()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect($"https://id.bacngoctuan.com/Manage/Index?returnUrl={((HttpContext.MerchantUrl() + "/Account/Login").UrlEncode())}");
         }
 
+        [SecurityHeaders]
         [Route("/[controller]/[action]")]
         public IActionResult Login()
         {

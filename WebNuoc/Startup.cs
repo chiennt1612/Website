@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using WebNuoc.Helpers;
+using WebNuoc.Services;
 
 namespace WebNuoc
 {
@@ -66,6 +67,9 @@ namespace WebNuoc
             //    options.SchemaName = "dbo";
             //    options.TableName = "WebCache";
             //}); 
+            //#region snippet1
+            services.AddHostedService<TimerBackgroundServive>();
+            //#endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

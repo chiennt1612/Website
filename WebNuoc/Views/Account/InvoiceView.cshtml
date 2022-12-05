@@ -1,9 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@{ 
+@{
+    var isMisa = false;
     var _url = $"https://sinvoice.viettel.vn/tracuuhoadon?supplierTaxCode={ViewData["supplierTaxCode"]}&reservationCode={ViewData["reservationCode"]}";
     if (ViewData["invoiceType"].ToString() == "vinvoice")
-        _url = $"https://vinvoice.viettel.vn/utilities/invoice-search?invoiceNo={ViewData["invoiceNo"]}&supplierTaxCode={ViewData["supplierTaxCode"]}&reservationCode={ViewData["reservationCode"]}";
+    {
+        if (ViewData["reservationCode"].ToString().StartsWith("[MISA]"))// Misa invoice
+        {
+            isMisa = true;
+            _url = $"https://www.meinvoice.vn/tra-cuu/?sc={ViewData["reservationCode"].ToString().Replace("[MISA]", "")}";
+        }
+        else 
+        {
+            _url = $"https://vinvoice.viettel.vn/utilities/invoice-search?invoiceNo={ViewData["invoiceNo"]}&supplierTaxCode={ViewData["supplierTaxCode"]}&reservationCode={ViewData["reservationCode"]}";
+        }        
+    }
 }
 <section class="head-page">
     <div class="container">
@@ -28,4 +39,20 @@
             </div>
         </div>
 </section>
-<iframe width="100%" height="750" src="@_url"></iframe>
+
+@if (isMisa)
+{
+    <script language="javascript">
+        var newWin = window.open("@_url");
+        if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+            location.href = "@_url";
+        }
+    </script>
+}
+else 
+{
+    <script language="javascript">
+        var newWin = window.open("@_url");
+    </script>
+    <iframe width="100%" height="750" src="@_url"></iframe>
+}

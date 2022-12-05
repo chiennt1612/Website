@@ -36,7 +36,7 @@ namespace WebAdmin.Repository
             int pageIndex = 1, int pageSize = Constants.PageSize)
         {
             IQueryable<Order> r = _context.Orders.Include(a => a.OrderStatus)
-                .Where(a => a.StatusId > 0 && a.StatusId < 6)
+                //.Where(a => a.StatusId > 0 && a.StatusId < 6)
                 .Where(expression);
             IOrderedEnumerable<Order> r1;
             if (!desc)

@@ -10,7 +10,7 @@
     var a = Model;
     var a1 = a.Where(u => u.Status);
 }
-<div id="menu-left" style="position:fixed;z-index:99;left:5px;bottom:25%;text-align:center;">
+<div id="menu-left" class="hidden-xs" style="position:fixed;z-index:99;left:5px;bottom:25%;text-align:center;">
     <p style="text-transform: uppercase;font-weight: 600;text-align: center;">@Localizer["Sản phẩm xem nhiều:"]</p>
     <ul style="color: white;text-transform: uppercase;font-weight: 600;padding: 10px;border-radius: 0 15px 15px 15px;">
         @foreach (var item in a1)

@@ -28,31 +28,31 @@ namespace WebClient.Services
             };
 
             if (!string.IsNullOrEmpty(_configuration.Password))
-                _client.Credentials = new System.Net.NetworkCredential(_decryptor.Decrypt(_configuration.Login), _decryptor.Decrypt(_configuration.Password));
+                _client.Credentials = new System.Net.NetworkCredential(_configuration.Login, _configuration.Password);
             else
                 _client.UseDefaultCredentials = true;
         }
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             _logger.LogInformation($"Sending email: {email}, subject: {subject}, message: {htmlMessage}");
             try
             {
-                var from = String.IsNullOrEmpty(_configuration.From) ? _decryptor.Decrypt(_configuration.Login) : _decryptor.Decrypt(_configuration.From);
+                var from = String.IsNullOrEmpty(_configuration.From) ? _configuration.Login : _configuration.From;
                 var mail = new MailMessage(new MailAddress(from, "NGOC TUAN SILVER"), new MailAddress(email));
                 mail.IsBodyHtml = true;
                 mail.Subject = subject;
                 mail.Body = htmlMessage;
                 mail.Bcc.Add(from);
 
-                _client.Send(mail);
+                await _client.SendMailAsync(mail);
                 _logger.LogInformation($"Email: {email}, subject: {subject}, message: {htmlMessage} successfully sent");
 
-                return Task.CompletedTask;
+                //return Task.CompletedTask;
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Exception {ex} during sending email: {email}, subject: {subject}");
-                throw;
+                //return Task.CompletedTask;
             }
         }
     }
