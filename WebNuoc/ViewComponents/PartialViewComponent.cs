@@ -218,7 +218,8 @@ namespace WebNuoc.ViewComponents
         }
         private async Task<IEnumerable<About>> PartialListGuidesMenu()
         {
-            return (await _Service.aboutServices.GetAllAsync()).Where(u => _guide.GuideID.Contains(u.Id)).OrderBy(u => u.Title);
+            //return (await _Service.aboutServices.GetAllAsync()).Where(u => _guide.GuideID.Contains(u.Id)).OrderBy(u => u.Title);
+            return await _Service.aboutServices.GetListAsync(_guide.GuideID);
         }
         #endregion
 

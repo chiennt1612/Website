@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Paygate.OnePay;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -450,6 +451,114 @@ namespace WebNuoc.Controllers
                 ViewData["ServiceDetail"] = await _Service.serviceServices.GetByIdAsync(_order.ServiceId.Value);
             }
             return View("Complete", resultModel);
+        }
+
+        [Route("/[controller]/[action]")]
+        public async Task<IActionResult> IQuery()
+        {
+            VPCRequest conn = new VPCRequest(paygateInfo, _logger);
+            conn.SetSecureSecret(paygateInfo._SECURE_SECRET);
+            var d1 = DateTime.Now.AddMinutes(-60);
+            var d2 = DateTime.Now.AddMinutes(-10);
+            Expression<Func<Contact, bool>> sqlWhere = u => (u.StatusId == 0 && u.ContactDate >= d1 && u.ContactDate <= d2);
+            var a = await _Service.contactServices.GetManyAsync(sqlWhere);
+
+            foreach(Contact a1 in a)
+            {
+                string result = await conn.CreateIQuery(_logger, paygateInfo, (a1.Id + Tools.StartIdOrder).ToString());
+                string[] r = result.Split(new string[] { "&" }, StringSplitOptions.None);
+                string vpc_DRExists = "";
+                string vpc_Amount = "";
+                string vpc_MerchTxnRef = "";
+                string vpc_OrderInfo = "";
+                string vpc_TransactionNo = "";
+                string vpc_TxnResponseCode = "";
+                string vpc_Message = "";
+                string vpc_Merchant = "";
+                for (int i = 0; i < r.Length; i++)
+                {
+                    if (r[i].StartsWith("vpc_DRExists="))
+                        vpc_DRExists = r[i].MySubString("vpc_DRExists=");
+                    if (r[i].StartsWith("vpc_Merchant="))
+                        vpc_Merchant = r[i].MySubString("vpc_Merchant=");
+                    else if (r[i].StartsWith("vpc_Amount="))
+                        vpc_Amount = r[i].MySubString("vpc_Amount=");
+                    else if (r[i].StartsWith("vpc_MerchTxnRef="))
+                        vpc_MerchTxnRef = r[i].MySubString("vpc_MerchTxnRef=");
+                    else if (r[i].StartsWith("vpc_OrderInfo="))
+                        vpc_OrderInfo = r[i].MySubString("vpc_OrderInfo=");
+                    else if (r[i].StartsWith("vpc_TransactionNo="))
+                        vpc_TransactionNo = r[i].MySubString("vpc_TransactionNo=");
+                    else if (r[i].StartsWith("vpc_TxnResponseCode="))
+                        vpc_TxnResponseCode = r[i].MySubString("vpc_TxnResponseCode=");
+                    else if (r[i].StartsWith("vpc_Message="))
+                        vpc_Message = r[i].MySubString("vpc_Message=");
+                }
+                _logger.LogInformation($"CreateIQuery/ {(a1.Id + Tools.StartIdOrder).ToString()}: {result}");
+                string hashvalidateResult = conn.Process3PartyResponse(HttpUtility.ParseQueryString(result));
+                _logger.LogInformation($"hashvalidateResult: {hashvalidateResult}");
+                if (hashvalidateResult == "CORRECTED" && vpc_Merchant == paygateInfo._MerchantID)//CORRECTED
+                {                    
+                    _logger.LogInformation($"vpc_DRExists: {vpc_DRExists}/ vpc_TxnResponseCode: {vpc_TxnResponseCode}/ vpc_Message: {vpc_Message}");
+                    if (vpc_DRExists == "Y" && vpc_TxnResponseCode == "0")
+                    {
+                        var _vpc_Amount = int.Parse(vpc_Amount.Left(vpc_Amount.Length - 2));
+                        string[] _orderInfo = vpc_OrderInfo.Split(new string[] { "_" }, StringSplitOptions.None);
+                        var _orderId = long.Parse(vpc_MerchTxnRef) - Tools.StartIdOrder;
+                        var _order = await _Service.contactServices.GetByIdAsync(_orderId);
+
+                        if (_orderInfo[0] == "1") // Order đăng ký dịch vụ
+                        {
+                            _order.StatusId = 4;
+                            _order.CookieID = vpc_TransactionNo;
+                            _order.OrderStatus = await _unitOfWork.orderStatusRepository.GetByIdAsync(4);
+                            var _orderU = await _Service.contactServices.Update(_order);
+                            string msg = $"<ul><li><b>{_localizer["Tên đầy đủ"]}:</b> {_order.Fullname}</li><li><b>Email:</b> {_order.Email}</li><li><b>Mobile:</b> {_order.Mobile}</li><li><b>Trạng thái:</b> Đã thanh toán</li></li><li>{_order.Description}</li></ul>";
+                            await _emailSender.SendEmailAsync(_order.Email, _localizer.GetString("v.v Liên hệ Ngọc Tuấn"), msg);
+                        }
+                        else if (_orderInfo[0] == "2") // Order thanh toán hóa đơn nước
+                        {
+                            //vpc_OrderInfo = $"2_{inv.CustomerCode}_{inv.InvoiceNo}_{inv.InvoiceAmount}",
+                            var InvoiceAmount = int.Parse(_orderInfo[3]);
+                            if (_orderInfo.Length == 4 && _vpc_Amount == InvoiceAmount && _order.Description == vpc_OrderInfo)
+                            {
+                                if (_order.StatusId != 4 && _order.StatusId != 6)
+                                {
+                                    var orderSave = await _unitOfWork.invoiceSaveRepository.GetByIdAsync(_order.Id);
+                                    if (orderSave != null)
+                                    {
+                                        orderSave.PaymentStatus = 1;
+                                        _unitOfWork.invoiceSaveRepository.Update(orderSave);
+                                    }
+                                    _order.StatusId = 4;
+                                    _order.CookieID = vpc_TransactionNo;
+                                    _order.OrderStatus = await _unitOfWork.orderStatusRepository.GetByIdAsync(4);
+                                    var _orderU = await _Service.contactServices.Update(_order);
+                                    _logger.LogInformation($"Thanh toan thanh cong {_orderId} {vpc_TxnResponseCode} {vpc_TransactionNo}");
+                                }
+                                else
+                                {
+                                    _logger.LogInformation($"Don hang da xu ly {_orderId} {vpc_TxnResponseCode} {vpc_TransactionNo}");
+                                }
+                                PayInput inv1 = new PayInput()
+                                {
+                                    CustomerCode = _orderInfo[1],
+                                    InvoiceNo = _orderInfo[2],
+                                    InvoiceAmount = InvoiceAmount,
+                                    OnePayID = vpc_TransactionNo
+                                };
+                                PayResult payResult = await _iInvoiceServices.PayInvoice(inv1);
+                                _logger.LogInformation($"hashvalidateResult: {hashvalidateResult}; vpc_OrderInfo: {vpc_OrderInfo}; vpc_TransactionNo: {vpc_TransactionNo}; vpc_Amount: {vpc_Amount}; Result: {payResult.PayStatus}");
+                            }
+                            else
+                            {
+                                _logger.LogInformation($"Error: hashvalidateResult: {hashvalidateResult}; vpc_OrderInfo: {vpc_OrderInfo}; vpc_TransactionNo: {vpc_TransactionNo}; vpc_Amount: {vpc_Amount}");
+                            }
+                        }
+                    }
+                }
+            }
+            return Ok();
         }
 
         [Route("/[controller]/[action]/{OrderId?}")]

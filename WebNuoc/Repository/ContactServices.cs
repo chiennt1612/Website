@@ -1,6 +1,8 @@
 ﻿using EntityFramework.Web.Entities;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using WebNuoc.Repository.Interfaces;
 using WebNuoc.Services.Interfaces;
@@ -52,6 +54,11 @@ namespace WebNuoc.Repository
                 ilogger.LogError($"Get by id {Id.ToString()} Is Fail {ex.Message}");
                 return default;
             }
+        }
+
+        public async Task<IEnumerable<Contact>> GetManyAsync(Expression<Func<Contact, bool>> where)
+        {
+            return await unitOfWork.contactRepository.GetManyAsync(where);
         }
 
         public async Task<Contact> Update(Contact order)

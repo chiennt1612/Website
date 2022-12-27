@@ -248,7 +248,7 @@ namespace WebClient.Controllers
                         Fullname = input.Fullname,
                         Mobile = input.Mobile,
                         OrderItems = OrderItems,
-                        Total = Total + FeeShip,
+                        Total = Total,
                         StatusId = 0,
                         UserName = b.UserName,
                         UserId = (b.UserId.HasValue ? b.UserId.Value : -1),

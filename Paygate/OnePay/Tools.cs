@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Paygate.OnePay
 {
@@ -249,6 +252,11 @@ namespace Paygate.OnePay
             }
             return s;
         }
+        
+        public static string MySubString(this string s, string s1)
+        {
+            return s.Substring(s.IndexOf(s1) + s1.Length).Trim();
+        }
         #endregion
 
         #region Cookie
@@ -446,6 +454,36 @@ namespace Paygate.OnePay
             // Chuyen huong trinh duyet sang cong thanh toan
             var url = conn.Create3PartyQueryString();
             return url;
+        }
+
+        public static async Task<string> CreateIQuery(this VPCRequest conn, ILogger logger, PaygateInfo paygateInfo, string vpc_MerchTxnRef)
+        {
+            string queryString = $"vpc_AccessCode={paygateInfo._MerchantAccessCode}&vpc_Command=queryDR&vpc_MerchTxnRef={vpc_MerchTxnRef}&vpc_Merchant={paygateInfo._MerchantID}&vpc_Password={paygateInfo._Password}&vpc_User={paygateInfo._User}&vpc_Version={paygateInfo._PaygateVersion.ToString()}";
+            string vpc_SecureHash = conn.CreateSHA256Signature(queryString);
+            string url = $"{paygateInfo._IQueryURL}?{queryString}&vpc_SecureHash={vpc_SecureHash}";
+            logger.LogInformation($"CreateIQuery/url:{url}");
+            //Open URL check
+            string result = string.Empty;
+            HttpWebRequest httpWebRequest;
+            httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpWebRequest.ContentType = "text/html; charset=utf-8";
+            httpWebRequest.Method = "GET";
+
+            try
+            {
+                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    result = await streamReader.ReadToEndAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                logger.LogError($"CreateIQuery/{url}: {ex.Message}");
+            }
+
+            return result;
         }
         #endregion
 

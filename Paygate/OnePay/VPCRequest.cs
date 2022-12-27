@@ -131,6 +131,7 @@ namespace Paygate.OnePay
 
         public string Process3PartyResponse(System.Collections.Specialized.NameValueCollection nameValueCollection)
         {
+            _responseFields.Clear();
             foreach (string item in nameValueCollection)
             {
                 ilogger.LogInformation($"Process3PartyResponse key {item} value {nameValueCollection[item]}");
@@ -219,15 +220,6 @@ namespace Paygate.OnePay
 
         public string CreateSHA256Signature(bool useRequest)
         {
-            // Hex Decode the Secure Secret for use in using the HMACSHA256 hasher
-            // hex decoding eliminates this source of error as it is independent of the character encoding
-            // hex decoding is precise in converting to a byte array and is the preferred form for representing binary values as hex strings. 
-            byte[] convertedHash = new byte[_secureSecret.Length / 2];
-            for (int i = 0; i < _secureSecret.Length / 2; i++)
-            {
-                convertedHash[i] = (byte)Int32.Parse(_secureSecret.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber);
-            }
-
             // Build string from collection in preperation to be hashed
             StringBuilder sb = new StringBuilder();
             SortedList<String, String> list = (useRequest ? _requestFields : _responseFields);
@@ -240,17 +232,81 @@ namespace Paygate.OnePay
             if (sb.Length > 0)
                 sb.Remove(sb.Length - 1, 1);
 
+            return CreateSHA256Signature(sb.ToString());
+        }
+
+        public string CreateSHA256Signature(string paramRequest)
+        {
+            // Hex Decode the Secure Secret for use in using the HMACSHA256 hasher
+            // hex decoding eliminates this source of error as it is independent of the character encoding
+            // hex decoding is precise in converting to a byte array and is the preferred form for representing binary values as hex strings. 
+            byte[] convertedHash = new byte[_secureSecret.Length / 2];
+            for (int i = 0; i < _secureSecret.Length / 2; i++)
+            {
+                convertedHash[i] = (byte)Int32.Parse(_secureSecret.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+
             // Create secureHash on string
             string hexHash = "";
             using (HMACSHA256 hasher = new HMACSHA256(convertedHash))
             {
-                byte[] hashValue = hasher.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
+                byte[] hashValue = hasher.ComputeHash(Encoding.UTF8.GetBytes(paramRequest));
                 foreach (byte b in hashValue)
                 {
                     hexHash += b.ToString("X2");
                 }
             }
             return hexHash;
+        }
+        public string Process3PartyResponse(string nameValueCollection)
+        {
+            string[] a = nameValueCollection.Split(new string[] { "&" }, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            string vpc_Message = "";
+            string vpc_TxnResponseCode = "";
+            string vpc_SecureHash = "";
+            for (int i = 0; i< a.Length; i++)
+            {
+                ilogger.LogInformation($"Process3PartyResponse key/value {a[i]}");
+                if (!a[i].StartsWith("vpc_SecureHash=") && !a[i].StartsWith("vpc_SecureHashType="))
+                {
+                    sb.Append(a[i] + @"&");
+                }
+                
+                if (a[i].StartsWith("vpc_TxnResponseCode="))
+                    vpc_TxnResponseCode = a[i].MySubString("vpc_TxnResponseCode=");
+                else if (a[i].StartsWith("vpc_SecureHash="))
+                    vpc_SecureHash = a[i].MySubString("vpc_SecureHash=") ;
+                else if (a[i].StartsWith("vpc_Message="))
+                    vpc_Message = a[i].MySubString("vpc_Message=");
+            }
+            // remove trailing & from string
+            if (sb.Length > 0) sb.Remove(sb.Length - 1, 1);
+            if (!vpc_TxnResponseCode.Equals("0") && !String.IsNullOrEmpty(vpc_Message))
+            {
+                if (!String.IsNullOrEmpty(vpc_SecureHash))
+                {
+                    if (!CreateSHA256Signature(sb.ToString()).Equals(vpc_SecureHash))
+                    {
+                        return "INVALIDATED";
+                    }
+                    ilogger.LogInformation($"Process3PartyResponse Is corrected");
+                    return "CORRECTED";
+                }
+                ilogger.LogInformation($"Process3PartyResponse Is corrected");
+                return "CORRECTED";
+            }
+
+            if (String.IsNullOrEmpty(vpc_SecureHash))
+            {
+                return "INVALIDATED";//no sercurehash response
+            }
+            if (!CreateSHA256Signature(sb.ToString()).Equals(vpc_SecureHash))
+            {
+                return "INVALIDATED";
+            }
+            ilogger.LogInformation($"Process3PartyResponse Is corrected");
+            return "CORRECTED";
         }
     }
 }
