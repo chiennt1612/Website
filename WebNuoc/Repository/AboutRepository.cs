@@ -43,7 +43,7 @@ namespace WebNuoc.Repository
         public async Task<IEnumerable<About>> GetListAsync(IEnumerable<long> Ids)
         {
             await Task.Delay(0);
-            var a = _context.Abouts.FromSqlRaw($"SELECT * From About Where Id in ({string.Join(", ", Ids)})");
+            var a = _context.Abouts.FromSqlRaw($"SELECT * From About Where Id in ({string.Join(", ", Ids)}) Order By Title");
             return a;
         }
     }

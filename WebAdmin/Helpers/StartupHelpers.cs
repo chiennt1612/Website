@@ -48,8 +48,9 @@ namespace WebAdmin.Helpers
         #endregion
 
         #region Authorization Policy
-        public static void AddAuthenticationServices(this IServiceCollection services)
+        public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var webConfig = configuration.GetSection(nameof(WebConfig)).Get<WebConfig>();
             services.AddSingleton<IDiscoveryCache>(r =>
             {
                 var factory = r.GetRequiredService<IHttpClientFactory>();
@@ -57,26 +58,35 @@ namespace WebAdmin.Helpers
             });
             services.AddAuthentication(options =>
             {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = "oidc";
             })
                 .AddCookie(options =>
                 {
-                    options.Cookie.Name = "WebAdmin";
+                    options.Cookie.Name = webConfig.CookieName;
+                    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+                    options.Cookie.HttpOnly = true;
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = Constants.Authority;
-                    options.ClientId = "WebAdmin";
-                    options.ClientSecret = "secretWebAdmin";
-                    options.ResponseType = "code";
+                    options.ClientId = webConfig.ClientId;
+                    options.ClientSecret = webConfig.ClientSecret;
+                    options.ResponseType = webConfig.ResponseType;
                     options.UsePkce = true;
                     options.RequireHttpsMetadata = false;
 
                     options.Scope.Clear();
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("email");
+                    foreach(string item in webConfig.Scope)
+                    {
+                        options.Scope.Add(item);
+                    }
+                    //options.Scope.Add("openid");
+                    //options.Scope.Add("profile");
+                    //options.Scope.Add("email");
                     //options.Scope.Add("address");
                     //options.Scope.Add("phone");
 

@@ -25,12 +25,13 @@ namespace WebAdmin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<WebConfig>(Configuration.GetSection("WebConfig"));
             services.AddRazorPages();
             services.AddControllersWithViews();
             services.AddHttpClient();
 
             services.AddServiceLanguage();
-            services.AddAuthenticationServices();
+            services.AddAuthenticationServices(Configuration);
             services.AddAuthorizationByPolicy();
 
             services.AddTransient<IDecryptorProvider, DecryptorProvider>();
