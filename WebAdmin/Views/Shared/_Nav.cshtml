@@ -1,10 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-
+@inject Microsoft.Extensions.Options.IOptions<WebAdmin.Helpers.WebConfig> webConfig
 @inject IViewLocalizer Localizer
+
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">@Localizer["Bạc Ngọc Tuấn"]</a>
+            @if(webConfig.Value.WebName == "BacNgocTuan")
+            {
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">@Localizer["Bạc Ngọc Tuấn"]</a>
+            }
+            else
+            {
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">@Localizer["Nước Ngọc Tuấn"]</a>
+            }
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,12 +28,16 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Dịch vụ"] <b class="caret"></b></a>
 
                                 <div class="dropdown-menu">
-                                    @*<a class="dropdown-item" asp-controller="Categories" asp-action="Index">@Localizer["Nhóm hàng hóa"]</a>
+                                    @if(webConfig.Value.WebName == "BacNgocTuan"){
+                                        <a class="dropdown-item" asp-controller="Categories" asp-action="Index">@Localizer["Nhóm hàng hóa"]</a>
                                         <a class="dropdown-item" asp-controller="Products" asp-action="Index">@Localizer["Hàng hóa"]</a>
-                                        <a class="dropdown-item" asp-controller="Orders" asp-action="Index">@Localizer["Đơn hàng"]</a>*@
-
-                                    <a class="dropdown-item" asp-controller="Services" asp-action="Index">@Localizer["Dịch vụ"]</a>
-                                    <a class="dropdown-item" asp-controller="Services" asp-action="Register">@Localizer["Đăng ký dịch vụ"]</a>
+                                        <a class="dropdown-item" asp-controller="Orders" asp-action="Index">@Localizer["Đơn hàng"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" asp-controller="Services" asp-action="Index">@Localizer["Dịch vụ"]</a>
+                                        <a class="dropdown-item" asp-controller="Services" asp-action="Register">@Localizer["Đăng ký dịch vụ"]</a>   
+                                    }
                                 </div>
                             </li>
                         </ul>
@@ -63,10 +75,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="ParamSettings" asp-action="Index">@Localizer["Tham số"]</a>
-                    </li>
-                    @*<li class="nav-item">
+                    @if(webConfig.Value.WebName == "BacNgocTuan"){
+                        <li class="nav-item">
                             <ul class="navbar-nav mr-auto">
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@Localizer["Danh mục"] <b class="caret"></b></a>
@@ -80,7 +90,14 @@
                                     </div>
                                 </li>
                             </ul>
-                        </li>*@
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="ParamSettings" asp-action="Index">@Localizer["Tham số"]</a>
+                        </li>   
+                    }
                     <li class="nav-item">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item dropdown">
