@@ -37,6 +37,7 @@ namespace SSO.Controllers.Account
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly IStringLocalizer<AccountController> _localizer;
+        private readonly SmtpConfiguration _smtpConfiguration;
 
         public AccountController(
             UserManager<AppUser> userManager,
@@ -48,18 +49,20 @@ namespace SSO.Controllers.Account
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILogger<AccountController> logger,
-            IStringLocalizer<AccountController> _localizer)
+            IStringLocalizer<AccountController> localizer,
+            SmtpConfiguration smtpConfiguration)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _interaction = interaction;
-            _clientStore = clientStore;
-            _schemeProvider = schemeProvider;
-            _events = events;
-            _emailSender = emailSender;
-            _smsSender = smsSender;
-            _logger = logger;
-            this._localizer = _localizer;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._interaction = interaction;
+            this._clientStore = clientStore;
+            this._schemeProvider = schemeProvider;
+            this._events = events;
+            this._emailSender = emailSender;
+            this._smsSender = smsSender;
+            this._logger = logger;
+            this._localizer = localizer;
+            this._smtpConfiguration = smtpConfiguration;
         }
 
         /// <summary>
@@ -416,7 +419,9 @@ namespace SSO.Controllers.Account
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
-                        await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                        await _emailSender.SendEmailAsync(model.Email, 
+                            _smtpConfiguration.SubjectConfirm.Replace(@"{AccountName}", user.UserName),
+                            _smtpConfiguration.ContentConfirm.Replace(@"{AccountName}", user.UserName).Replace(@"{Email}", user.Email).Replace(@"{Link}", $"<a href='{System.Text.Encodings.Web.HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>"));
 
                         //await _signInManager.SignInAsync(user, isPersistent: false);
                         //_logger.LogInformation("User created a new account with password.");
@@ -485,8 +490,8 @@ namespace SSO.Controllers.Account
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id.ToString(), code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}&email={user.Email}'>link</a>");
+                await _emailSender.SendEmailAsync(model.Email, _smtpConfiguration.Subject.Replace(@"{AccountName}", user.UserName),
+                   _smtpConfiguration.Content.Replace(@"{AccountName}", user.UserName).Replace(@"{Link}", $"<a href='{callbackUrl}&email={user.Email}'>link</a>"));
                 return RedirectToAction(nameof(ForgotPasswordConfirmation), new { ReturnUrl = returnUrl });
             }
 
@@ -607,7 +612,9 @@ namespace SSO.Controllers.Account
             var message = "Your security code is: " + code;
             if (model.SelectedProvider == "Email")
             {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user),
+                    _smtpConfiguration.Subject.Replace(@"{AccountName}", user.UserName),
+                    _smtpConfiguration.Content.Replace(@"{AccountName}", user.UserName).Replace(@"{OTPCODE}", code));
             }
             else if (model.SelectedProvider == "Phone")
             {

@@ -25,6 +25,7 @@ namespace SSO.Controllers
         private readonly ILogger _logger;
         private readonly ISmsSender _smsSender;
         private readonly UrlEncoder _urlEncoder;
+        private readonly SmtpConfiguration _smtpConfiguration;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -35,7 +36,8 @@ namespace SSO.Controllers
           IEmailSender emailSender,
           ISmsSender smsSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          SmtpConfiguration smtpConfiguration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -43,6 +45,7 @@ namespace SSO.Controllers
             _logger = logger;
             _smsSender = smsSender;
             _urlEncoder = urlEncoder;
+            this._smtpConfiguration = smtpConfiguration;
         }
 
         [TempData]
@@ -150,7 +153,9 @@ namespace SSO.Controllers
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
             var email = user.Email;
-            await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
+            await _emailSender.SendEmailAsync(model.Email,
+                            _smtpConfiguration.SubjectConfirm.Replace(@"{AccountName}", user.UserName),
+                            _smtpConfiguration.ContentConfirm.Replace(@"{AccountName}", user.UserName).Replace(@"{Email}", user.Email).Replace(@"{Link}", $"<a href='{System.Text.Encodings.Web.HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>")); ;
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToAction(nameof(Index));

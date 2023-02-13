@@ -35,6 +35,12 @@
         public string Password { get; set; }
         public int Port { get; set; } = 587; // default smtp port
         public bool UseSSL { get; set; } = true;
+        public string Subject { get; set; }
+        public string Content { get; set; }
+        public string SubjectOTP { get; set; }
+        public string ContentOTP { get; set; }
+        public string SubjectConfirm { get; set; }
+        public string ContentConfirm { get; set; }
     }
 
     public class SMSoptions
