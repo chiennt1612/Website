@@ -78,6 +78,7 @@ namespace WebNuoc.Services.Interfaces
         public double InvAmountWithoutTax { get; set; }
         public double InvAmount { get; set; }
         public int PaymentStatus { get; set; } // 1. Da thanh toan; 0. Chua thanh toan
+        public string Link { get; set; }
     }
 
     public class InvoiceInput

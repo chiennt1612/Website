@@ -195,6 +195,9 @@
   <data name="EndDate" xml:space="preserve">
     <value>Ngày hết hạn</value>
   </data>
+  <data name="EVNCode" xml:space="preserve">
+    <value>Mã thẻ điện lực</value>
+  </data>
   <data name="Fullname" xml:space="preserve">
     <value>Tên đầy đủ</value>
   </data>
@@ -257,6 +260,9 @@
   </data>
   <data name="OrderStatus" xml:space="preserve">
     <value>Trạng thái đơn</value>
+  </data>
+  <data name="OTP" xml:space="preserve">
+    <value>Mã OTP</value>
   </data>
   <data name="ParamKey" xml:space="preserve">
     <value>Biến tham số</value>
@@ -362,6 +368,9 @@
   </data>
   <data name="UserModify" xml:space="preserve">
     <value>Tài khoản sửa</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Tên đăng nhập</value>
   </data>
   <data name="ZipCode" xml:space="preserve">
     <value>Mã vùng</value>

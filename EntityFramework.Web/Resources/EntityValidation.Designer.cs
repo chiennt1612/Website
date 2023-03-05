@@ -19,7 +19,7 @@ namespace EntityFramework.Web.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EntityValidation {
@@ -295,6 +295,15 @@ namespace EntityFramework.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mã thẻ điện lực.
+        /// </summary>
+        public static string EVNCode {
+            get {
+                return ResourceManager.GetString("EVNCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tên đầy đủ.
         /// </summary>
         public static string Fullname {
@@ -480,6 +489,15 @@ namespace EntityFramework.Web.Resources {
         public static string OrderStatus {
             get {
                 return ResourceManager.GetString("OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã OTP.
+        /// </summary>
+        public static string OTP {
+            get {
+                return ResourceManager.GetString("OTP", resourceCulture);
             }
         }
         
@@ -795,6 +813,15 @@ namespace EntityFramework.Web.Resources {
         public static string UserModify {
             get {
                 return ResourceManager.GetString("UserModify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên đăng nhập.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         

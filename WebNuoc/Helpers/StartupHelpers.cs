@@ -4,13 +4,16 @@ using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Paygate.OnePay;
+using System;
 using System.Net.Http;
+using System.Text;
 using WebNuoc.Repository;
 using WebNuoc.Repository.Interfaces;
 using WebNuoc.Services;
@@ -21,7 +24,7 @@ namespace WebNuoc.Helpers
     public static class StartupHelpers
     {
         #region Localization
-        private static string[] LanguageSupport = new[] { "vi", "en-US" };
+        private static string[] LanguageSupport = new[] { "vi" };
         public static void AddServiceLanguage(this IServiceCollection services)
         {
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -49,56 +52,80 @@ namespace WebNuoc.Helpers
         #endregion
 
         #region Authorization Policy
-        public static void AddAuthenticationServices(this IServiceCollection services)
+        public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IDiscoveryCache>(r =>
-            {
-                var factory = r.GetRequiredService<IHttpClientFactory>();
-                return new DiscoveryCache(Constants.Authority, () => factory.CreateClient());
+            //services.AddSingleton<IDiscoveryCache>(r =>
+            //{
+            //    var factory = r.GetRequiredService<IHttpClientFactory>();
+            //    return new DiscoveryCache(Constants.Authority, () => factory.CreateClient());
+            //});
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(2460);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
+
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddCookie(options =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.Cookie.Name = "WebNuoc";
-                })
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = Constants.Authority;
-                    options.ClientId = "WebNuoc";
-                    options.ClientSecret = "secretWebAdmin";
-                    options.ResponseType = "code";
-                    options.UsePkce = true;
-                    options.RequireHttpsMetadata = false;
+                    ValidIssuer = configuration["JwtModel:ValidIssuer"],
+                    ValidAudience = configuration["JwtModel:ValidAudience"],
+                    IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes(configuration["JwtModel:Secret"])),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
+            });
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = "oidc";
+            //})
+            //    .AddCookie(options =>
+            //    {
+            //        options.Cookie.Name = "WebNuoc";
+            //    })
+            //    .AddOpenIdConnect("oidc", options =>
+            //    {
+            //        options.Authority = Constants.Authority;
+            //        options.ClientId = "WebNuoc";
+            //        options.ClientSecret = "secretWebAdmin";
+            //        options.ResponseType = "code";
+            //        options.UsePkce = true;
+            //        options.RequireHttpsMetadata = false;
 
-                    options.Scope.Clear();
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("email");
-                    options.Scope.Add("address");
-                    options.Scope.Add("phone");
+            //        options.Scope.Clear();
+            //        options.Scope.Add("openid");
+            //        options.Scope.Add("profile");
+            //        options.Scope.Add("email");
+            //        options.Scope.Add("address");
+            //        options.Scope.Add("phone");
 
-                    // not mapped by default
-                    options.ClaimActions.MapJsonKey("role", "role");
-                    options.ClaimActions.MapJsonKey("phone_number", "phone_number");
-                    options.ClaimActions.MapJsonKey("address", "address");
-                    options.ClaimActions.MapJsonKey("website", "website");
-                    options.ClaimActions.MapJsonKey("oldid", "oldid");
-                    options.ClaimActions.MapJsonKey("username", "username");
+            //        // not mapped by default
+            //        options.ClaimActions.MapJsonKey("role", "role");
+            //        options.ClaimActions.MapJsonKey("phone_number", "phone_number");
+            //        options.ClaimActions.MapJsonKey("address", "address");
+            //        options.ClaimActions.MapJsonKey("website", "website");
+            //        options.ClaimActions.MapJsonKey("oldid", "oldid");
+            //        options.ClaimActions.MapJsonKey("username", "username");
 
-                    // keeps id_token smaller
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                    options.SaveTokens = true;
+            //        // keeps id_token smaller
+            //        options.GetClaimsFromUserInfoEndpoint = true;
+            //        options.SaveTokens = true;
 
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = JwtClaimTypes.Name,
-                        RoleClaimType = JwtClaimTypes.Role,
-                    };
-                });
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            NameClaimType = JwtClaimTypes.Name,
+            //            RoleClaimType = JwtClaimTypes.Role,
+            //        };
+            //    });
         }
 
         public static void AddAuthorizationByPolicy(this IServiceCollection services)

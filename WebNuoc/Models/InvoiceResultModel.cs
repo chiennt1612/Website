@@ -1,4 +1,5 @@
-﻿using WebNuoc.Services.Interfaces;
+﻿using System;
+using WebNuoc.Services.Interfaces;
 
 namespace WebNuoc.Models
 {
@@ -18,5 +19,17 @@ namespace WebNuoc.Models
         public PayResult payResult { get; set; }
 
         public EntityFramework.Web.Entities.Contact order { get; set; }
+    }
+
+    public class InvoiceFindModel : SearchDateModel
+    {
+        //public string CustomerCode { get; set; }
+        public int? PaymentStatus { get; set; }
+    }
+
+    public class SearchDateModel
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
     }
 }

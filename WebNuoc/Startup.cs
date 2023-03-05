@@ -31,7 +31,7 @@ namespace WebNuoc
             services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddServiceLanguage();
-            services.AddAuthenticationServices();
+            services.AddAuthenticationServices(Configuration);
             services.AddAuthorizationByPolicy();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -103,6 +103,21 @@ namespace WebNuoc
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            //add for jwt
+            app.UseCookiePolicy();
+            app.UseSession();
+            //Add JWToken to all incoming HTTP Request Header
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
+
             app.UseConfigLanguage();
 
             app.UseRouting();

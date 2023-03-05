@@ -1,0 +1,89 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model WebNuoc.Models.LoginModel
+<style>
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    a.text-success:hover, a.text-success:focus {
+        color: #19692c !important;
+    }
+
+    .text-info {
+        color: #17a2b8 !important;
+    }
+
+    a.text-info:hover, a.text-info:focus {
+        color: #0f6674 !important;
+    }
+
+    .text-warning {
+        color: #ffc107 !important;
+    }
+
+    a.text-warning:hover, a.text-warning:focus {
+        color: #ba8b00 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    a.text-danger:hover, a.text-danger:focus {
+        color: #a71d2a !important;
+    }
+    input.input-validation-error {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+</style>
+<section class="head-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 left-side">
+                <h1 class="title">@Localizer["Đăng nhập"]</h1>
+                <p class="summary">@Localizer["Công ty TNHH Nước Sạch Ngọc Tuấn - NAGAOKA"]</p>
+            </div><!--left-->
+            <div class="col-md-6 col-12 right-side">
+                <div id="breadcrumb">
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="/" itemprop="url" class="nopad-l">
+                            <span itemprop="title">@Localizer["Trang chủ"]</span>
+                        </a>
+                    </div>
+                    <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                        &nbsp;<i class="fa fa-angle-right"></i>&nbsp;<a href="" itemprop="url">
+                                                                         <span itemprop="title">@Localizer["Đăng nhập"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div><!--right-->
+        </div><!--row-->
+    </div><!--container-->
+</section><!--head-page-->
+<section id="contact-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-6">
+                <div class="contact-form">
+                    <form asp-action="Login" asp-controller="Account">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <label asp-for="Username" class="control-label"> </label>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <input asp-for="Username" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input type="submit" value="@Localizer["Đăng nhập"]" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </form>
+                </div><!--form-->
+            </div><!--left-->
+        </div><!--row-->
+    </div><!--container-->
+</section>

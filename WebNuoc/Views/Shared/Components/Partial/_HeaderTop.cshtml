@@ -23,7 +23,6 @@
         {
             <div class="item">
                 <i class="fa fa-user"></i>
-                <a href="@(EntityFramework.Web.DBContext.Constants.Authority)/Account/Register?returnUrl=@((Context.MerchantUrl() + "/Account/Login").UrlEncode())">@Localizer["Đăng ký"]</a> /
                 <a asp-action="Login" asp-controller="Account">@Localizer["Đăng nhập"]</a>
             </div>
         }

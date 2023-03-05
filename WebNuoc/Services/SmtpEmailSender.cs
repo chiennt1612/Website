@@ -13,11 +13,11 @@ namespace WebNuoc.Services
         private readonly ILogger<SmtpEmailSender> _logger;
         private readonly SmtpConfiguration _configuration;
         private readonly SmtpClient _client;
-        private readonly IDecryptorProvider _decryptor;
-        public SmtpEmailSender(ILogger<SmtpEmailSender> logger, SmtpConfiguration configuration, IDecryptorProvider decryptor)
+        //private readonly IDecryptorProvider _decryptor;
+        public SmtpEmailSender(ILogger<SmtpEmailSender> logger, SmtpConfiguration configuration)//, IDecryptorProvider decryptor)
         {
             _logger = logger;
-            _decryptor = decryptor;
+            //_decryptor = decryptor;
             _configuration = configuration;
             _client = new SmtpClient
             {
@@ -28,7 +28,8 @@ namespace WebNuoc.Services
             };
 
             if (!string.IsNullOrEmpty(_configuration.Password))
-                _client.Credentials = new System.Net.NetworkCredential(_decryptor.Decrypt(_configuration.Login), _decryptor.Decrypt(_configuration.Password));
+                //_client.Credentials = new System.Net.NetworkCredential(_decryptor.Decrypt(_configuration.Login), _decryptor.Decrypt(_configuration.Password));
+                _client.Credentials = new System.Net.NetworkCredential(_configuration.Login, _configuration.Password);
             else
                 _client.UseDefaultCredentials = true;
         }
@@ -37,7 +38,8 @@ namespace WebNuoc.Services
             _logger.LogInformation($"Sending email: {email}, subject: {subject}, message: {htmlMessage}");
             try
             {
-                var from = String.IsNullOrEmpty(_configuration.From) ? _decryptor.Decrypt(_configuration.Login) : _decryptor.Decrypt(_configuration.From);
+                //var from = String.IsNullOrEmpty(_configuration.From) ? _decryptor.Decrypt(_configuration.Login) : _decryptor.Decrypt(_configuration.From);
+                var from = String.IsNullOrEmpty(_configuration.From) ? _configuration.Login : _configuration.From;
                 var mail = new MailMessage(new MailAddress(from, "CLEAN WATER NGOC TUAN - NAGAOKA COMPANY LIMITED"), new MailAddress(email));
                 mail.IsBodyHtml = true;
                 mail.Subject = subject;
