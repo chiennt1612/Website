@@ -8,6 +8,7 @@ using SSO.Helpers;
 using SSO.Models.ManageViewModels;
 using SSO.Services.Interface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -153,9 +154,10 @@ namespace SSO.Controllers
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
             var email = user.Email;
+            IList<string> r = new List<string>() { user.UserName, user.Email, $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>", "" };
             await _emailSender.SendEmailAsync(model.Email,
-                            _smtpConfiguration.SubjectConfirm.Replace(@"{AccountName}", user.UserName),
-                            _smtpConfiguration.ContentConfirm.Replace(@"{AccountName}", user.UserName).Replace(@"{Email}", user.Email).Replace(@"{Link}", $"<a href='{System.Text.Encodings.Web.HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>")); ;
+                            _smtpConfiguration.SubjectConfirm.Replace(_smtpConfiguration.p, r),
+                            _smtpConfiguration.ContentConfirm.Replace(_smtpConfiguration.p, r)); ;
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToAction(nameof(Index));

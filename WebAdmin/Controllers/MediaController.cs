@@ -19,7 +19,7 @@ using X.PagedList;
 namespace WebAdmin.Controllers
 {
     [SecurityHeaders]
-    [Authorize]
+    [Authorize(Roles = "Admin,Mod")]
     public class MediasController : Controller
     {
         private readonly ILogger<MediasController> _logger;

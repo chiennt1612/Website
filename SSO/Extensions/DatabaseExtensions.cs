@@ -18,7 +18,7 @@ namespace SSO.Extensions
             //where TLogDbContext : DbContext, ILogDbContext
             //where TAuditLoggingDbContext : DbContext, IAuditLoggingDbContext<AuditLog>
         {
-            string connectionString = decryptor.Decrypt(configuration.GetConnectionString("DefaultConnection"));
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
             //string connectionString = DecryptorProvider.Decrypt(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
 
             services.RegisterSqlServerDbContexts<TIdentityDbContext, TDataProtectionDbContext>//, TLogDbContext, TAuditLoggingDbContext>
@@ -32,7 +32,7 @@ namespace SSO.Extensions
             where TIdentityDbContext : DbContext
             where TDataProtectionDbContext : DbContext, IDataProtectionKeyContext
         {
-            string connectionString = decryptor.Decrypt(configuration.GetConnectionString("DefaultConnection"));
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
             //string connectionString = DecryptorProvider.Decrypt(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
 
             services.AddIdSHealthChecks<TConfigurationDbContext, TPersistedGrantDbContext, TIdentityDbContext, TDataProtectionDbContext>

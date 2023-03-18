@@ -1,4 +1,6 @@
-﻿namespace SSO.Helpers
+﻿using System.Collections.Generic;
+
+namespace SSO.Helpers
 {
     public class RegisterConfiguration
     {
@@ -41,6 +43,7 @@
         public string ContentOTP { get; set; }
         public string SubjectConfirm { get; set; }
         public string ContentConfirm { get; set; }
+        public IList<string> p { get; set; }
     }
 
     public class SMSoptions
