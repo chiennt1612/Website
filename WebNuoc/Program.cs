@@ -3,8 +3,11 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using Serilog.Sinks.MongoDB;
 using System;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using WebNuoc.Helpers;
 
 namespace WebNuoc
 {
@@ -12,7 +15,29 @@ namespace WebNuoc
     {
         public static int Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+            LoggingProvider settings_Web = new LoggingProvider();
+            config.GetSection("LoggingProvider").Bind(settings_Web);
+            if(settings_Web.LoggingType == 1)
+            {
+                Log.Logger = new LoggerConfiguration()
+                      .MinimumLevel.Debug()
+                      .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                      .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                      .MinimumLevel.Override("System", LogEventLevel.Warning)
+                      .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                      .Enrich.FromLogContext()
+                      // uncomment to write to Azure diagnostics stream
+                      .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
+                      .WriteTo.MongoDB(settings_Web.LogMongoDB.URI, settings_Web.LogMongoDB.Collection)
+                      .CreateLogger();
+            }
+            else
+            {
+                Log.Logger = new LoggerConfiguration()
                       .MinimumLevel.Debug()
                       .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                       .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
@@ -21,15 +46,17 @@ namespace WebNuoc
                       .Enrich.FromLogContext()
                       // uncomment to write to Azure diagnostics stream
                       .WriteTo.File(
-                          Directory.GetCurrentDirectory() + @"\Log\WebAdmin.txt",
-                          fileSizeLimitBytes: 10000000,
+                          Directory.GetCurrentDirectory() + settings_Web.LogFiles.FileName,
+                          fileSizeLimitBytes: settings_Web.LogFiles.FileSizeLimitBytes,
                           rollOnFileSizeLimit: true,
-                          rollingInterval: RollingInterval.Hour,
+                          rollingInterval: (Serilog.RollingInterval)settings_Web.LogFiles.RollingInterval,
                           shared: true,
                           flushToDiskInterval: TimeSpan.FromSeconds(1),
-                          outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine})")
+                          outputTemplate: settings_Web.LogFiles.OutputTemplate)
                       .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
                       .CreateLogger();
+            }
+            
             var host = CreateHostBuilder(args).Build();
             Log.Information("Starting host...");
             host.Run();

@@ -50,4 +50,30 @@ namespace WebNuoc.Helpers
         public long AboutID { get; set; }
         public List<long> GuideID { get; set; }
     }
+
+    public class LoggingFiles
+    {
+        public string FileName { get; set; }
+        public long FileSizeLimitBytes { get; set; }
+        public int RollingInterval { get; set; }
+        public string OutputTemplate { get; set; }
+    }
+
+    public class LoggingMongoDB
+    {
+        public string URI { get; set; }
+        public string Collection { get; set; }
+    }
+
+    public class LoggingProvider
+    {
+        public LoggingMongoDB LogMongoDB { get; set; }
+        public LoggingFiles LogFiles { get; set; }
+        public int LoggingType { get; set; }
+        public LoggingProvider()
+        {
+            LogMongoDB = new LoggingMongoDB();
+            LogFiles = new LoggingFiles();
+        }
+    }
 }

@@ -27,6 +27,12 @@ namespace WebNuoc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Adds services required for using options.
+            services.AddOptions();
+            var _LoggingProvider = Configuration.GetSection("LoggingProvider");
+            // Register the IConfiguration instance
+            services.Configure<LoggingProvider>(_LoggingProvider);
+
             services.AddRazorPages();
             services.AddControllersWithViews();
             services.AddHttpClient();
